@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formas de Pagamento</title>
+    <link rel="icon"  type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/pagamento.css" />
+</head>
+
+<body>
+    <header>
+        
+    </header>
+
+    <a class="voltar" href="index.html">← Voltar</a>
+
+    <main>
+        <h2>Formas</h2>
+        <div id="lista-pagamentos">
+            <!-- Itens aparecerão aqui -->
+        </div>
+
+        <button class="botao-adicionar" id="btnAbrirModal">+ Adicionar Forma</button>
+    </main>
+
+    <!-- Modal principal para adicionar ou editar -->
+    <div id="fundoEscuro" class="fundo-escuro"></div>
+    <div id="modalPagamento" class="modal">
+        <h2>Forma de Pagamento</h2>
+        <input type="text" id="nomePagamento" placeholder="Nome da forma" />
+        <input type="number" id="taxaPagamento" placeholder="Taxa (%) - opcional" />
+        <div class="botoes">
+            <button class="cancelar" id="btnFecharModal">Voltar</button>
+            <button class="confirmar" id="btnConfirmar">Confirmar</button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação de exclusão (caso use futuramente) -->
+    <div id="modalConfirmarExclusao" class="modal">
+        <h2>Deseja realmente excluir?</h2>
+        <div class="botoes">
+            <button class="cancelar" id="btnCancelarExclusao">Voltar</button>
+            <button class="confirmar" id="btnConfirmarExclusao">Confirmar</button>
+        </div>
+    </div>
+
+    
+
+    <script src="javaScript/pagamento.js"></script>
+    <script src="javaScript/menu.js" ></script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intervalos e Bloqueios</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/intervalos.css" />
+</head>
+
+<body>
+
+    <header></header>
+
+    <a class="voltar" href="index.html">← Voltar</a>
+
+    <main>
+        <h2>Intervalos</h2>
+
+        <div id="lista-intervalos">
+            <!-- Os bloqueios aparecerão aqui -->
+        </div>
+
+        <button class="botao-adicionar" id="btnAbrirModal">
+            + Criar Bloqueio
+        </button>
+    </main>
+
+    <!-- Fundo escuro -->
+    <div id="fundoEscuro" class="fundo-escuro"></div>
+
+    <!-- Modal criar/editar -->
+    <div id="modalIntervalo" class="modal">
+        <h2>Novo Bloqueio</h2>
+
+        <input type="text" id="nomeIntervalo" placeholder="Nome opcional. Ex: Almoço" />
+
+        <p class="texto-horarios">Selecione os horários:</p>
+
+        <div id="listaHorarios" class="lista-horarios">
+            <!-- Horários aparecem via JS -->
+        </div>
+
+        <div class="botoes">
+            <button class="cancelar" id="btnFecharModal">Voltar</button>
+            <button class="confirmar" id="btnConfirmar">Confirmar</button>
+        </div>
+    </div>
+
+    <!-- Modal opções -->
+    <div id="modalOpcoes" class="modal">
+        <h2>O que deseja fazer?</h2>
+
+        <div class="botoes-opcoes">
+            <button class="confirmar" id="btnEditar">Editar</button>
+            <button class="excluir" id="btnExcluir">Excluir</button>
+        </div>
+    </div>
+
+    <!-- Modal confirmar exclusão -->
+    <div id="modalConfirmarExclusao" class="modal">
+        <h2>Deseja realmente excluir?</h2>
+
+        <div class="botoes">
+            <button class="cancelar" id="btnCancelarExclusao">Voltar</button>
+            <button class="confirmar" id="btnConfirmarExclusao">Confirmar</button>
+        </div>
+    </div>
+
+    <script src="javaScript/intervalos.js"></script>
+</body>
+
+</html>

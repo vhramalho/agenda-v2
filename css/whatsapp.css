@@ -1,0 +1,142 @@
+/* Estilo geral */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    touch-action: manipulation;
+}
+
+/* Cabeçalho preto padrão */
+header {
+    background-color: #000;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Botão voltar */
+.botao-voltar {
+    display: inline-block;
+    margin: 15px;
+    padding: 8px 14px;
+    background-color: transparent;
+    border: 1px solid #000;
+    border-radius: 6px;
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.botao-voltar:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+/* Título da página */
+.titulo-pagina {
+    text-align: center;
+    font-size: 10px;
+    margin-bottom: 20px;
+}
+
+/* Container principal */
+.container-config {
+    background-color: white;
+    border-radius: 10px;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Campos de input e textarea */
+.container-config input,
+.container-config textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.container-config label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Mensagem de sucesso */
+#msgSucesso {
+    color: green;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+}
+
+.botoes-whatsapp {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.salvar {
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.previa {
+    background-color: transparent;
+    color: #333;
+    border: none;
+    padding: 0px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.fechar {
+    color: #333;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-caixa {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 300px;
+}
+.saudacao {
+    color: #929292;
+    font-size: 14px;
+}

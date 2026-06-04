@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório</title>
+    <link rel="icon"  type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/relatorio.css" />
+    <link rel="stylesheet" href="css/servicos.css" />
+    
+</head>
+
+<body>
+    <header>
+        <h1>Serviços</h1>
+    </header>
+
+    <a class="voltar" href="index.html">← Voltar</a>
+
+    <div class="titulo-relatorio">
+        <h2>Relatório</h2>
+        <div id="btnCalendario" class="botao-topo">
+            <img src="img/calendario.png" alt="Calendário" />
+            <span>Calendário</span>
+        </div>
+    </div>
+
+    <section id="relatorios">
+        <div class="bloco-relatorio" id="relatorio-dia">
+            <h3>Dia 00/00</h3>
+            <div class="valores">
+                <div><strong>Faturamento</strong><br><span class="valor-total">R$0</span></div>
+                <div><strong>Atendimentos</strong><br><span class="atendimentos-total">0</span></div>
+            </div>
+            <div class="detalhes">
+                <div class="formas-pagamento"></div>
+                <div class="servicos-realizados"></div>
+            </div>
+        </div>
+
+        <div class="bloco-relatorio" id="relatorio-semana">
+            <h3>Semana 00</h3>
+            <div class="valores">
+                <div><strong>Faturamento</strong><br><span class="valor-total">R$0</span></div>
+                <div><strong>Atendimentos</strong><br><span class="atendimentos-total">0</span></div>
+            </div>
+            <div class="detalhes">
+                <div class="formas-pagamento"></div>
+                <div class="servicos-realizados"></div>
+            </div>
+        </div>
+
+        <div class="bloco-relatorio" id="relatorio-mes">
+            <h3>Mês 00/0000</h3>
+            <div class="valores">
+                <div><strong>Faturamento</strong><br><span class="valor-total">R$0</span></div>
+                <div><strong>Atendimentos</strong><br><span class="atendimentos-total">0</span></div>
+            </div>
+            <div class="detalhes">
+                <div class="formas-pagamento"></div>
+                <div class="servicos-realizados"></div>
+            </div>
+        </div>
+
+        <div class="bloco-relatorio" id="relatorio-ano">
+            <h3>Ano 0000</h3>
+            <div class="valores">
+                <div><strong>Faturamento</strong><br><span class="valor-total">R$0</span></div>
+                <div><strong>Atendimentos</strong><br><span class="atendimentos-total">0</span></div>
+            </div>
+            <div class="detalhes">
+                <div class="formas-pagamento"></div>
+                <div class="servicos-realizados"></div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+
+    <!-- Modal de Calendário -->
+    <div id="modal-calendario" class="modal-calendario">
+        <div class="calendario-container">
+            <div class="calendario-topo">
+                <button id="mesAnterior" class="cal-btn">«</button>
+                <span id="mesAtual" class="cal-mes">Julho 2025</span>
+                <button id="mesSeguinte" class="cal-btn">»</button>
+            </div>
+            <div class="calendario-semana">
+                <div>Dom</div>
+                <div>Seg</div>
+                <div>Ter</div>
+                <div>Qua</div>
+                <div>Qui</div>
+                <div>Sex</div>
+                <div>Sab</div>
+            </div>
+            <div class="calendario-corpo" id="calendarioCorpo">
+                <!-- Dias inseridos por JS -->
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script src="javaScript/relatorio.js"></script>
+    <script src="javaScript/menu.js"></script>
+</body>
+
+</html>
