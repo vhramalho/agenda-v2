@@ -97,11 +97,11 @@ window.onload = () => {
   }
 
   // 🔁 Carrega ou cria os horários do dia
-  function carregarHorarios(chave) {
+  function carregarHorarios(chave, dataReferencia = dataAtual) {
     const salvo = localStorage.getItem("agenda_" + chave);
     const horarios = salvo ? JSON.parse(salvo) : gerarHorariosBase();
 
-    return aplicarIntervalosFixos(horarios);
+    return aplicarIntervalosFixos(horarios, dataReferencia);
   }
 
   function carregarIntervalosFixos() {
@@ -109,9 +109,9 @@ window.onload = () => {
     return dados ? JSON.parse(dados) : [];
   }
 
-  function buscarIntervaloPorHorario(hora) {
+  function buscarIntervaloPorHorario(hora, dataReferencia = dataAtual) {
     const intervalos = carregarIntervalosFixos();
-    const diaSemanaAtual = dataAtual.getDay();
+    const diaSemanaAtual = dataReferencia.getDay();
 
     return intervalos.find((intervalo) => {
       const bloqueiaHorario = intervalo.horarios.includes(hora);
@@ -121,9 +121,9 @@ window.onload = () => {
     });
   }
 
-  function aplicarIntervalosFixos(horarios) {
+  function aplicarIntervalosFixos(horarios, dataReferencia = dataAtual) {
     return horarios.map((item) => {
-      const intervalo = buscarIntervaloPorHorario(item.hora);
+      const intervalo = buscarIntervaloPorHorario(item.hora, dataReferencia);
 
       if (
         intervalo &&
@@ -1007,8 +1007,7 @@ ${
       const nomeDia = dataObj.toLocaleDateString("pt-BR", { weekday: "long" });
       mensagem += `${capitalize(nomeDia)} ${dia}/${mes}\n`;
 
-      const chave = `agenda_${dataISO}`;
-      const dados = JSON.parse(localStorage.getItem(chave));
+      const dados = carregarHorarios(dataISO, dataObj);
 
       let horarios = [];
 
@@ -1053,11 +1052,6 @@ ${
         }
 
         horarios = horariosOtimizados;
-      } else {
-        // gerar horários padrão de hora em hora (08:00 até 20:00)
-        for (let h = 8; h <= 20; h++) {
-          horarios.push(`${h.toString().padStart(2, "0")}:00`);
-        }
       }
 
       if (horarios.length === 0) {
