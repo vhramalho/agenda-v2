@@ -126,6 +126,7 @@
             <div class="botoes-modal" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
                 <div style="display: flex; justify-content: space-between; gap: 10px;">
                     <button id="btnRealizado" class="botao-verde" style="flex: 1;">Realizado</button>
+                    <button id="btnEditarAgendamento" class="btn-transparente" style="flex: 1;">Editar</button>
                     <button id="btnCancelarAgendamento" class="botao-vermelho" style="flex: 1;">Cancelar</button>
 
                 </div>
@@ -152,7 +153,12 @@
         <div class="modal-caixa">
             <h2 id="titulo-realizado">Finalizar Serviço</h2>
 
+            <label>Nome do cliente</label>
+            <input type="text" id="inputNomeRealizado">
+
             <p id="info-realizado"></p>
+
+            <div id="lista-servicos-realizado" class="checkbox-container"></div>
 
             <div class="grupo-radio">
                 <span>Foi pago?</span>

@@ -478,6 +478,7 @@ ${
   // Confirmar
   btnConfirmarAgendar.addEventListener("click", () => {
     const nome = inputNomeCliente.value.trim();
+
     if (!nome) {
       alert("Por favor, preencha o nome do cliente.");
       return;
@@ -490,13 +491,24 @@ ${
     const chave = getChaveData(dataAtual);
     const horarios = carregarHorarios(chave);
 
-    horarios.forEach((item) => {
-      if (item.hora === horarioSelecionado) {
-        item.status = "agendado";
-        item.cliente = nome;
-        item.servico = servicosSelecionados.join(" + ");
-      }
-    });
+    if (agendamentoEditando) {
+      horarios.forEach((item) => {
+        if (item.hora === agendamentoEditando.hora) {
+          item.cliente = nome;
+          item.servico = servicosSelecionados.join(" + ");
+        }
+      });
+
+      agendamentoEditando = null;
+    } else {
+      horarios.forEach((item) => {
+        if (item.hora === horarioSelecionado) {
+          item.status = "agendado";
+          item.cliente = nome;
+          item.servico = servicosSelecionados.join(" + ");
+        }
+      });
+    }
 
     salvarHorarios(chave, horarios);
     aplicarLogicaEncaixe(getChaveData(dataAtual));
@@ -505,6 +517,7 @@ ${
   });
 
   /* MODAL DE AGENDADO (QUANDO CLICA EM UM HOARIO AGENDADO) (REALIZAR / EDITAR / CANCELAR*/
+  let agendamentoEditando = null;
 
   function abrirModalAgendamento(item) {
     // Referências ao modal e seus elementos internos
@@ -515,6 +528,9 @@ ${
     const btnRealizado = document.getElementById("btnRealizado");
     const btnCancelarAgendamento = document.getElementById(
       "btnCancelarAgendamento",
+    );
+    const btnEditarAgendamento = document.getElementById(
+      "btnEditarAgendamento",
     );
 
     // Dados do agendamento
@@ -544,7 +560,49 @@ ${
       modalAgendamento.classList.remove("ativo");
       abrirModalRealizado(item); // já implementado por você
     };
+    btnEditarAgendamento.onclick = function () {
+      modalAgendamento.classList.remove("ativo");
+
+      agendamentoEditando = item;
+
+      abrirModalEditarAgendamento(item);
+    };
   }
+
+  function abrirModalEditarAgendamento(item) {
+    tituloAgendar.textContent = `Horário: ${item.hora}`;
+
+    inputNomeCliente.value = item.cliente || "";
+
+    listaServicos.innerHTML = "";
+
+    const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+
+    const servicosSelecionados = (item.servico || "")
+      .split(" + ")
+      .map((s) => s.trim());
+
+    servicos.forEach((serv) => {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = serv.nome;
+      checkbox.id = `editar-${serv.nome}`;
+
+      if (servicosSelecionados.includes(serv.nome)) {
+        checkbox.checked = true;
+      }
+
+      const label = document.createElement("label");
+      label.htmlFor = checkbox.id;
+      label.textContent = serv.nome;
+
+      label.prepend(checkbox);
+      listaServicos.appendChild(label);
+    });
+
+    modalAgendar.classList.add("ativo");
+  }
+
   function abrirModalCancelar(item) {
     console.log("OK", item);
     const modalCancelar = document.getElementById("modal-cancelar");
@@ -636,6 +694,10 @@ ${
     const btnConfirmar = document.getElementById("btnConfirmarRealizado");
     const campoValorNaoPago = document.getElementById("campoValorNaoPago");
     const inputValorNaoPago = document.getElementById("inputValorNaoPago");
+    const listaServicosRealizado = document.getElementById(
+      "lista-servicos-realizado",
+    );
+    const inputNomeRealizado = document.getElementById("inputNomeRealizado");
 
     // Preenche os dados do serviço no modal
     const servicosTexto = Array.isArray(item.servico)
@@ -644,7 +706,36 @@ ${
         ? item.servico
         : "-";
 
-    campoInfo.innerHTML = `Horário: ${item.hora}<br>Nome: ${item.cliente || "-"}<br>Serviços: ${servicosTexto}`;
+    campoInfo.innerHTML = `Horário: ${item.hora}`;
+
+    inputNomeRealizado.value = item.cliente || "";
+
+    listaServicosRealizado.innerHTML = "";
+
+    const servicosCadastrados =
+      JSON.parse(localStorage.getItem("servicos")) || [];
+
+    const servicosMarcados = (item.servico || "")
+      .split(" + ")
+      .map((s) => s.trim());
+
+    servicosCadastrados.forEach((serv) => {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.value = serv.nome;
+      checkbox.id = `realizado-${serv.nome}`;
+
+      if (servicosMarcados.includes(serv.nome)) {
+        checkbox.checked = true;
+      }
+
+      const label = document.createElement("label");
+      label.htmlFor = checkbox.id;
+      label.textContent = serv.nome;
+
+      label.prepend(checkbox);
+      listaServicosRealizado.appendChild(label);
+    });
 
     // Resetar radios e esconder campos
     radiosPago.forEach((radio) => (radio.checked = false));
@@ -734,6 +825,26 @@ ${
       if (index !== -1) {
         horarios[index].status = "realizado";
         horarios[index].pago = pago.value === "sim";
+
+        const nomeAtualizado = inputNomeRealizado.value.trim();
+
+        if (!nomeAtualizado) {
+          alert("Informe o nome do cliente.");
+          return;
+        }
+
+        horarios[index].cliente = nomeAtualizado;
+
+        const servicosRealizados = [
+          ...listaServicosRealizado.querySelectorAll("input:checked"),
+        ].map((input) => input.value);
+
+        if (servicosRealizados.length === 0) {
+          alert("Selecione pelo menos um serviço realizado.");
+          return;
+        }
+
+        horarios[index].servico = servicosRealizados.join(" + ");
 
         if (pago.value === "sim") {
           // Se foi pago, pegar formas de pagamento e valores
