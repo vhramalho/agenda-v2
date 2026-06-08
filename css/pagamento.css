@@ -113,11 +113,6 @@ main {
 padding: 20px;
 }
 
-h2 {
-font-size: 20px;
-margin-bottom: 10px;
-}
-
 /* Botão verde de adicionar */
 .botao-adicionar {
 display: block;
@@ -185,14 +180,16 @@ font-size: 15px;
 cursor: pointer;
 }
 
-.modal .cancelar {
-background-color: transparent;
-color: black;
+.modal .cancelar,
+.btn-transparente {
+    background-color: transparent;
+    color: black;
 }
 
-.modal .confirmar {
-background-color: green;
-color: white;
+.modal .confirmar,
+.btn-verde {
+    background-color: green;
+    color: white;
 }
 
 /* Ativo: mostra modal ou fundo */
@@ -222,20 +219,34 @@ font-size: 16px;
 font-size: 15px;
 }
 
-/* 🔽 Ícones de ação: apenas lápis */
-.icones-acoes {
-display: none;
-gap: 10px;
-align-items: center;
+.pagamento {
+    cursor: pointer;
 }
 
-.icones-acoes img {
-width: 20px;
-height: 20px;
-cursor: pointer;
+.botoes-opcoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-.pagamento.selecionado .icones-acoes {
-display: flex;
+.botoes-opcoes button {
+    flex: 1;
+}
+
+.modal .excluir,
+.btn-vermelho {
+    background-color: #b30000;
+    color: white;
+}
+
+.botoes-modal {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.botoes-modal button {
+    flex: 1;
 }
 

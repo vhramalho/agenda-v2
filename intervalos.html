@@ -14,8 +14,6 @@
     <a class="voltar" href="index.html">← Voltar</a>
 
     <main>
-      <h2>Intervalos</h2>
-
       <div id="lista-intervalos">
         <!-- Os bloqueios aparecerão aqui -->
       </div>
@@ -30,7 +28,7 @@
 
     <!-- Modal criar/editar -->
     <div id="modalIntervalo" class="modal">
-      <h2>Novo Bloqueio</h2>
+      <h2>Bloqueio</h2>
 
       <input
         type="text"
@@ -83,9 +81,9 @@
         </label>
       </div>
 
-      <div class="botoes">
-        <button class="cancelar" id="btnFecharModal">Voltar</button>
-        <button class="confirmar" id="btnConfirmar">Confirmar</button>
+      <div class="botoes-modal">
+        <button class="btn-transparente" id="btnFecharModal">Voltar</button>
+        <button class="btn-verde" id="btnConfirmar">Confirmar</button>
       </div>
     </div>
 
@@ -94,8 +92,8 @@
       <h2>O que deseja fazer?</h2>
 
       <div class="botoes-opcoes">
-        <button class="confirmar" id="btnEditar">Editar</button>
-        <button class="excluir" id="btnExcluir">Excluir</button>
+        <button class="btn-verde" id="btnEditar">Editar</button>
+        <button class="btn-vermelho" id="btnExcluir">Excluir</button>
       </div>
     </div>
 
@@ -103,12 +101,13 @@
     <div id="modalConfirmarExclusao" class="modal">
       <h2>Deseja realmente excluir?</h2>
 
-      <div class="botoes">
-        <button class="cancelar" id="btnCancelarExclusao">Voltar</button>
-        <button class="confirmar" id="btnConfirmarExclusao">Confirmar</button>
+      <div class="botoes-modal">
+        <button class="btn-transparente" id="btnCancelarExclusao">Voltar</button>
+        <button class="btn-verde" id="btnConfirmarExclusao">Confirmar</button>
       </div>
     </div>
 
     <script src="javaScript/intervalos.js"></script>
+    <script src="javaScript/menu.js"></script>
   </body>
 </html>

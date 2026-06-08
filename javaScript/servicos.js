@@ -10,32 +10,41 @@ const valorInput = document.getElementById("valorServico");
 const listaServicos = document.getElementById("lista-servicos");
 
 // ✅ Modal de confirmação de exclusão
-const modalConfirmarExclusao = document.getElementById("modalConfirmarExclusao");
+const modalConfirmarExclusao = document.getElementById(
+  "modalConfirmarExclusao",
+);
 const btnCancelarExclusao = document.getElementById("btnCancelarExclusao");
 const btnConfirmarExclusao = document.getElementById("btnConfirmarExclusao");
+const modalOpcoes = document.getElementById("modalOpcoes");
+const btnEditar = document.getElementById("btnEditar");
+const btnExcluir = document.getElementById("btnExcluir");
 let indiceParaExcluir = null;
 
 // ✅ Controle de edição
+let indiceSelecionado = null;
 let modoEdicao = false;
 let indiceEditando = null;
 
 // 👉 Abrir modal de novo serviço
 btnAbrirModal.addEventListener("click", () => {
-    fundoEscuro.classList.add("ativo");
-    modal.classList.add("ativo");
-    nomeInput.value = "";
-    valorInput.value = "";
-    modoEdicao = false;
+  fundoEscuro.classList.add("ativo");
+  modal.classList.add("ativo");
+  nomeInput.value = "";
+  valorInput.value = "";
+  modoEdicao = false;
 });
 
 // 👉 Fechar modal (reutilizável)
 const fecharModal = () => {
     fundoEscuro.classList.remove("ativo");
     modal.classList.remove("ativo");
-    modalConfirmarExclusao.classList.remove("ativo"); // Também fecha confirmação
+    modalOpcoes.classList.remove("ativo");
+    modalConfirmarExclusao.classList.remove("ativo");
+
     modoEdicao = false;
     indiceEditando = null;
     indiceParaExcluir = null;
+    indiceSelecionado = null;
 };
 
 // 👉 Fechar modal ao clicar nos botões ou fundo
@@ -45,106 +54,99 @@ fundoEscuro.addEventListener("click", fecharModal);
 
 // 👉 Confirmar exclusão
 btnConfirmarExclusao.addEventListener("click", () => {
-    if (indiceParaExcluir !== null) {
-        const servicos = carregarServicos();
-        servicos.splice(indiceParaExcluir, 1);
-        salvarServicos(servicos);
-        renderizarServicos();
-    }
-    fecharModal();
+  if (indiceParaExcluir !== null) {
+    const servicos = carregarServicos();
+    servicos.splice(indiceParaExcluir, 1);
+    salvarServicos(servicos);
+    renderizarServicos();
+  }
+  fecharModal();
 });
 
 // 👉 Confirmar cadastro ou edição
 btnConfirmar.addEventListener("click", () => {
-    const nome = nomeInput.value.trim();
-    const valor = parseFloat(valorInput.value);
+  const nome = nomeInput.value.trim();
+  const valor = parseFloat(valorInput.value);
 
-    if (nome && !isNaN(valor)) {
-        const servicos = carregarServicos();
+  if (nome && !isNaN(valor)) {
+    const servicos = carregarServicos();
 
-        if (modoEdicao && indiceEditando !== null) {
-            servicos[indiceEditando] = { nome, valor }; // Editar
-        } else {
-            servicos.push({ nome, valor }); // Adicionar novo
-        }
-
-        salvarServicos(servicos);
-        renderizarServicos();
-        fecharModal();
+    if (modoEdicao && indiceEditando !== null) {
+      servicos[indiceEditando] = { nome, valor }; // Editar
     } else {
-        alert("Preencha o nome e o valor corretamente.");
+      servicos.push({ nome, valor }); // Adicionar novo
     }
+
+    salvarServicos(servicos);
+    renderizarServicos();
+    fecharModal();
+  } else {
+    alert("Preencha o nome e o valor corretamente.");
+  }
 });
 
 // 📦 LocalStorage
 function carregarServicos() {
-    const dados = localStorage.getItem("servicos");
-    return dados ? JSON.parse(dados) : [];
+  const dados = localStorage.getItem("servicos");
+  return dados ? JSON.parse(dados) : [];
 }
 
 function salvarServicos(lista) {
-    localStorage.setItem("servicos", JSON.stringify(lista));
+  localStorage.setItem("servicos", JSON.stringify(lista));
 }
 
 // 🖥️ Renderizar lista de serviços
 function renderizarServicos() {
-    const servicos = carregarServicos();
-    listaServicos.innerHTML = "";
+  const servicos = carregarServicos();
+  listaServicos.innerHTML = "";
 
-    servicos.forEach((servico, index) => {
-        const div = document.createElement("div");
-        div.className = "servico";
+  servicos.forEach((servico, index) => {
+    const div = document.createElement("div");
+    div.className = "servico";
 
-        div.innerHTML = `
+    div.innerHTML = `
             <div>
                 <span class="servico-nome">${servico.nome}</span><br>
                 <span class="servico-valor">R$ ${servico.valor.toFixed(2)}</span>
             </div>
-            <div class="acoes" style="display: none;">
-                <button class="editar" data-index="${index}"><img src="img/lapis.png"</button>
-                <button class="excluir" data-index="${index}"><img src="img/lixeira.png"</button>
-            </div>
         `;
 
-        div.addEventListener("click", () => {
-            // Oculta todos os outros ícones primeiro
-            document.querySelectorAll(".acoes").forEach(outra => {
-                outra.style.display = "none";
-            });
+    div.addEventListener("click", () => {
+      indiceSelecionado = index;
 
-            // Exibe apenas os do item clicado
-            const acoes = div.querySelector(".acoes");
-            acoes.style.display = "flex";
-        });
-
-        listaServicos.appendChild(div);
+      fundoEscuro.classList.add("ativo");
+      modalOpcoes.classList.add("ativo");
     });
 
-    // ✏️ Editar
-    document.querySelectorAll(".editar").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const index = parseInt(btn.dataset.index);
-            const servico = carregarServicos()[index];
-            nomeInput.value = servico.nome;
-            valorInput.value = servico.valor;
-            modoEdicao = true;
-            indiceEditando = index;
-            fundoEscuro.classList.add("ativo");
-            modal.classList.add("ativo");
-        });
-    });
+    listaServicos.appendChild(div);
+  });
 
-    // 🗑️ Excluir → abre modal de confirmação
-    document.querySelectorAll(".excluir").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            indiceParaExcluir = parseInt(btn.dataset.index);
-            fundoEscuro.classList.add("ativo");
-            modalConfirmarExclusao.classList.add("ativo");
-        });
-    });
+  
 }
 
+btnEditar.addEventListener("click", () => {
+    if (indiceSelecionado === null) return;
+
+    const servicos = carregarServicos();
+    const servico = servicos[indiceSelecionado];
+
+    nomeInput.value = servico.nome;
+    valorInput.value = servico.valor;
+
+    modoEdicao = true;
+    indiceEditando = indiceSelecionado;
+
+    modalOpcoes.classList.remove("ativo");
+    modal.classList.add("ativo");
+});
+
+btnExcluir.addEventListener("click", () => {
+    if (indiceSelecionado === null) return;
+
+    indiceParaExcluir = indiceSelecionado;
+
+    modalOpcoes.classList.remove("ativo");
+    modalConfirmarExclusao.classList.add("ativo");
+});
 // 🚀 Inicial
 renderizarServicos();

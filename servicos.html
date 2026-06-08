@@ -1,54 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Serviços</title>
-    <link rel="icon"  type="image/png" href="img/favicon.png">
-    <link rel="stylesheet" href="css/servicos.css">
-</head>
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="stylesheet" href="css/servicos.css" />
+  </head>
 
-<body>
-
-    <header>
-        <h1>Serviços</h1>
-    </header>
+  <body>
+    <header></header>
 
     <a class="voltar" href="index.html">← Voltar</a>
 
     <main>
-        <h2>Serviços</h2>
-        <div id="lista-servicos">
-            <!-- Serviços aparecerão aqui futuramente -->
-        </div>
+      <div id="lista-servicos">
+        <!-- Serviços aparecerão aqui futuramente -->
+      </div>
 
-        <button class="botao-adicionar" id="btnAbrirModal">+ Adicionar Serviço</button>
+      <button class="botao-adicionar" id="btnAbrirModal">
+        + Adicionar Serviço
+      </button>
     </main>
 
     <!-- Modal de adicionar serviço-->
     <div id="fundoEscuro" class="fundo-escuro"></div>
     <div id="modalServico" class="modal">
-        <h2>Novo Serviço</h2>
-        <input type="text" id="nomeServico" placeholder="Nome do serviço">
-        <input type="number" id="valorServico" placeholder="Valor (R$)">
-        <div class="botoes">
-            <button class="cancelar" id="btnFecharModal">Voltar</button>
-            <button class="confirmar" id="btnConfirmar">Confirmar</button>
-        </div>
+      <h2>Serviço</h2>
+      <input type="text" id="nomeServico" placeholder="Nome do serviço" />
+      <input type="number" id="valorServico" placeholder="Valor (R$)" />
+      <div class="botoes-modal">
+        <button class="btn-transparente" id="btnFecharModal">Voltar</button>
+        <button class="btn-verde" id="btnConfirmar">Confirmar</button>
+      </div>
+    </div>
+
+    <!-- Modal opções -->
+    <div id="modalOpcoes" class="modal">
+      <h2>O que deseja fazer?</h2>
+
+      <div class="botoes-opcoes">
+        <button class="btn-verde" id="btnEditar">Editar</button>
+        <button class="btn-vermelho" id="btnExcluir">Excluir</button>
+      </div>
     </div>
 
     <!-- Modal de confirmação de exclusão -->
     <div id="modalConfirmarExclusao" class="modal">
-        <h2>Deseja realmente excluir?</h2>
-        <div class="botoes">
-            <button class="cancelar" id="btnCancelarExclusao">Voltar</button>
-            <button class="confirmar" id="btnConfirmarExclusao">Confirmar</button>
-        </div>
+      <h2>Deseja realmente excluir?</h2>
+      <div class="botoes-modal">
+        <button class="btn-transparente" id="btnCancelarExclusao">Voltar</button>
+        <button class="btn-verde" id="btnConfirmarExclusao">Confirmar</button>
+      </div>
     </div>
     <script src="javaScript/servicos.js"></script>
     <script src="javaScript/menu.js"></script>
-
-</body>
-
+  </body>
 </html>

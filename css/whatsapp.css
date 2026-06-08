@@ -6,40 +6,6 @@ body {
     touch-action: manipulation;
 }
 
-/* Cabeçalho preto padrão */
-header {
-    background-color: #000;
-    color: white;
-    padding: 16px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* Botão voltar */
-.botao-voltar {
-    display: inline-block;
-    margin: 15px;
-    padding: 8px 14px;
-    background-color: transparent;
-    border: 1px solid #000;
-    border-radius: 6px;
-    color: #000;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.botao-voltar:hover {
-    background-color: #000;
-    color: #fff;
-}
-
-/* Título da página */
-.titulo-pagina {
-    text-align: center;
-    font-size: 10px;
-    margin-bottom: 20px;
-}
 
 /* Container principal */
 .container-config {
