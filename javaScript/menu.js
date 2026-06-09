@@ -73,3 +73,39 @@ fetch("menu.html")
   .catch((err) => {
     console.error("Erro ao carregar menu.html:", err);
   });
+
+async function verificarAtualizacao() {
+  const confirmar = confirm("Deseja verificar atualizações do app?");
+
+  if (!confirmar) return;
+
+  try {
+    if ("serviceWorker" in navigator) {
+      const registros = await navigator.serviceWorker.getRegistrations();
+
+      for (const registro of registros) {
+        await registro.update();
+      }
+    }
+
+    if ("caches" in window) {
+      const nomesCaches = await caches.keys();
+
+      for (const nome of nomesCaches) {
+        await caches.delete(nome);
+      }
+    }
+
+    alert("Atualização verificada. O app será recarregado agora.");
+    window.location.reload(true);
+  } catch (erro) {
+    console.error("Erro ao verificar atualização:", erro);
+    alert("Não foi possível verificar atualização agora.");
+  }
+}
+
+document.addEventListener("click", (event) => {
+    if (event.target.id === "btnAtualizacao") {
+        verificarAtualizacao();
+    }
+});

@@ -95,3 +95,14 @@ header h1 {
 main {
     padding: 20px;
 }
+
+.bot-atualizacao {
+    background-color: none;
+    border: none;
+    color: #f5f5f5;
+    font-size: 16px;
+    font-family: inherit;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+}
