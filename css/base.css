@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+    touch-action: manipulation;
+}
+
+header {
+    background-color: #111111;
+    color: #7c5cff;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+header h1 {
+    font-size: 18px;
+    flex: 1;
+    text-align: center;
+    color: #7c5cff;
+    margin-left: -24px;
+}
+
+.botao-menu {
+    background: none;
+    border: none;
+    color: #7c5cff;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001;
+    position: relative;
+}
+
+.botao-whatsapp {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-whatsapp img {
+    width: 40px;
+    height: 40px;
+}
+
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background-color: #111111;
+    color: #7c5cff;
+    transition: left 0.5s ease;
+    padding-top: 60px;
+    z-index: 1000;
+}
+
+.menu-lateral.ativo {
+    left: 0;
+}
+
+.menu-lateral ul {
+    list-style: none;
+    padding: 0 20px;
+}
+
+.menu-lateral li {
+    margin: 20px 0;
+}
+
+.menu-lateral a {
+    color: #f5f5f5;
+    text-decoration: none;
+}
+
+.voltar {
+    display: inline-block;
+    margin: 16px 0 8px 12px;
+    color: #f5f5f5;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}

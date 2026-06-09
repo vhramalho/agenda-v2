@@ -1,252 +1,37 @@
-/* Reset básico */
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: sans-serif;
-}
-
-/* Fundo da página */
-body {
-background-color: #f3f3f3;
-touch-action: manipulation;
-}
-
-/* Cabeçalho preto com título centralizado */
-header {
-background-color: #000;
-color: yellow;
-padding: 12px 16px;
-display: flex;
-align-items: center;
-justify-content: center;
-position: relative;
-}
-
-header h1 {
-    font-size: 18px;
-    flex: 1;
-    text-align: center;
-    color: yellow;
-    margin-left: -24px;
-    /* compensar botão do menu */
-}
-
-.botao-menu {
-    background: none;
-    border: none;
-    color: #ffff00;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 1001;
-    position: relative;
-}
-
-.botao-whatsapp {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    align-items: center;
-    justify-content: center;
-}
-
-.botao-whatsapp img {
-    width: 40px;
-    height: 40px;
-}
-
-/* ===== MENU LATERAL (oculto por padrão) ===== */
-.menu-lateral {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background-color: #000000;
-    color: #ffff00;
-    transition: left 0.5s ease;
-    padding-top: 60px;
-    z-index: 1000;
-}
-
-.menu-lateral.ativo {
-    left: 0;
-}
-
-.menu-lateral ul {
-    list-style: none;
-    padding: 0 20px;
-}
-
-.menu-lateral li {
-    margin: 20px 0;
-}
-
-.menu-lateral a {
-    color: #ffff00;
-    text-decoration: none;
-}
-
-.fundo-escuro {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-}
-
-/* Link de voltar */
-.voltar {
-display: inline-block;
-margin: 16px 0 8px 12px;
-color: #000;
-font-weight: bold;
-text-decoration: none;
-}
-
-/* Conteúdo principal */
-main {
-padding: 20px;
-}
-
-/* Botão verde de adicionar */
 .botao-adicionar {
-display: block;
-width: 90%;
-max-width: 300px;
-margin: 30px auto;
-padding: 12px;
-font-size: 16px;
-font-weight: bold;
-background-color: green;
-color: white;
-border: none;
-border-radius: 10px;
-cursor: pointer;
-}
-
-/* Modal: fundo escuro */
-.fundo-escuro {
-display: none;
-position: fixed;
-inset: 0;
-background-color: rgba(0, 0, 0, 0.5);
-z-index: 10;
-}
-
-/* Modal: conteúdo */
-.modal {
-display: none;
-background-color: white;
-width: 90%;
-max-width: 320px;
-padding: 20px;
-border-radius: 20px;
-position: fixed;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-z-index: 11;
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-text-align: center;
-}
-
-.modal input {
-width: 100%;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #aaa;
-border-radius: 8px;
-font-size: 16px;
-}
-
-/* Botões do modal */
-.modal .botoes {
-margin-top: 20px;
-display: flex;
-justify-content: space-between;
-}
-
-.modal button {
-padding: 10px 20px;
-font-weight: bold;
-border: none;
-border-radius: 10px;
-font-size: 15px;
-cursor: pointer;
-}
-
-.modal .cancelar,
-.btn-transparente {
-    background-color: transparent;
-    color: black;
-}
-
-.modal .confirmar,
-.btn-verde {
+    display: block;
+    width: 90%;
+    max-width: 300px;
+    margin: 30px auto;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
     background-color: green;
     color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-/* Ativo: mostra modal ou fundo */
-.fundo-escuro.ativo,
-.modal.ativo {
-display: block;
-}
-
-/* Estilo da lista de formas de pagamento */
 .pagamento {
-background-color: #fff;
-border-radius: 10px;
-padding: 12px;
-margin-bottom: 10px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
 .pagamento-nome {
-font-weight: bold;
-font-size: 16px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #f5f5f5;
 }
 
 .pagamento-taxa {
-font-size: 15px;
+    font-size: 15px;
+    color: #bdbdbd;
 }
-
-.pagamento {
-    cursor: pointer;
-}
-
-.botoes-opcoes {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.botoes-opcoes button {
-    flex: 1;
-}
-
-.modal .excluir,
-.btn-vermelho {
-    background-color: #b30000;
-    color: white;
-}
-
-.botoes-modal {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.botoes-modal button {
-    flex: 1;
-}
-

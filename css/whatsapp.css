@@ -2,14 +2,15 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+    background-color: #1e1e1e;
     touch-action: manipulation;
 }
 
 
 /* Container principal */
 .container-config {
-    background-color: white;
+    background-color: #2a2a2a;
+    border: 1px solid #3a3a3a;
     border-radius: 10px;
     max-width: 90%;
     margin: 0 auto;
@@ -23,6 +24,9 @@ body {
 /* Campos de input e textarea */
 .container-config input,
 .container-config textarea {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+    border: 1px solid #3a3a3a;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -35,6 +39,7 @@ body {
 .container-config label {
     font-weight: bold;
     font-size: 14px;
+    color: #f5f5f5;
 }
 
 /* Mensagem de sucesso */
@@ -53,7 +58,7 @@ body {
 }
 
 .salvar {
-    background-color: #2ecc71;
+    background-color: green;
     color: white;
     padding: 10px 18px;
     border: none;
@@ -105,4 +110,8 @@ body {
 .saudacao {
     color: #929292;
     font-size: 14px;
+}
+
+.container-config input::placeholder {
+    color: #888;
 }
