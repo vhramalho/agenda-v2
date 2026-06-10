@@ -1,109 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Relatório</title>
-    <link rel="icon"  type="image/png" href="img/favicon.png">
+    <title>Relatórios</title>
+
+    <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/relatorio.css" />
-    <link rel="stylesheet" href="css/servicos.css" />
-    
-</head>
+  </head>
 
-<body>
-    <header></header>
+  <body>
+    <main class="pagina-relatorio">
+      <section class="relatorio-topo">
+        <a href="index.html" class="botao-voltar-relatorio">←</a>
 
-    <a class="voltar" href="index.html">← Voltar</a>
-
-    <div class="titulo-relatorio">
-        <h2>Relatório</h2>
-        <div id="btnCalendario" class="botao-topo">
-            <img src="img/calendario.png" alt="Calendário" />
-            <span>Calendário</span>
-        </div>
-    </div>
-
-    <section id="relatorios">
-        <div class="bloco-relatorio" id="relatorio-dia">
-            <h3>Dia 00/00</h3>
-            <div class="valores">
-                <div><strong>Faturamento</strong><br><span class="valor-total">R$0</span></div>
-                <div><strong>Atendimentos</strong><br><span class="atendimentos-total">0</span></div>
-            </div>
-            <div class="detalhes">
-                <div class="formas-pagamento"></div>
-                <div class="servicos-realizados"></div>
-            </div>
+        <div>
+          <h1>Relatórios</h1>
         </div>
 
-        <div class="bloco-relatorio" id="relatorio-semana">
-            <h3>Semana 00</h3>
-            <div class="valores">
-                <div><strong>Faturamento</strong><br><span class="valor-total">R$0</span></div>
-                <div><strong>Atendimentos</strong><br><span class="atendimentos-total">0</span></div>
-            </div>
-            <div class="detalhes">
-                <div class="formas-pagamento"></div>
-                <div class="servicos-realizados"></div>
-            </div>
+        <button id="btnCalendario" class="botao-calendario-relatorio">
+          📅
+        </button>
+      </section>
+
+      <section class="abas-periodo">
+        <button class="aba-periodo ativa" data-periodo="dia">Dia</button>
+        <button class="aba-periodo" data-periodo="semana">Semana</button>
+        <button class="aba-periodo" data-periodo="mes">Mês</button>
+        <button class="aba-periodo" data-periodo="ano">Ano</button>
+      </section>
+
+      <section class="periodo-selecionado">
+        <button id="btnPeriodoAnterior" class="btn-periodo">‹</button>
+
+        <div class="info-periodo">
+          <strong id="textoPeriodoSelecionado">Hoje</strong>
+          <span id="subtituloPeriodo"></span>
         </div>
 
-        <div class="bloco-relatorio" id="relatorio-mes">
-            <h3>Mês 00/0000</h3>
-            <div class="valores">
-                <div><strong>Faturamento</strong><br><span class="valor-total">R$0</span></div>
-                <div><strong>Atendimentos</strong><br><span class="atendimentos-total">0</span></div>
-            </div>
-            <div class="detalhes">
-                <div class="formas-pagamento"></div>
-                <div class="servicos-realizados"></div>
-            </div>
+        <button id="btnPeriodoSeguinte" class="btn-periodo">›</button>
+      </section>
+
+      <section class="card-grafico">
+        <div class="card-titulo">
+          <div>
+            <span>Faturamento</span>
+            <h2 id="faturamentoPeriodo">R$ 0,00</h2>
+          </div>
         </div>
 
-        <div class="bloco-relatorio" id="relatorio-ano">
-            <h3>Ano 0000</h3>
-            <div class="valores">
-                <div><strong>Faturamento</strong><br><span class="valor-total">R$0</span></div>
-                <div><strong>Atendimentos</strong><br><span class="atendimentos-total">0</span></div>
-            </div>
-            <div class="detalhes">
-                <div class="formas-pagamento"></div>
-                <div class="servicos-realizados"></div>
-            </div>
+        <div class="grafico-em-breve">
+          <span>📊</span>
+          <p>Gráfico de faturamento em breve</p>
         </div>
-    </section>
+      </section>
+
+      <section class="grade-relatorio">
+        <article class="card-servicos">
+          <div class="card-titulo">
+            <span>Serviços realizados</span>
+            <h2 id="totalServicosRealizados">0</h2>
+          </div>
+
+          <div id="listaServicosRealizados" class="lista-servicos">
+            <!-- Serviços gerados pelo JavaScript -->
+          </div>
+        </article>
+
+        <div class="cards-menores">
+          <article class="mini-card">
+            <span>Atendimento</span>
+            <strong id="totalAtendimentos">0</strong>
+          </article>
+
+          <article class="mini-card">
+            <span>Ticket médio</span>
+            <strong id="ticketMedio">R$ 0,00</strong>
+          </article>
+
+          <article class="mini-card mini-card-detalhado">
+            <span>Recebimento</span>
+            <div id="recebimentoDetalhado">
+              <!-- Formas de pagamento -->
+            </div>
+          </article>
+
+          <article class="mini-card">
+            <span>Pendente</span>
+            <strong id="valorPendente">R$ 0,00</strong>
+          </article>
+
+          <article class="mini-card">
+            <span>Taxa cartão</span>
+            <strong id="taxaCartao">R$ 0,00</strong>
+          </article>
+        </div>
+      </section>
     </main>
-
 
     <!-- Modal de Calendário -->
     <div id="modal-calendario" class="modal-calendario">
-        <div class="calendario-container">
-            <div class="calendario-topo">
-                <button id="mesAnterior" class="cal-btn">«</button>
-                <span id="mesAtual" class="cal-mes">Julho 2025</span>
-                <button id="mesSeguinte" class="cal-btn">»</button>
-            </div>
-            <div class="calendario-semana">
-                <div>Dom</div>
-                <div>Seg</div>
-                <div>Ter</div>
-                <div>Qua</div>
-                <div>Qui</div>
-                <div>Sex</div>
-                <div>Sab</div>
-            </div>
-            <div class="calendario-corpo" id="calendarioCorpo">
-                <!-- Dias inseridos por JS -->
-            </div>
+      <div class="calendario-container">
+        <div class="calendario-topo">
+          <button id="mesAnterior" class="cal-btn">‹</button>
+          <span id="mesAtual" class="cal-mes">Julho 2025</span>
+          <button id="mesSeguinte" class="cal-btn">›</button>
         </div>
+
+        <div class="calendario-semana">
+          <div>Dom</div>
+          <div>Seg</div>
+          <div>Ter</div>
+          <div>Qua</div>
+          <div>Qui</div>
+          <div>Sex</div>
+          <div>Sáb</div>
+        </div>
+
+        <div class="calendario-corpo" id="calendarioCorpo">
+          <!-- Dias inseridos por JS -->
+        </div>
+      </div>
     </div>
 
-    
-
     <script src="javaScript/relatorio.js"></script>
-    <script src="javaScript/menu.js"></script>
-</body>
-
+  </body>
 </html>

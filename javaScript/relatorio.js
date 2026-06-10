@@ -1,5 +1,11 @@
+// ================================
+// CONFIGURAÇÃO INICIAL
+// ================================
+
+let periodoAtual = "dia";
 let dataAtual = obterDataDoSistema();
-// Referências do calendário
+
+// Calendário
 const btnCalendario = document.getElementById("btnCalendario");
 const modalCalendario = document.getElementById("modal-calendario");
 const mesAtualSpan = document.getElementById("mesAtual");
@@ -10,302 +16,555 @@ const btnMesSeguinte = document.getElementById("mesSeguinte");
 let mesAtual = new Date(dataAtual).getMonth();
 let anoAtual = new Date(dataAtual).getFullYear();
 
+// Abas
+const abas = document.querySelectorAll(".aba-periodo");
+const btnPeriodoAnterior = document.getElementById("btnPeriodoAnterior");
+const btnPeriodoSeguinte = document.getElementById("btnPeriodoSeguinte");
+
+// ================================
+// INICIALIZAÇÃO
+// ================================
 
 document.addEventListener("DOMContentLoaded", () => {
+  atualizarRelatorio();
 
-    const agendamentos = carregarTodosAgendamentosRealizados();
-    const servicosCadastrados = JSON.parse(localStorage.getItem("servicos")) || [];
-    const formasCadastradas = JSON.parse(localStorage.getItem("formasPagamento")) || [];
+  abas.forEach((botao) => {
+    botao.addEventListener("click", () => {
+      abas.forEach((b) => b.classList.remove("ativa"));
+      botao.classList.add("ativa");
 
-    preencherRelatorio("dia", filtrarPorDia(agendamentos, dataAtual), formatarData(dataAtual), servicosCadastrados, formasCadastradas);
-    preencherRelatorio("semana", filtrarPorSemana(agendamentos, dataAtual), "Semana " + getNumeroSemana(dataAtual), servicosCadastrados, formasCadastradas);
-    preencherRelatorio("mes", filtrarPorMes(agendamentos, dataAtual), formatarMes(dataAtual), servicosCadastrados, formasCadastradas);
-    preencherRelatorio("ano", filtrarPorAno(agendamentos, dataAtual), dataAtual.slice(0, 4), servicosCadastrados, formasCadastradas);
+      periodoAtual = botao.dataset.periodo;
+
+      atualizarRelatorio();
+    });
+  });
+
+  btnPeriodoAnterior.addEventListener("click", () => {
+    mudarPeriodo(-1);
+  });
+
+  btnPeriodoSeguinte.addEventListener("click", () => {
+    mudarPeriodo(1);
+  });
+
+  gerarCalendario();
 });
 
-// 1. Data do sistema em formato YYYY-MM-DD
+// ================================
+// ATUALIZA RELATÓRIO
+// ================================
+
+function atualizarRelatorio() {
+  const agendamentos = carregarTodosAgendamentosRealizados();
+  const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+  const formas = JSON.parse(localStorage.getItem("formasPagamento")) || [];
+
+  let lista = [];
+  let titulo = "";
+
+  switch (periodoAtual) {
+    case "dia":
+      lista = filtrarPorDia(agendamentos, dataAtual);
+      titulo = formatarData(dataAtual);
+      break;
+
+    case "semana":
+      lista = filtrarPorSemana(agendamentos, dataAtual);
+      titulo = "Semana " + getNumeroSemana(dataAtual);
+      break;
+
+    case "mes":
+      lista = filtrarPorMes(agendamentos, dataAtual);
+      titulo = formatarMes(dataAtual);
+      break;
+
+    case "ano":
+      lista = filtrarPorAno(agendamentos, dataAtual);
+      titulo = dataAtual.slice(0, 4);
+      break;
+  }
+
+  preencherCabecalho(titulo);
+  preencherCards(lista, formas);
+  preencherServicos(lista, servicos);
+}
+
+function mudarPeriodo(direcao) {
+  const data = criarDataLocal(dataAtual);
+
+  if (periodoAtual === "dia") {
+    data.setDate(data.getDate() + direcao);
+  }
+
+  if (periodoAtual === "semana") {
+    data.setDate(data.getDate() + 7 * direcao);
+  }
+
+  if (periodoAtual === "mes") {
+    data.setMonth(data.getMonth() + direcao);
+  }
+
+  if (periodoAtual === "ano") {
+    data.setFullYear(data.getFullYear() + direcao);
+  }
+
+  dataAtual = converterDataParaTexto(data);
+  atualizarRelatorio();
+}
+
+// ================================
+// PREENCHIMENTO DOS DADOS
+// ================================
+
+function preencherCabecalho(titulo) {
+  const textoPeriodo = document.getElementById("textoPeriodoSelecionado");
+  const subtituloPeriodo = document.getElementById("subtituloPeriodo");
+
+  textoPeriodo.textContent = titulo;
+  subtituloPeriodo.textContent = "";
+
+  if (periodoAtual === "dia") {
+    subtituloPeriodo.textContent = obterNomeDiaSemana(dataAtual);
+  }
+
+  if (periodoAtual === "semana") {
+    subtituloPeriodo.textContent = obterPeriodoSemana(dataAtual);
+  }
+}
+
+function preencherCards(lista, formasCadastradas) {
+  const faturamento = somarValores(lista);
+  const atendimentos = lista.length;
+  const ticketMedio = atendimentos > 0 ? faturamento / atendimentos : 0;
+
+  document.getElementById("faturamentoPeriodo").textContent =
+    formatarMoeda(faturamento);
+  document.getElementById("totalAtendimentos").textContent = atendimentos;
+  document.getElementById("ticketMedio").textContent =
+    formatarMoeda(ticketMedio);
+
+  preencherRecebimentos(lista);
+  preencherTaxaCartao(lista, formasCadastradas);
+  preencherPendentes(lista);
+}
+
+function preencherRecebimentos(lista) {
+  const container = document.getElementById("recebimentoDetalhado");
+  const resumo = {
+    dinheiro: 0,
+    pix: 0,
+    credito: 0,
+    debito: 0,
+  };
+
+  lista.forEach((agendamento) => {
+    const formas = Array.isArray(agendamento.formaPagamento)
+      ? agendamento.formaPagamento
+      : [];
+
+    formas.forEach((fp) => {
+      const nome = normalizarTexto(fp.forma);
+      const valor = Number(fp.valor) || 0;
+
+      if (nome.includes("dinheiro")) resumo.dinheiro += valor;
+      else if (nome.includes("pix")) resumo.pix += valor;
+      else if (nome.includes("credito") || nome.includes("crédito"))
+        resumo.credito += valor;
+      else if (nome.includes("debito") || nome.includes("débito"))
+        resumo.debito += valor;
+    });
+  });
+
+  container.innerHTML = `
+        <div class="linha-recebimento"><span>Dinheiro</span><strong>${formatarMoeda(resumo.dinheiro)}</strong></div>
+        <div class="linha-recebimento"><span>Pix</span><strong>${formatarMoeda(resumo.pix)}</strong></div>
+        <div class="linha-recebimento"><span>Crédito</span><strong>${formatarMoeda(resumo.credito)}</strong></div>
+        <div class="linha-recebimento"><span>Débito</span><strong>${formatarMoeda(resumo.debito)}</strong></div>
+    `;
+}
+
+function preencherTaxaCartao(lista, formasCadastradas) {
+  let totalTaxa = 0;
+
+  lista.forEach((agendamento) => {
+    const formas = Array.isArray(agendamento.formaPagamento)
+      ? agendamento.formaPagamento
+      : [];
+
+    formas.forEach((fp) => {
+      const nome = fp.forma || "";
+      const valor = Number(fp.valor) || 0;
+
+      const formaCadastrada = formasCadastradas.find((f) => f.nome === nome);
+
+      if (formaCadastrada && formaCadastrada.taxa) {
+        totalTaxa += valor * (Number(formaCadastrada.taxa) / 100);
+      }
+    });
+  });
+
+  document.getElementById("taxaCartao").textContent = formatarMoeda(totalTaxa);
+}
+
+function preencherPendentes(lista) {
+  const totalPendente = lista
+    .filter(
+      (agendamento) => agendamento.pago === "nao" || agendamento.pago === false,
+    )
+    .reduce(
+      (total, agendamento) => total + (Number(agendamento.valor) || 0),
+      0,
+    );
+
+  document.getElementById("valorPendente").textContent =
+    formatarMoeda(totalPendente);
+}
+
+// ================================
+// SERVIÇOS REALIZADOS
+// ================================
+
+function preencherServicos(lista, servicosCadastrados) {
+  const container = document.getElementById("listaServicosRealizados");
+  const totalContainer = document.getElementById("totalServicosRealizados");
+
+  const contagem = {};
+
+  lista.forEach((agendamento) => {
+    let servicos = [];
+
+    if (Array.isArray(agendamento.servico)) {
+      servicos = agendamento.servico;
+    } else if (typeof agendamento.servico === "string") {
+      servicos = agendamento.servico.split("+").map((s) => s.trim());
+    }
+
+    servicos.forEach((nome) => {
+      if (!contagem[nome]) contagem[nome] = 0;
+      contagem[nome]++;
+    });
+  });
+
+  const totalServicos = Object.values(contagem).reduce(
+    (soma, qtd) => soma + qtd,
+    0,
+  );
+  totalContainer.textContent = totalServicos;
+
+  if (servicosCadastrados.length === 0) {
+    container.innerHTML = `<p class="texto-vazio">Nenhum serviço cadastrado.</p>`;
+    return;
+  }
+
+  container.innerHTML = servicosCadastrados
+    .map((servico) => {
+      const qtd = contagem[servico.nome] || 0;
+
+      return `
+            <div class="item-servico">
+                <span>${servico.nome}</span>
+                <strong>${qtd}</strong>
+            </div>
+        `;
+    })
+    .join("");
+}
+
+// ================================
+// DADOS E FILTROS
+// ================================
+
 function obterDataDoSistema() {
-    const dataLocal = localStorage.getItem("dataAtual");
+  const dataLocal = localStorage.getItem("dataAtual");
 
-    if (dataLocal && dataLocal.includes("/")) {
-        const [dia, mes, ano] = dataLocal.split("/");
-        return `${ano}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`;
-    }
+  if (dataLocal && dataLocal.includes("/")) {
+    const [dia, mes, ano] = dataLocal.split("/");
+    return `${ano}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`;
+  }
 
-    // Fallback: data local (não UTC)
-    const hoje = new Date();
-    const ano = hoje.getFullYear();
-    const mes = String(hoje.getMonth() + 1).padStart(2, "0");
-    const dia = String(hoje.getDate()).padStart(2, "0");
-    return `${ano}-${mes}-${dia}`;
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+  const dia = String(hoje.getDate()).padStart(2, "0");
+
+  return `${ano}-${mes}-${dia}`;
 }
 
-// 2. Coleta apenas os agendamentos "realizado"
 function carregarTodosAgendamentosRealizados() {
-    const agendamentos = [];
+  const agendamentos = [];
 
-    for (let i = 0; i < localStorage.length; i++) {
-        const chave = localStorage.key(i);
-        if (!chave.startsWith("agenda_")) continue;
+  for (let i = 0; i < localStorage.length; i++) {
+    const chave = localStorage.key(i);
 
-        const data = chave.replace("agenda_", ""); // YYYY-MM-DD
-        const lista = JSON.parse(localStorage.getItem(chave)) || [];
+    if (!chave.startsWith("agenda_")) continue;
 
-        lista.forEach(item => {
-            if (item.status === "realizado") {
-                agendamentos.push({ ...item, data });
-            }
-        });
-    }
+    const data = chave.replace("agenda_", "");
+    const lista = JSON.parse(localStorage.getItem(chave)) || [];
 
-    return agendamentos;
+    lista.forEach((item) => {
+      if (item.status === "realizado") {
+        agendamentos.push({ ...item, data });
+      }
+    });
+  }
+
+  return agendamentos;
 }
 
-// 3. Filtros por período
 function filtrarPorDia(ags, data) {
-    return ags.filter(a => a.data === data);
+  return ags.filter((a) => a.data === data);
 }
 
 function filtrarPorSemana(ags, data) {
-    const semana = getNumeroSemana(data);
-    const ano = data.slice(0, 4);
-    return ags.filter(a => getNumeroSemana(a.data) === semana && a.data.startsWith(ano));
+  const semana = getNumeroSemana(data);
+  const ano = data.slice(0, 4);
+
+  return ags.filter(
+    (a) => getNumeroSemana(a.data) === semana && a.data.startsWith(ano),
+  );
 }
 
 function filtrarPorMes(ags, data) {
-    const [ano, mes] = data.split("-");
-    return ags.filter(a => a.data.startsWith(`${ano}-${mes}`));
+  const [ano, mes] = data.split("-");
+  return ags.filter((a) => a.data.startsWith(`${ano}-${mes}`));
 }
 
 function filtrarPorAno(ags, data) {
-    const ano = data.slice(0, 4);
-    return ags.filter(a => a.data.startsWith(ano));
+  const ano = data.slice(0, 4);
+  return ags.filter((a) => a.data.startsWith(ano));
 }
 
-// 4. Preenche a caixa de relatório
-function preencherRelatorio(tipo, ags, titulo, servicosCadastrados, formasCadastradas) {
-    const bloco = document.getElementById(`relatorio-${tipo}`);
-    if (!bloco) return;
+// ================================
+// CALENDÁRIO
+// ================================
 
-    bloco.querySelector("h3").textContent = tipo === "semana" ? titulo : `${capitalize(tipo)} ${titulo}`;
-    bloco.querySelector(".valor-total").textContent = "R$ " + somarValores(ags).toFixed(2);
-    bloco.querySelector(".atendimentos-total").textContent = ags.length;
-
-    bloco.querySelector(".formas-pagamento").innerHTML = gerarResumoPagamentos(ags, formasCadastradas);
-    bloco.querySelector(".servicos-realizados").innerHTML = gerarResumoServicos(ags, servicosCadastrados);
-}
-
-// 5. Soma de valores
-function somarValores(lista) {
-    return lista.reduce((soma, a) => soma + (a.valor || 0), 0);
-}
-
-// 6. Formas de pagamento agrupadas e somadas
-function gerarResumoPagamentos(lista, formasCadastradas) {
-    const resumo = {}; // { nomeDaForma: valorTotal }
-    const taxas = {}; // { nomeDaForma: taxa % }
-
-    lista.forEach(a => {
-        const formas = Array.isArray(a.formaPagamento) ? a.formaPagamento : [];
-
-        formas.forEach(fp => {
-            const nome = fp.forma || "Indefinido";
-            const valor = fp.valor || 0;
-
-            if (!resumo[nome]) resumo[nome] = 0;
-            resumo[nome] += valor;
-
-            // salva taxa se existir na forma cadastrada
-            const formaEncontrada = formasCadastradas.find(f => f.nome === nome);
-            if (formaEncontrada && formaEncontrada.taxa) {
-                taxas[nome] = formaEncontrada.taxa;
-            }
-        });
-    });
-
-    return Object.entries(resumo).map(([nome, valor]) => {
-        let taxaTexto = "";
-
-        if (taxas[nome]) {
-            const valorTaxa = (valor * (taxas[nome] / 100)).toFixed(2);
-            taxaTexto = ` (R$ ${valorTaxa})`;
-        }
-
-        return `${nome}: R$ ${valor.toFixed(2)}${taxaTexto}`;
-    }).join("<br>");
-}
-
-// 7. Serviços agrupados (dividindo + se necessário)
-function gerarResumoServicos(lista, servicosCadastrados) {
-    const contagem = {};
-
-    lista.forEach(a => {
-        let servicos = [];
-
-        if (Array.isArray(a.servico)) {
-            servicos = a.servico;
-        } else if (typeof a.servico === "string") {
-            servicos = a.servico.split("+").map(s => s.trim());
-        }
-
-        servicos.forEach(nome => {
-            if (!contagem[nome]) contagem[nome] = 0;
-            contagem[nome]++;
-        });
-    });
-
-    return servicosCadastrados.map(s => {
-        const nome = s.nome;
-        const qtd = contagem[nome] || 0;
-        return `${nome}: ${qtd}`;
-    }).join("<br>");
-}
-
-// 8. Formatadores
-function formatarData(data) {
-    const [ano, mes, dia] = data.split("-");
-    return `${dia}/${mes}`;
-}
-
-function formatarMes(data) {
-    const [ano, mes] = data.split("-");
-    return `${mes}/${ano}`;
-}
-
-function getNumeroSemana(dataStr) {
-    const [ano, mes, dia] = dataStr.split("-").map(Number);
-    const data = new Date(ano, mes - 1, dia);
-
-    const primeiroDomingo = new Date(data.getFullYear(), 0, 1);
-    while (primeiroDomingo.getDay() !== 0) {
-        primeiroDomingo.setDate(primeiroDomingo.getDate() - 1);
-    }
-
-    const diffDias = Math.floor((data - primeiroDomingo) / 86400000);
-    return Math.floor(diffDias / 7) + 1;
-}
-
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-// Abrir e fechar o modal de calendário
 btnCalendario.addEventListener("click", () => {
-    modalCalendario.style.display = "flex";
+  modalCalendario.style.display = "flex";
 });
 
 modalCalendario.addEventListener("click", (e) => {
-    if (e.target === modalCalendario) {
-        modalCalendario.style.display = "none";
-    }
+  if (e.target === modalCalendario) {
+    modalCalendario.style.display = "none";
+  }
 });
 
-// Gera o calendário completo
-function gerarCalendario(dataBase = new Date()) {
-    calendarioCorpo.innerHTML = "";
+function gerarCalendario() {
+  calendarioCorpo.innerHTML = "";
 
-    const data = new Date(anoAtual, mesAtual);
-    const primeiroDia = new Date(anoAtual, mesAtual, 1).getDay();
-    const diasNoMes = new Date(anoAtual, mesAtual + 1, 0).getDate();
+  const primeiroDia = new Date(anoAtual, mesAtual, 1).getDay();
+  const diasNoMes = new Date(anoAtual, mesAtual + 1, 0).getDate();
 
-    const nomesMeses = [
-        "janeiro", "fevereiro", "março", "abril", "maio", "junho",
-        "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
-    ];
+  const nomesMeses = [
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro",
+  ];
 
-    mesAtualSpan.textContent = `${capitalize(nomesMeses[mesAtual])} ${anoAtual}`;
+  mesAtualSpan.textContent = `${capitalize(nomesMeses[mesAtual])} ${anoAtual}`;
 
-    for (let i = 0; i < primeiroDia; i++) {
-        const vazio = document.createElement("div");
-        calendarioCorpo.appendChild(vazio);
+  for (let i = 0; i < primeiroDia; i++) {
+    const vazio = document.createElement("div");
+    vazio.classList.add("dia-vazio");
+    calendarioCorpo.appendChild(vazio);
+  }
+
+  for (let dia = 1; dia <= diasNoMes; dia++) {
+    const divDia = document.createElement("div");
+    divDia.textContent = String(dia).padStart(2, "0");
+    const dataDoDia = `${anoAtual}-${String(mesAtual + 1).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+
+    if (estaNaSemanaSelecionada(dataDoDia)) {
+      divDia.classList.add("semana-selecionada");
     }
 
-    for (let dia = 1; dia <= diasNoMes; dia++) {
-        const divDia = document.createElement("div");
-        divDia.textContent = dia.toString().padStart(2, "0");
-
-        divDia.addEventListener("click", () => {
-            const dataSelecionada = new Date(anoAtual, mesAtual, dia);
-            const ano = dataSelecionada.getFullYear();
-            const mes = String(dataSelecionada.getMonth() + 1).padStart(2, "0");
-            const diaStr = String(dataSelecionada.getDate()).padStart(2, "0");
-
-            dataAtual = `${ano}-${mes}-${diaStr}`;
-            modalCalendario.style.display = "none";
-
-            const ags = carregarTodosAgendamentosRealizados();
-            const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
-            const formas = JSON.parse(localStorage.getItem("formasPagamento")) || [];
-
-            preencherRelatorio("dia", filtrarPorDia(ags, dataAtual), formatarData(dataAtual), servicos, formas);
-            preencherRelatorio("semana", filtrarPorSemana(ags, dataAtual), "Semana " + getNumeroSemana(dataAtual), servicos, formas);
-            preencherRelatorio("mes", filtrarPorMes(ags, dataAtual), formatarMes(dataAtual), servicos, formas);
-            preencherRelatorio("ano", filtrarPorAno(ags, dataAtual), dataAtual.slice(0, 4), servicos, formas);
-        });
-
-        // HIGHLIGHT SEMANA
-        divDia.addEventListener("mouseenter", () => {
-            const dataAtualHover = new Date(anoAtual, mesAtual, dia);
-            const diaSemana = dataAtualHover.getDay();
-
-            const domingo = new Date(dataAtualHover);
-            domingo.setDate(dataAtualHover.getDate() - diaSemana);
-
-            const sabado = new Date(dataAtualHover);
-            sabado.setDate(dataAtualHover.getDate() + (6 - diaSemana));
-
-            const diasCalendario = calendarioCorpo.querySelectorAll("div");
-
-            diasCalendario.forEach(div => {
-                const diaTexto = div.textContent.padStart(2, "0");
-                const dataLoop = new Date(anoAtual, mesAtual, Number(diaTexto));
-
-                div.classList.remove("semana-hover");
-                div.classList.remove("dia-hover");
-
-                if (dataLoop >= domingo && dataLoop <= sabado) {
-                    div.classList.add("semana-hover");
-                    if (dataLoop.getTime() === dataAtualHover.getTime()) {
-                        div.classList.add("dia-hover");
-                    }
-                }
-            });
-        });
-
-        divDia.addEventListener("mouseleave", () => {
-            const diasCalendario = calendarioCorpo.querySelectorAll("div");
-            diasCalendario.forEach(div => {
-                div.classList.remove("semana-hover");
-                div.classList.remove("dia-hover");
-            });
-        });
-
-        calendarioCorpo.appendChild(divDia);
+    if (dataDoDia === dataAtual) {
+      divDia.classList.add("dia-selecionado");
     }
+
+    divDia.addEventListener("click", () => {
+      const mes = String(mesAtual + 1).padStart(2, "0");
+      const diaStr = String(dia).padStart(2, "0");
+
+      dataAtual = `${anoAtual}-${mes}-${diaStr}`;
+
+      modalCalendario.style.display = "none";
+      atualizarRelatorio();
+    });
+
+    calendarioCorpo.appendChild(divDia);
+  }
 }
 
-// Botões de navegação de mês
 btnMesAnterior.addEventListener("click", () => {
-    mesAtual--;
-    if (mesAtual < 0) {
-        mesAtual = 11;
-        anoAtual--;
-    }
-    gerarCalendario();
+  mesAtual--;
+
+  if (mesAtual < 0) {
+    mesAtual = 11;
+    anoAtual--;
+  }
+
+  gerarCalendario();
 });
 
 btnMesSeguinte.addEventListener("click", () => {
-    mesAtual++;
-    if (mesAtual > 11) {
-        mesAtual = 0;
-        anoAtual++;
-    }
-    gerarCalendario();
+  mesAtual++;
+
+  if (mesAtual > 11) {
+    mesAtual = 0;
+    anoAtual++;
+  }
+
+  gerarCalendario();
 });
 
-// Gera calendário ao carregar
-document.addEventListener("DOMContentLoaded", () => {
-    gerarCalendario();
-});
+// ================================
+// AUXILIARES
+// ================================
 
+function somarValores(lista) {
+  return lista.reduce((soma, item) => soma + (Number(item.valor) || 0), 0);
+}
 
+function formatarMoeda(valor) {
+  return Number(valor || 0).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+}
+
+function formatarDataCurta(data) {
+  const [, mes, dia] = data.split("-");
+  return `${dia}/${mes}`;
+}
+
+function formatarData(data) {
+  const [ano, mes, dia] = data.split("-");
+
+  const meses = [
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro",
+  ];
+
+  return `${Number(dia)} de ${meses[Number(mes) - 1]} de ${ano}`;
+}
+
+function formatarMes(data) {
+  const [ano, mes] = data.split("-");
+
+  const meses = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
+  ];
+
+  return `${meses[Number(mes) - 1]} de ${ano}`;
+}
+
+function criarDataLocal(dataStr) {
+  const [ano, mes, dia] = dataStr.split("-").map(Number);
+  return new Date(ano, mes - 1, dia);
+}
+
+function getNumeroSemana(dataStr) {
+  const data = criarDataLocal(dataStr);
+
+  const primeiroDomingo = new Date(data.getFullYear(), 0, 1);
+
+  while (primeiroDomingo.getDay() !== 0) {
+    primeiroDomingo.setDate(primeiroDomingo.getDate() - 1);
+  }
+
+  const diffDias = Math.floor((data - primeiroDomingo) / 86400000);
+  return Math.floor(diffDias / 7) + 1;
+}
+
+function normalizarTexto(texto) {
+  return String(texto || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function capitalize(texto) {
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
+function converterDataParaTexto(data) {
+  const ano = data.getFullYear();
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const dia = String(data.getDate()).padStart(2, "0");
+
+  return `${ano}-${mes}-${dia}`;
+}
+function obterNomeDiaSemana(dataStr) {
+  const dias = [
+    "Domingo",
+    "Segunda-feira",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",
+    "Sexta-feira",
+    "Sábado",
+  ];
+
+  return dias[criarDataLocal(dataStr).getDay()];
+}
+
+function obterPeriodoSemana(dataStr) {
+  const data = criarDataLocal(dataStr);
+
+  const inicio = new Date(data);
+  inicio.setDate(data.getDate() - data.getDay());
+
+  const fim = new Date(inicio);
+  fim.setDate(inicio.getDate() + 6);
+
+  const diaInicio = String(inicio.getDate()).padStart(2, "0");
+  const mesInicio = String(inicio.getMonth() + 1).padStart(2, "0");
+
+  const diaFim = String(fim.getDate()).padStart(2, "0");
+  const mesFim = String(fim.getMonth() + 1).padStart(2, "0");
+
+  return `${diaInicio}/${mesInicio} a ${diaFim}/${mesFim}`;
+}
+
+function estaNaSemanaSelecionada(dataDiaStr) {
+  const dataBase = criarDataLocal(dataAtual);
+  const dataDia = criarDataLocal(dataDiaStr);
+
+  const inicioSemana = new Date(dataBase);
+  inicioSemana.setDate(dataBase.getDate() - dataBase.getDay());
+
+  const fimSemana = new Date(inicioSemana);
+  fimSemana.setDate(inicioSemana.getDate() + 6);
+
+  return dataDia >= inicioSemana && dataDia <= fimSemana;
+}
