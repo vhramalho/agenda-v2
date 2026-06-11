@@ -259,14 +259,15 @@ function renderizarIntervalos() {
     div.className = "intervalo";
 
     div.innerHTML = `
-            <div>
-                <span class="intervalo-nome">${intervalo.nome}</span><br>
-                <span class="intervalo-horarios">${intervalo.horarios.join(", ")}</span><br>
-                <span class="intervalo-horarios">${formatarDiasSemana(intervalo.diasSemana)}</span>
-            </div>
+  <div class="intervalo-topo">
+    <span class="intervalo-nome">${intervalo.nome}</span>
+    <span class="intervalo-dias">${formatarDiasSemana(intervalo.diasSemana)}</span>
+  </div>
 
-            <span class="intervalo-qtd">${intervalo.horarios.length} horário(s)</span>
-        `;
+  <span class="intervalo-horarios">
+    ${intervalo.horarios.join(", ")}
+  </span>
+`;
 
     div.addEventListener("click", () => {
       abrirModalOpcoes(index);

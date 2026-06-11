@@ -1,86 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pagamentos Pendentes</title>
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/servicos.css" />
+    <link rel="stylesheet" href="css/paginas.css" />
+  </head>
 
-    <style>
-        .cartao-pagamento {
-            background-color: #2a2a2a;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            gap: 6px;
-        }
-
-        .cartao-pagamento:hover {
-            color: #f5f5f5;
-            background-color: #5d35fc;
-        }
-
-        .linha-superior {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-        }
-
-        .linha-superior .data {
-            min-width: 60px;
-            font-weight: bold;
-            text-align: left;
-        }
-
-        .linha-superior .cliente {
-            flex: 1;
-            font-weight: bold;
-            text-align: center;
-            padding: 0 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .linha-superior .valor {
-            min-width: 80px;
-            font-weight: bold;
-            text-align: right;
-        }
-
-        .linha-inferior {
-            text-align: center;
-            margin-left: -10px;
-            word-break: break-word;
-            width: 100%;
-            color: #bdbdbd;
-        }
-    </style>
-</head>
-
-<body>
-
-    <header></header>
-
-    <a class="voltar" href="index.html">← Voltar</a>
-
-    <main>
-        <div id="lista-pendentes">
-            <!-- Lista será preenchida via JavaScript -->
+  <body>
+    <main class="pagina-secundaria">
+      <section class="topo-pagina">
+        <div>
+          <h1>Pendentes</h1>
+          <p>Acompanhe os pagamentos que ainda não foram recebidos.</p>
         </div>
-    </main>
+      </section>
 
+      <div id="lista-pendentes" class="lista-pagina">
+        <!-- Lista será preenchida via JavaScript -->
+      </div>
+    </main>
+<a href="index.html">agenda</a>
     <script src="javaScript/pgtoPendentes.js"></script>
     <script src="javaScript/menu.js"></script>
-
-</body>
-
+  </body>
 </html>

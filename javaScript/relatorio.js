@@ -132,16 +132,103 @@ function preencherCabecalho(titulo) {
   }
 }
 
+function calcularVariacaoPercentual(atual, anterior) {
+  if (anterior === 0) {
+    return {
+      valor: "Sem dados para comparação",
+      classe: "variacao-neutra",
+    };
+  }
+
+  const percentual = ((atual - anterior) / anterior) * 100;
+
+  return {
+    valor: `${percentual >= 0 ? "▲" : "▼"} ${Math.abs(percentual).toFixed(1)}%`,
+    classe: percentual >= 0 ? "variacao-positiva" : "variacao-negativa",
+  };
+}
+
+function calcularVariacaoQuantidade(atual, anterior) {
+  if (anterior === 0) {
+    return {
+      valor: "Sem dados para comparação",
+      classe: "variacao-neutra",
+    };
+  }
+
+  const diferenca = atual - anterior;
+
+  return {
+    valor: `${diferenca >= 0 ? "+" : "-"}${Math.abs(diferenca)}`,
+    classe: diferenca >= 0 ? "variacao-positiva" : "variacao-negativa",
+  };
+}
+
+function obterTextoComparacao() {
+  if (periodoAtual === "dia") return "vs ontem";
+  if (periodoAtual === "semana") return "vs semana anterior";
+  if (periodoAtual === "mes") return "vs mês anterior";
+  if (periodoAtual === "ano") return "vs ano anterior";
+
+  return "";
+}
+
+function aplicarVariacao(idElemento, resultado, mostrarContexto = true) {
+  const elemento = document.getElementById(idElemento);
+
+  if (!elemento) return;
+
+  const contexto = obterTextoComparacao();
+
+  if (resultado.valor === "Sem dados para comparação") {
+    elemento.innerHTML = "";
+    return;
+  }
+
+  elemento.innerHTML = `
+    <span class="variacao-valor ${resultado.classe}">${resultado.valor}</span>
+    ${
+      mostrarContexto
+        ? `<span class="variacao-contexto">${contexto}</span>`
+        : ""
+    }
+  `;
+
+  elemento.className = "variacao-card";
+}
+
 function preencherCards(lista, formasCadastradas) {
   const faturamento = somarValores(lista);
   const atendimentos = lista.length;
   const ticketMedio = atendimentos > 0 ? faturamento / atendimentos : 0;
 
+  const anterior = obterDadosPeriodoAnterior();
+
+  const variacaoFaturamento = calcularVariacaoPercentual(
+    faturamento,
+    anterior.faturamento,
+  );
+
+  const variacaoAtendimentos = calcularVariacaoQuantidade(
+    atendimentos,
+    anterior.atendimentos,
+  );
+
+  const variacaoTicket = calcularVariacaoPercentual(
+    ticketMedio,
+    anterior.ticketMedio,
+  );
   document.getElementById("faturamentoPeriodo").textContent =
     formatarMoeda(faturamento);
   document.getElementById("totalAtendimentos").textContent = atendimentos;
   document.getElementById("ticketMedio").textContent =
     formatarMoeda(ticketMedio);
+
+  aplicarVariacao("variacaoFaturamento", variacaoFaturamento);
+
+  aplicarVariacao("variacaoAtendimentos", variacaoAtendimentos);
+
+  aplicarVariacao("variacaoTicketMedio", variacaoTicket);
 
   preencherRecebimentos(lista);
   preencherTaxaCartao(lista, formasCadastradas);
@@ -425,6 +512,46 @@ btnMesSeguinte.addEventListener("click", () => {
 
   gerarCalendario();
 });
+
+function obterDadosPeriodoAnterior() {
+  const agendamentos = carregarTodosAgendamentosRealizados();
+
+  let listaAnterior = [];
+
+  const data = criarDataLocal(dataAtual);
+
+  if (periodoAtual === "dia") {
+    data.setDate(data.getDate() - 1);
+    listaAnterior = filtrarPorDia(agendamentos, converterDataParaTexto(data));
+  }
+
+  if (periodoAtual === "semana") {
+    data.setDate(data.getDate() - 7);
+    listaAnterior = filtrarPorSemana(
+      agendamentos,
+      converterDataParaTexto(data),
+    );
+  }
+
+  if (periodoAtual === "mes") {
+    data.setMonth(data.getMonth() - 1);
+    listaAnterior = filtrarPorMes(agendamentos, converterDataParaTexto(data));
+  }
+
+  if (periodoAtual === "ano") {
+    data.setFullYear(data.getFullYear() - 1);
+    listaAnterior = filtrarPorAno(agendamentos, converterDataParaTexto(data));
+  }
+
+  const faturamento = somarValores(listaAnterior);
+  const atendimentos = listaAnterior.length;
+
+  return {
+    faturamento,
+    atendimentos,
+    ticketMedio: atendimentos > 0 ? faturamento / atendimentos : 0,
+  };
+}
 
 // ================================
 // AUXILIARES

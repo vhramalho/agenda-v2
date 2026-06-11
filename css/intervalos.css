@@ -1,102 +1,97 @@
-.botao-adicionar {
-    display: block;
-    width: 90%;
-    max-width: 300px;
-    margin: 30px auto;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: green;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
 .texto-horarios {
-    margin: 12px 0 8px;
-    font-weight: bold;
-    text-align: left;
+  margin: 12px 0 8px;
+  font-weight: bold;
+  text-align: left;
 }
 
 .lista-horarios {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .horario-opcao {
-    background-color: #f1f1f1;
-    border-radius: 8px;
-    padding: 8px;
-    font-size: 14px;
-    cursor: pointer;
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .horario-opcao input {
-    display: none;
+  display: none;
 }
 
 .horario-opcao.selecionado {
-    background-color: green;
-    color: white;
-    font-weight: bold;
+  background: var(--purple-main);
+  color: white;
+  font-weight: bold;
 }
 
 .intervalo {
-    background-color: #2a2a2a;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.intervalo-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.intervalo-dias {
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .intervalo-nome {
-    color: #f5f5f5;
-    font-weight: bold;
-    font-size: 16px;
+  color: var(--text-main);
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .intervalo-horarios {
-    font-size: 15px;
-    color: #bdbdbd;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .intervalo-qtd {
-    background-color: #3a3a3a;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 13px;
-    color: #f5f5f5;
+  background: var(--bg-card-light);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text-main);
 }
 
 .lista-dias-semana {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .dia-opcao {
-    background-color: #f1f1f1;
-    border-radius: 8px;
-    padding: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
 }
 
 .dia-opcao input {
-    display: none;
+  display: none;
 }
 
 .dia-opcao.selecionado {
-    background-color: green;
-    color: white;
-    font-weight: bold;
+  background: var(--purple-main);
+  color: white;
+  font-weight: bold;
 }

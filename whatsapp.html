@@ -1,39 +1,40 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Configurações do WhatsApp</title>
-    <link rel="icon"  type="image/png" href="img/favicon.png">
+    <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/servicos.css" />
+    <link rel="stylesheet" href="css/paginas.css" />
     <link rel="stylesheet" href="css/whatsapp.css" />
-    
-</head>
+  </head>
 
-<body>
+  <body>
+    <main class="pagina-secundaria">
+      <section class="topo-pagina">
+        <div>
+          <h1>WhatsApp</h1>
+          <p>Compartilhe seus horários disponíveis.</p>
+        </div>
+      </section>
 
-    <header></header>
+      <section class="container-config">
+        <label for="numeroWhatsapp">Número do WhatsApp (com DDD):</label>
+        <input
+          type="tel"
+          id="numeroWhatsapp"
+          placeholder="Ex: 11912345678"
+          maxlength="11"
+        />
+      </section>
 
-    <a class="voltar" href="index.html">← Voltar</a>
-
-    <!-- Conteúdo da página -->
-    <div class="container-config">
-
-        <!-- Campo de telefone -->
-        <label for="telefoneWhatsapp">Número do WhatsApp (com DDD):</label>
-        <input type="tel" id="numeroWhatsapp" placeholder="Ex: 11912345678" maxlength="11" />
-    </div>
-
-    <div class="botoes-whatsapp">
-        <button id="btnSalvarWhatsapp" class="salvar"  >Salvar</button>
-        
-    </div>
-
+      <div class="botoes-whatsapp">
+        <button id="btnSalvarWhatsapp" class="salvar">Salvar</button>
+      </div>
+    </main>
+<a href="index.html">agenda</a>
     <script src="javaScript/whatsapp.js"></script>
     <script src="javaScript/menu.js"></script>
-
-</body>
-
+  </body>
 </html>

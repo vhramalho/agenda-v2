@@ -7,22 +7,27 @@
     <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/modal.css" />
+    <link rel="stylesheet" href="css/paginas.css" />
     <link rel="stylesheet" href="css/servicos.css" />
   </head>
 
   <body>
-    <header></header>
+    <main class="pagina-secundaria">
+      <section class="topo-pagina topo-pagina-com-acao">
+        <div>
+          <h1>Serviços</h1>
+          <p>Cadastre e edite os serviços oferecidos.</p>
+        </div>
 
-    <a class="voltar" href="index.html">← Voltar</a>
+        <button class="botao-topo-mais" id="btnAbrirModal" type="button">
+          +
+        </button>
+      </section>
 
-    <main>
-      <div id="lista-servicos">
+      <div id="lista-servicos" class="lista-pagina">
         <!-- Serviços aparecerão aqui futuramente -->
       </div>
 
-      <button class="botao-adicionar" id="btnAbrirModal">
-        + Adicionar Serviço
-      </button>
     </main>
 
     <!-- Modal de adicionar serviço-->
@@ -51,10 +56,13 @@
     <div id="modalConfirmarExclusao" class="modal">
       <h2>Deseja realmente excluir?</h2>
       <div class="botoes-modal">
-        <button class="btn-transparente" id="btnCancelarExclusao">Voltar</button>
+        <button class="btn-transparente" id="btnCancelarExclusao">
+          Voltar
+        </button>
         <button class="btn-verde" id="btnConfirmarExclusao">Confirmar</button>
       </div>
     </div>
+<a href="index.html">agenda</a>
     <script src="javaScript/servicos.js"></script>
     <script src="javaScript/menu.js"></script>
   </body>

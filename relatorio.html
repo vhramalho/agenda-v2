@@ -47,55 +47,62 @@
           <div>
             <span>Faturamento</span>
             <h2 id="faturamentoPeriodo">R$ 0,00</h2>
+            <span id="variacaoFaturamento" class="variacao-card"></span>
           </div>
-        </div>
-
-        <div class="grafico-em-breve">
-          <span>📊</span>
-          <p>Gráfico de faturamento em breve</p>
         </div>
       </section>
 
-      <section class="grade-relatorio">
-        <article class="card-servicos">
-          <div class="card-titulo">
-            <span>Serviços realizados</span>
-            <h2 id="totalServicosRealizados">0</h2>
-          </div>
-
-          <div id="listaServicosRealizados" class="lista-servicos">
-            <!-- Serviços gerados pelo JavaScript -->
-          </div>
+      <section class="grade-kpis">
+        <article class="mini-card">
+          <span>Atendimentos</span>
+          <strong id="totalAtendimentos">0</strong>
+          <span id="variacaoAtendimentos" class="variacao-card"></span>
         </article>
 
-        <div class="cards-menores">
-          <article class="mini-card">
-            <span>Atendimento</span>
-            <strong id="totalAtendimentos">0</strong>
-          </article>
+        <article class="mini-card">
+          <span>Ticket médio</span>
+          <strong id="ticketMedio">R$ 0,00</strong>
+          <span id="variacaoTicketMedio" class="variacao-card"></span>
+        </article>
+      </section>
 
-          <article class="mini-card">
-            <span>Ticket médio</span>
-            <strong id="ticketMedio">R$ 0,00</strong>
-          </article>
-
-          <article class="mini-card mini-card-detalhado">
-            <span>Recebimento</span>
-            <div id="recebimentoDetalhado">
-              <!-- Formas de pagamento -->
-            </div>
-          </article>
-
-          <article class="mini-card">
-            <span>Pendente</span>
-            <strong id="valorPendente">R$ 0,00</strong>
-          </article>
-
-          <article class="mini-card">
-            <span>Taxa cartão</span>
-            <strong id="taxaCartao">R$ 0,00</strong>
-          </article>
+      <article class="card-recebimentos">
+        <div class="card-titulo">
+          <span>Recebimentos</span>
         </div>
+
+        <div class="recebimentos-layout">
+          <div id="recebimentoDetalhado" class="recebimentos-lista">
+            <!-- Formas de pagamento -->
+          </div>
+
+          <div class="grafico-pizza-recebimentos">
+            <span>◔</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-servicos">
+        <div class="card-titulo">
+          <span>Serviços</span>
+          <h2 id="totalServicosRealizados">0</h2>
+        </div>
+
+        <div id="listaServicosRealizados" class="lista-servicos">
+          <!-- Serviços gerados pelo JavaScript -->
+        </div>
+      </article>
+
+      <section class="grade-kpis">
+        <article class="mini-card">
+          <span>Taxa cartão</span>
+          <strong id="taxaCartao">R$ 0,00</strong>
+        </article>
+
+        <article class="mini-card">
+          <span>Pendente</span>
+          <strong id="valorPendente">R$ 0,00</strong>
+        </article>
       </section>
     </main>
 
@@ -123,7 +130,7 @@
         </div>
       </div>
     </div>
-
+<a href="index.html">agenda</a>
     <script src="javaScript/relatorio.js"></script>
   </body>
 </html>

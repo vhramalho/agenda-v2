@@ -105,7 +105,7 @@ async function verificarAtualizacao() {
 }
 
 document.addEventListener("click", (event) => {
-    if (event.target.id === "btnAtualizacao") {
-        verificarAtualizacao();
-    }
+  if (event.target.id === "btnAtualizacao") {
+    verificarAtualizacao();
+  }
 });

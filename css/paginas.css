@@ -1,0 +1,234 @@
+.pagina-secundaria {
+  padding: 22px 16px 32px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+
+
+.topo-pagina {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.botao-voltar-pagina,
+.acao-topo-pagina {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid var(--border-card);
+  background: var(--bg-card);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.acao-topo-pagina {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.topo-pagina > div {
+  flex: 1;
+}
+
+.topo-pagina h1 {
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.topo-pagina p {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.lista-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-lista,
+.servico,
+.pagamento,
+.intervalo,
+.cartao-pagamento,
+.container-config {
+  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
+  border: 1px solid var(--border-card);
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.servico,
+.pagamento,
+.intervalo,
+.cartao-pagamento {
+  min-height: 62px;
+  margin-bottom: 0;
+}
+
+.servico,
+.pagamento,
+.intervalo,
+.cartao-pagamento {
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.servico:hover,
+.pagamento:hover,
+.intervalo:hover,
+.cartao-pagamento:hover {
+  background: var(--bg-card-light);
+  border-color: var(--purple-light);
+}
+
+.servico-nome,
+.pagamento-nome,
+.intervalo-nome,
+.linha-superior .data,
+.linha-superior .cliente,
+.linha-superior .valor {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.servico-valor,
+.pagamento-taxa,
+.intervalo-horarios,
+.linha-inferior {
+  color: var(--text-muted);
+}
+
+.botao-adicionar,
+.salvar {
+  width: 100%;
+  min-height: 48px;
+  border: none;
+  border-radius: 16px;
+  background: var(--purple-main);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 18px;
+}
+
+.botao-adicionar {
+  max-width: none;
+  display: block;
+}
+
+.botao-adicionar:hover,
+.salvar:hover {
+  background: var(--purple-light);
+}
+
+.container-config {
+  max-width: none;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.container-config label,
+.texto-horarios {
+  color: var(--text-soft);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.container-config input,
+.container-config textarea {
+  width: 100%;
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  border: 1px solid var(--border-card);
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 15px;
+  outline: none;
+}
+
+.container-config input:focus,
+.container-config textarea:focus {
+  border-color: var(--purple-light);
+}
+
+.container-config input::placeholder,
+.container-config textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.botoes-whatsapp {
+  margin-top: 18px;
+}
+
+.linha-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.linha-superior .data {
+  min-width: 58px;
+  text-align: left;
+}
+
+.linha-superior .cliente {
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.linha-superior .valor {
+  min-width: 80px;
+  text-align: right;
+}
+
+.linha-inferior {
+  margin-top: 8px;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+
+.topo-pagina-com-acao {
+  align-items: flex-start;
+}
+
+.topo-pagina-com-acao > div {
+  text-align: left;
+}
+
+.botao-topo-mais {
+  border: none;
+  background: transparent;
+  color: #8b5cf6;
+
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1;
+
+  padding: 0;
+  cursor: pointer;
+}
+.botao-topo-mais:active {
+  transform: scale(0.94);
+}

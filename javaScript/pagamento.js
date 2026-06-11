@@ -85,9 +85,9 @@ btnConfirmar.addEventListener("click", () => {
 
   if (modoEdicao && indiceEditando !== null) {
     lista[indiceEditando] = { nome, taxa };
-} else {
+  } else {
     lista.push({ nome, taxa });
-}
+  }
 
   salvarFormas(lista);
   renderizarFormas();
@@ -112,12 +112,10 @@ function renderizarFormas() {
     const possuiAcoes = ehEditavelSimples || !ehFixa;
 
     div.innerHTML = `
-<div>
-    <span class="pagamento-nome">${forma.nome}</span><br>
-    <span class="pagamento-taxa">
-        ${forma.taxa ? `Taxa: ${forma.taxa.toFixed(2)}%` : ""}
-    </span>
-</div>
+  <span class="pagamento-nome">${forma.nome}</span>
+  <span class="pagamento-taxa">
+    ${forma.taxa ? `Taxa ${forma.taxa.toFixed(2)}%` : ""}
+  </span>
 `;
 
     if (possuiAcoes) {
@@ -158,7 +156,7 @@ btnExcluir.addEventListener("click", () => {
   if (item.nome === "Dinheiro" || item.nome === "Pix") {
     alert("Dinheiro e Pix são formas padrão e não podem ser excluídas.");
     return;
-}
+  }
 
   indiceParaExcluir = indiceSelecionado;
 

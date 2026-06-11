@@ -1,249 +1,286 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agenda Victor</title>
-    <link rel="icon"  type="image/png" href="img/favicon.png">
+    <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/index.css" />
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000" >
-</head>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#000000" />
+  </head>
 
-<body>
-
+  <body>
     <!-- Cabeçalho preto com título -->
     <header>
-        <h1>Agenda Victor</h1>
+      <h1>Agenda Victor</h1>
     </header>
 
     <div class="botoes-topo-agenda">
-        <div id="btnVoltarHoje" class="botao-topo" style="display: none;">
-            <img src="img/hoje.png" alt="Hoje" />
-            <span>Voltar para Hoje</span>
-        </div>
-        <!-- Data do dia (como no PDV) -->
-        <section id="data-agenda" class="data"></section>
-        <!-- Botões do Calendário -->
-        <div id="btnCalendario" class="botao-topo">
-            <img src="img/calendario.png" alt="Calendário" />
-            <span>Calendário</span>
-        </div>
+      <div id="btnVoltarHoje" class="botao-topo" style="display: none">
+        <img src="img/hoje.png" alt="Hoje" />
+        <span>Voltar para Hoje</span>
+      </div>
+      <!-- Data do dia (como no PDV) -->
+      <section id="data-agenda" class="data"></section>
+      <!-- Botões do Calendário -->
+      <div id="btnCalendario" class="botao-topo">
+        <img src="img/calendario.png" alt="Calendário" />
+        <span>Calendário</span>
+      </div>
     </div>
 
     <!-- Lista de horários do dia -->
     <section class="agenda">
-        <ul id="lista-horarios"></ul>
+      <ul id="lista-horarios"></ul>
     </section>
 
     <!-- Botões flutuantes para mudar o dia -->
     <button id="btnAnterior" class="botao-flutuante">
-        <img src="img/seta-para-a-esquerda.png" alt="seta-para-a-esquerda">
+      <img src="img/seta-para-a-esquerda.png" alt="seta-para-a-esquerda" />
     </button>
     <button id="btnProximo" class="botao-flutuante">
-        <img src="img/seta-para-a-direita.png" alt="">
+      <img src="img/seta-para-a-direita.png" alt="" />
     </button>
-
 
     <!-- Modal de Calendário -->
     <div id="modal-calendario" class="modal-calendario">
-        <div class="calendario-container">
-            <div class="calendario-topo">
-                <button id="mesAnterior" class="cal-btn">«</button>
-                <span id="mesAtual" class="cal-mes">Julho 2025</span>
-                <button id="mesSeguinte" class="cal-btn">»</button>
-            </div>
-            <div class="calendario-semana">
-                <div>Dom</div>
-                <div>Seg</div>
-                <div>Ter</div>
-                <div>Que</div>
-                <div>Qui</div>
-                <div>Sex</div>
-                <div>Sab</div>
-            </div>
-            <div class="calendario-corpo" id="calendarioCorpo">
-                <!-- Dias serão inseridos por JS -->
-            </div>
-
+      <div class="calendario-container">
+        <div class="calendario-topo">
+          <button id="mesAnterior" class="cal-btn">«</button>
+          <span id="mesAtual" class="cal-mes">Julho 2025</span>
+          <button id="mesSeguinte" class="cal-btn">»</button>
         </div>
+        <div class="calendario-semana">
+          <div>Dom</div>
+          <div>Seg</div>
+          <div>Ter</div>
+          <div>Que</div>
+          <div>Qui</div>
+          <div>Sex</div>
+          <div>Sab</div>
+        </div>
+        <div class="calendario-corpo" id="calendarioCorpo">
+          <!-- Dias serão inseridos por JS -->
+        </div>
+      </div>
     </div>
-
 
     <!-- Modal: Agendar ou Bloquear -->
     <div id="modal-opcoes" class="modal-opcoes oculto">
-        <div class="caixa-opcoes">
-            <p class="titulo-horario" id="texto-horario">Horário: 00:00</p>
-            <div class="botoes-opcoes">
-                <button id="btnAgendar" class="botao-verde">Agendar</button>
-                <button id="btnBloquear" class="botao-vermelho">Bloquear</button>
-            </div>
+      <div class="caixa-opcoes">
+        <p class="titulo-horario" id="texto-horario">Horário: 00:00</p>
+        <div class="botoes-opcoes">
+          <button id="btnAgendar" class="botao-verde">Agendar</button>
+          <button id="btnBloquear" class="botao-vermelho">Bloquear</button>
         </div>
+      </div>
     </div>
-
 
     <!-- Modal de Bloqueio/Desbloqueio -->
     <div id="modal-bloqueio" class="modal-fundo">
-        <div class="modal-caixa">
-            <h2 id="titulo-bloqueio">Bloquear horário?</h2>
+      <div class="modal-caixa">
+        <h2 id="titulo-bloqueio">Bloquear horário?</h2>
 
-
-
-            <div class="botoes-modal">
-                <button id="btnCancelarBloqueio" class="btn-transparente">Cancelar</button>
-                <button id="btnConfirmarBloqueio" class="btn-verde">Confirmar</button>
-            </div>
+        <div class="botoes-modal">
+          <button id="btnCancelarBloqueio" class="btn-transparente">
+            Cancelar
+          </button>
+          <button id="btnConfirmarBloqueio" class="btn-verde">Confirmar</button>
         </div>
+      </div>
     </div>
-
-
 
     <!-- Modal de Agendar -->
     <div id="modal-agendar" class="modal-fundo">
-        <div class="modal-caixa">
-            <h2 id="titulo-agendar">Horário: 08:00</h2>
-            <input type="text" id="input-nome-cliente" placeholder="Nome do cliente">
+      <div class="modal-caixa">
+        <h2 id="titulo-agendar">Horário: 08:00</h2>
+        <input
+          type="text"
+          id="input-nome-cliente"
+          placeholder="Nome do cliente"
+        />
 
-            <div id="lista-servicos" class="checkbox-container"></div>
+        <div id="lista-servicos" class="checkbox-container"></div>
 
-            <div class="botoes-modal">
-                <button id="btnCancelarAgendar" class="btn-transparente">Cancelar</button>
-                <button id="btnConfirmarAgendar" class="btn-verde">Confirmar</button>
-            </div>
+        <div class="botoes-modal">
+          <button id="btnCancelarAgendar" class="btn-transparente">
+            Cancelar
+          </button>
+          <button id="btnConfirmarAgendar" class="btn-verde">Confirmar</button>
         </div>
+      </div>
     </div>
-
 
     <!-- Modal de Agendamento Realizado -->
     <div id="modal-agendamento" class="modal-fundo">
-        <div class="modal-caixa">
-            <h2 id="titulo-agendamento">Horário: 08:00</h2>
-            <p id="descricao-agendamento" style="text-align: center; font-weight: bold; margin-top: 10px;">
-                Victor: Cabelo + Barba
-            </p>
+      <div class="modal-caixa">
+        <h2 id="titulo-agendamento">Horário: 08:00</h2>
+        <p
+          id="descricao-agendamento"
+          style="text-align: center; font-weight: bold; margin-top: 10px"
+        >
+          Victor: Cabelo + Barba
+        </p>
 
-            <div class="botoes-modal" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-                <div style="display: flex; justify-content: space-between; gap: 10px;">
-                    <button id="btnRealizado" class="botao-verde" style="flex: 1;">Realizado</button>
-                    <button id="btnEditarAgendamento" class="btn-transparente" style="flex: 1;">Editar</button>
-                    <button id="btnCancelarAgendamento" class="botao-vermelho" style="flex: 1;">Cancelar</button>
-
-                </div>
-            </div>
+        <div
+          class="botoes-modal"
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+          "
+        >
+          <div style="display: flex; justify-content: space-between; gap: 10px">
+            <button id="btnRealizado" class="botao-verde" style="flex: 1">
+              Realizado
+            </button>
+            <button
+              id="btnEditarAgendamento"
+              class="btn-transparente"
+              style="flex: 1"
+            >
+              Editar
+            </button>
+            <button
+              id="btnCancelarAgendamento"
+              class="botao-vermelho"
+              style="flex: 1"
+            >
+              Cancelar
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-
 
     <!-- Modal de Cancelamento -->
     <div id="modal-cancelar" class="modal-fundo">
-        <div class="modal-caixa">
-            <h2>Deseja realmente cancelar este agendamento?</h2>
+      <div class="modal-caixa">
+        <h2>Deseja realmente cancelar este agendamento?</h2>
 
-            <div class="botoes-modal">
-                <button id="btnVoltarCancelar" class="btn-transparente">Voltar</button>
-                <button id="btnConfirmarCancelar" class="btn-verde">Confirmar</button>
-            </div>
+        <div class="botoes-modal">
+          <button id="btnVoltarCancelar" class="btn-transparente">
+            Voltar
+          </button>
+          <button id="btnConfirmarCancelar" class="btn-verde">Confirmar</button>
         </div>
+      </div>
     </div>
-
 
     <!--Modal de REALIZADO-->
     <div id="modal-realizado" class="modal-fundo">
-        <div class="modal-caixa">
-            <h2 id="titulo-realizado">Finalizar Serviço</h2>
+      <div class="modal-caixa">
+        <h2 id="titulo-realizado">Finalizar Serviço</h2>
 
-            <label>Nome do cliente</label>
-            <input type="text" id="inputNomeRealizado">
+        <label>Nome do cliente</label>
+        <input type="text" id="inputNomeRealizado" />
 
-            <p id="info-realizado"></p>
+        <p id="info-realizado"></p>
 
-            <div id="lista-servicos-realizado" class="checkbox-container"></div>
+        <div id="lista-servicos-realizado" class="checkbox-container"></div>
 
-            <div class="grupo-radio">
-                <span>Foi pago?</span>
-                <label><input type="radio" name="pago" value="sim"> Sim</label>
-                <label><input type="radio" name="pago" value="nao"> Não</label>
-            </div>
-            <div id="campoValorNaoPago" class="valorNaoPago">
-                <label for="inputValorNaoPago">Valor:</label>
-                <input type="number" id="inputValorNaoPago" placeholder="Valor">
-            </div>
-
-            <div id="grupoFormaPagamento" class="grupo-checkbox" style="display: none;">
-                <span>Forma de pagamento:</span>
-                <div id="listaFormasPagamento"></div>
-            </div>
-
-            <div class="botoes">
-                <button id="btnVoltarRealizado" class="btn-transparente">Voltar</button>
-                <button id="btnConfirmarRealizado" class="btn-verde">Confirmar</button>
-            </div>
+        <div class="grupo-radio">
+          <span>Foi pago?</span>
+          <label><input type="radio" name="pago" value="sim" /> Sim</label>
+          <label><input type="radio" name="pago" value="nao" /> Não</label>
         </div>
-    </div>
+        <div id="campoValorNaoPago" class="valorNaoPago">
+          <label for="inputValorNaoPago">Valor:</label>
+          <input type="number" id="inputValorNaoPago" placeholder="Valor" />
+        </div>
 
+        <div
+          id="grupoFormaPagamento"
+          class="grupo-checkbox"
+          style="display: none"
+        >
+          <span>Forma de pagamento:</span>
+          <div id="listaFormasPagamento"></div>
+        </div>
+
+        <div class="botoes">
+          <button id="btnVoltarRealizado" class="btn-transparente">
+            Voltar
+          </button>
+          <button id="btnConfirmarRealizado" class="btn-verde">
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Modal: Agendamento Realizado -->
     <div id="modal-agendamento-realizado" class="modal-fundo">
-        <div class="modal-caixa">
-            <h2>Agendamento Realizado</h2>
-            <p><strong>Horário:</strong> <span id="hr-realizado"></span></p>
-            <p><strong>Cliente:</strong> <span id="nome-realizado"></span></p>
-            <p><strong>Serviço:</strong> <span id="servico-realizado"></span></p>
-            <p><strong>Valor:</strong> R$ <span id="valor-realizado"></span></p>
+      <div class="modal-caixa">
+        <h2>Agendamento Realizado</h2>
+        <p><strong>Horário:</strong> <span id="hr-realizado"></span></p>
+        <p><strong>Cliente:</strong> <span id="nome-realizado"></span></p>
+        <p><strong>Serviço:</strong> <span id="servico-realizado"></span></p>
+        <p><strong>Valor:</strong> R$ <span id="valor-realizado"></span></p>
 
-            <div class="botoes">
-                <button class="botao-verde" onclick="editarRealizado()">Editar</button>
-                <button class="botao-vermelho" onclick="excluirRealizado()">Excluir</button>
-            </div>
+        <div class="botoes">
+          <button class="botao-verde" onclick="editarRealizado()">
+            Editar
+          </button>
+          <button class="botao-vermelho" onclick="excluirRealizado()">
+            Excluir
+          </button>
         </div>
+      </div>
     </div>
-
 
     <!-- Modal: Confirmar Exclusão de Agendamento Realizado -->
     <div id="modal-confirmar-exclusao" class="modal-fundo">
-        <div class="modal-caixa">
-            <h2>Deseja realmente excluir esse agendamento?</h2>
-            <div class="botao">
-                <button class="btn-transparente" style="border: none;"
-                    onclick="fecharModalExclusaoRealizado()">Cancelar</button>
-                <button class="btn-verde" onclick="confirmarExclusaoRealizado()">Confirmar</button>
-            </div>
+      <div class="modal-caixa">
+        <h2>Deseja realmente excluir esse agendamento?</h2>
+        <div class="botao">
+          <button
+            class="btn-transparente"
+            style="border: none"
+            onclick="fecharModalExclusaoRealizado()"
+          >
+            Cancelar
+          </button>
+          <button class="btn-verde" onclick="confirmarExclusaoRealizado()">
+            Confirmar
+          </button>
         </div>
+      </div>
     </div>
 
     <div id="resumoDia">
-        <div class="info">
-            <span>Atendimentos:</span>
-            <strong id="qtdAtendimentos">0</strong>
-        </div>
-        <div class="info">
-            <span>Valor total:</span>
-            <strong id="valorTotalDia">R$ 0,00</strong>
-        </div>
+      <div class="info">
+        <span>Atendimentos:</span>
+        <strong id="qtdAtendimentos">0</strong>
+      </div>
+      <div class="info">
+        <span>Valor total:</span>
+        <strong id="valorTotalDia">R$ 0,00</strong>
+      </div>
     </div>
 
-
-    
     <!-- Modal WhatsApp -->
-    <div id="modalWhatsapp" class="modal-overlay" style="display: none;">
-        <div class="modal-caixa">
-            <h2 class="modal-titulo" id="tituloSemana"></h2>
-            <p class="selecioneDias" >(selecione os dias)</p>
-            <div class="semana-dias" id="diasSemanaWhatsapp">
-                <!-- Dias da semana serão inseridos via JS -->
-            </div>
-            <div class="botoes">
-                <button class="btn-transparente" onclick="fecharModalWhatsapp()">Cancelar</button>
-                <button class="btn-verde" id="btnEncaminharParaWhatsApp">Encaminhar para WhatsApp</button>
-            </div>
+    <div id="modalWhatsapp" class="modal-overlay" style="display: none">
+      <div class="modal-caixa">
+        <h2 class="modal-titulo" id="tituloSemana"></h2>
+        <p class="selecioneDias">(selecione os dias)</p>
+        <div class="semana-dias" id="diasSemanaWhatsapp">
+          <!-- Dias da semana serão inseridos via JS -->
         </div>
+        <div class="botoes">
+          <button class="btn-transparente" onclick="fecharModalWhatsapp()">
+            Cancelar
+          </button>
+          <button class="btn-verde" id="btnEncaminharParaWhatsApp">
+            Encaminhar para WhatsApp
+          </button>
+        </div>
+      </div>
     </div>
-</body>
+  </body>
 
-
-<script src="javaScript/index.js"></script>
-<script src="javaScript/menu.js"></script>
-</body>
-
+  <script src="javaScript/index.js"></script>
+  <script src="javaScript/menu.js"></script>
 </html>

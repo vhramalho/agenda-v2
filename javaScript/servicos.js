@@ -36,15 +36,15 @@ btnAbrirModal.addEventListener("click", () => {
 
 // 👉 Fechar modal (reutilizável)
 const fecharModal = () => {
-    fundoEscuro.classList.remove("ativo");
-    modal.classList.remove("ativo");
-    modalOpcoes.classList.remove("ativo");
-    modalConfirmarExclusao.classList.remove("ativo");
+  fundoEscuro.classList.remove("ativo");
+  modal.classList.remove("ativo");
+  modalOpcoes.classList.remove("ativo");
+  modalConfirmarExclusao.classList.remove("ativo");
 
-    modoEdicao = false;
-    indiceEditando = null;
-    indiceParaExcluir = null;
-    indiceSelecionado = null;
+  modoEdicao = false;
+  indiceEditando = null;
+  indiceParaExcluir = null;
+  indiceSelecionado = null;
 };
 
 // 👉 Fechar modal ao clicar nos botões ou fundo
@@ -105,11 +105,9 @@ function renderizarServicos() {
     div.className = "servico";
 
     div.innerHTML = `
-            <div>
-                <span class="servico-nome">${servico.nome}</span><br>
-                <span class="servico-valor">R$ ${servico.valor.toFixed(2)}</span>
-            </div>
-        `;
+  <span class="servico-nome">${servico.nome}</span>
+  <span class="servico-valor">R$ ${servico.valor.toFixed(2)}</span>
+`;
 
     div.addEventListener("click", () => {
       indiceSelecionado = index;
@@ -120,33 +118,31 @@ function renderizarServicos() {
 
     listaServicos.appendChild(div);
   });
-
-  
 }
 
 btnEditar.addEventListener("click", () => {
-    if (indiceSelecionado === null) return;
+  if (indiceSelecionado === null) return;
 
-    const servicos = carregarServicos();
-    const servico = servicos[indiceSelecionado];
+  const servicos = carregarServicos();
+  const servico = servicos[indiceSelecionado];
 
-    nomeInput.value = servico.nome;
-    valorInput.value = servico.valor;
+  nomeInput.value = servico.nome;
+  valorInput.value = servico.valor;
 
-    modoEdicao = true;
-    indiceEditando = indiceSelecionado;
+  modoEdicao = true;
+  indiceEditando = indiceSelecionado;
 
-    modalOpcoes.classList.remove("ativo");
-    modal.classList.add("ativo");
+  modalOpcoes.classList.remove("ativo");
+  modal.classList.add("ativo");
 });
 
 btnExcluir.addEventListener("click", () => {
-    if (indiceSelecionado === null) return;
+  if (indiceSelecionado === null) return;
 
-    indiceParaExcluir = indiceSelecionado;
+  indiceParaExcluir = indiceSelecionado;
 
-    modalOpcoes.classList.remove("ativo");
-    modalConfirmarExclusao.classList.add("ativo");
+  modalOpcoes.classList.remove("ativo");
+  modalConfirmarExclusao.classList.add("ativo");
 });
 // 🚀 Inicial
 renderizarServicos();
