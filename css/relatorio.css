@@ -184,42 +184,95 @@
 /* RECEBIMENTOS */
 .recebimentos-layout {
   display: grid;
-  grid-template-columns: 1fr 76px;
+  grid-template-columns: 1fr 150px;
+  gap: 24px;
   align-items: center;
-  gap: 16px;
 }
 
 .recebimentos-lista {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.forma-recebimento {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coluna-legenda,
+.coluna-valores {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
-.linha-recebimento {
-  display: flex;
-  justify-content: space-between;
+.coluna-legenda {
   gap: 12px;
-  color: var(--text-soft);
-  font-size: 13px;
 }
 
-.linha-recebimento strong {
+.coluna-valores {
+  gap: 12px;
+  align-items: left;
+}
+
+.coluna-valores strong {
   color: var(--text-main);
+  white-space: nowrap;
+}
+
+.bolinha {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.12);
+}
+
+.bolinha.dinheiro {
+  background: #09db09;
+  box-shadow: 0 0 8px #09db09;
+}
+
+.bolinha.pix {
+  background: #0051ca;
+  box-shadow: 0 0 8px #0051ca;
+}
+
+.bolinha.credito {
+  background: #da14af;
+  box-shadow: 0 0 8px #da14af;
+}
+
+.bolinha.debito {
+  background: #fbff00;
+  box-shadow: 0 0 8px #fbff00;
 }
 
 .grafico-pizza-recebimentos {
-  width: 76px;
-  height: 76px;
+  
+  justify-self: center;
+  width: 92px;
+  height: 92px;
+  margin-left: auto;
   border-radius: 50%;
   background: var(--bg-card-light);
   border: 1px solid var(--border-card);
-  color: var(--purple-main);
+  position: relative;
+  flex-shrink: 0;
+  filter: saturate(1.15) brightness(1.08);
+  box-shadow: 
+  0 0 15px rgba(124, 58, 237, 0.349);
+}
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 38px;
+.grafico-pizza-recebimentos::after {
+  content: "";
+  position: absolute;
+  inset: 22px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
 }
 
 /* SERVIÇOS */
@@ -343,8 +396,11 @@
   }
 
   .grafico-pizza-recebimentos {
-    width: 68px;
-    height: 68px;
-    font-size: 34px;
-  }
+  width: 68px;
+  height: 68px;
+}
+
+.grafico-pizza-recebimentos::after {
+  inset: 16px;
+}
 }

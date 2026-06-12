@@ -263,11 +263,71 @@ function preencherRecebimentos(lista) {
   });
 
   container.innerHTML = `
-        <div class="linha-recebimento"><span>Dinheiro</span><strong>${formatarMoeda(resumo.dinheiro)}</strong></div>
-        <div class="linha-recebimento"><span>Pix</span><strong>${formatarMoeda(resumo.pix)}</strong></div>
-        <div class="linha-recebimento"><span>Crédito</span><strong>${formatarMoeda(resumo.credito)}</strong></div>
-        <div class="linha-recebimento"><span>Débito</span><strong>${formatarMoeda(resumo.debito)}</strong></div>
-    `;
+  <div class="coluna-legenda">
+
+    <div class="forma-recebimento">
+      <span class="bolinha dinheiro"></span>
+      <span>Dinheiro</span>
+    </div>
+
+    <div class="forma-recebimento">
+      <span class="bolinha pix"></span>
+      <span>Pix</span>
+    </div>
+
+    <div class="forma-recebimento">
+      <span class="bolinha credito"></span>
+      <span>Crédito</span>
+    </div>
+
+    <div class="forma-recebimento">
+      <span class="bolinha debito"></span>
+      <span>Débito</span>
+    </div>
+
+  </div>
+
+  <div class="coluna-valores">
+    <strong>${formatarMoeda(resumo.dinheiro)}</strong>
+    <strong>${formatarMoeda(resumo.pix)}</strong>
+    <strong>${formatarMoeda(resumo.credito)}</strong>
+    <strong>${formatarMoeda(resumo.debito)}</strong>
+  </div>
+`;
+
+  atualizarGraficoRecebimentos(resumo);
+}
+
+function atualizarGraficoRecebimentos(resumo) {
+  const grafico = document.getElementById("graficoPizzaRecebimentos");
+
+  if (!grafico) return;
+
+  const total = resumo.dinheiro + resumo.pix + resumo.credito + resumo.debito;
+
+  if (total <= 0) {
+    grafico.style.background = "var(--bg-card-light)";
+    return;
+  }
+
+  const dinheiro = (resumo.dinheiro / total) * 100;
+  const pix = (resumo.pix / total) * 100;
+  const credito = (resumo.credito / total) * 100;
+  const debito = (resumo.debito / total) * 100;
+
+  const fimDinheiro = dinheiro;
+  const fimPix = fimDinheiro + pix;
+  const fimCredito = fimPix + credito;
+  const fimDebito = fimCredito + debito;
+
+  grafico.style.background = `
+  conic-gradient(
+    #09db09 0% ${fimDinheiro}%,
+    #0051ca ${fimDinheiro}% ${fimPix}%,
+    #da14af ${fimPix}% ${fimCredito}%,
+    #fbff00 ${fimCredito}% ${fimDebito}%
+  )
+`;
 }
 
 function preencherTaxaCartao(lista, formasCadastradas) {
