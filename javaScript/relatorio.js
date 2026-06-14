@@ -87,6 +87,8 @@ function atualizarRelatorio() {
   preencherCabecalho(titulo);
   preencherCards(lista, formas);
   preencherServicos(lista, servicos);
+  atualizarGraficoFaturamento(lista);
+
 }
 
 function mudarPeriodo(direcao) {
@@ -365,6 +367,237 @@ function preencherPendentes(lista) {
 
   document.getElementById("valorPendente").textContent =
     formatarMoeda(totalPendente);
+}
+
+// ================================
+// GRÁFICO DE FATURAMENTO
+// ================================
+
+function atualizarGraficoFaturamento(lista) {
+  const resumoMedia = document.getElementById("resumoMediaFaturamento");
+  const container = document.getElementById("graficoFaturamento");
+
+  if (!resumoMedia || !container) return;
+
+  if (periodoAtual === "dia") {
+    resumoMedia.innerHTML = "";
+    container.innerHTML = "";
+    container.classList.remove("ativo");
+    return;
+  }
+
+  const dados = montarDadosGraficoFaturamento(lista);
+  const total = somarValores(lista);
+
+  if (dados.length === 0 || total <= 0) {
+    resumoMedia.innerHTML = `<span>Sem faturamento neste período.</span>`;
+    container.innerHTML = "";
+    container.classList.remove("ativo");
+    return;
+  }
+
+  const itensComFaturamento = dados.filter((item) => item.valor > 0);
+  const media =
+    itensComFaturamento.length > 0 ? total / itensComFaturamento.length : 0;
+
+  const textoMedia =
+    periodoAtual === "ano"
+      ? "Média mensal ativa"
+      : "Média por dia atendido";
+
+  resumoMedia.innerHTML = `
+    <span>${textoMedia}: <strong>${formatarMoeda(media)}</strong></span>
+  `;
+
+  container.classList.add("ativo");
+  container.innerHTML = desenharGraficoSvg(dados, media);
+}
+
+function montarDadosGraficoFaturamento(lista) {
+  if (periodoAtual === "semana") {
+    return montarDadosSemana(lista);
+  }
+
+  if (periodoAtual === "mes") {
+    return montarDadosMes(lista);
+  }
+
+  if (periodoAtual === "ano") {
+    return montarDadosAno(lista);
+  }
+
+  return [];
+}
+
+function montarDadosSemana(lista) {
+  const labels = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  const dados = labels.map((label) => ({
+    label,
+    valor: 0,
+  }));
+
+  lista.forEach((agendamento) => {
+    const diaSemana = criarDataLocal(agendamento.data).getDay();
+    dados[diaSemana].valor += Number(agendamento.valor) || 0;
+  });
+
+  return dados;
+}
+
+function montarDadosMes(lista) {
+  const [ano, mes] = dataAtual.split("-").map(Number);
+  const diasNoMes = new Date(ano, mes, 0).getDate();
+
+  const dados = [];
+
+  for (let dia = 1; dia <= diasNoMes; dia++) {
+    dados.push({
+      label: String(dia),
+      valor: 0,
+    });
+  }
+
+  lista.forEach((agendamento) => {
+    const dia = Number(agendamento.data.split("-")[2]);
+    dados[dia - 1].valor += Number(agendamento.valor) || 0;
+  });
+
+  return dados;
+}
+
+function montarDadosAno(lista) {
+  const labels = [
+    "Jan",
+    "Fev",
+    "Mar",
+    "Abr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Set",
+    "Out",
+    "Nov",
+    "Dez",
+  ];
+
+  const dados = labels.map((label) => ({
+    label,
+    valor: 0,
+  }));
+
+  lista.forEach((agendamento) => {
+    const mes = Number(agendamento.data.split("-")[1]);
+    dados[mes - 1].valor += Number(agendamento.valor) || 0;
+  });
+
+  return dados;
+}
+
+function desenharGraficoSvg(dados, media) {
+  const largura = 320;
+  const altura = 150;
+  const paddingTopo = 16;
+  const paddingDireita = 8;
+  const paddingBaixo = 24;
+  const paddingEsquerda = 8;
+
+  const larguraUtil = largura - paddingEsquerda - paddingDireita;
+  const alturaUtil = altura - paddingTopo - paddingBaixo;
+
+  const maiorValor = Math.max(...dados.map((item) => item.valor), media, 1);
+
+  const pontos = dados.map((item, index) => {
+    const x =
+      dados.length === 1
+        ? largura / 2
+        : paddingEsquerda + (index / (dados.length - 1)) * larguraUtil;
+
+    const y =
+      paddingTopo + alturaUtil - (item.valor / maiorValor) * alturaUtil;
+
+    return {
+      ...item,
+      x,
+      y,
+    };
+  });
+
+  const linha = pontos
+    .map((ponto, index) => `${index === 0 ? "M" : "L"} ${ponto.x} ${ponto.y}`)
+    .join(" ");
+
+  const area = `
+    M ${pontos[0].x} ${altura - paddingBaixo}
+    ${pontos.map((ponto) => `L ${ponto.x} ${ponto.y}`).join(" ")}
+    L ${pontos[pontos.length - 1].x} ${altura - paddingBaixo}
+    Z
+  `;
+
+  const yMedia =
+    paddingTopo + alturaUtil - (media / maiorValor) * alturaUtil;
+
+  const pontosSvg = pontos
+    .map(
+      (ponto) => `
+        <circle
+          class="ponto-faturamento"
+          cx="${ponto.x}"
+          cy="${ponto.y}"
+          r="${ponto.valor > 0 ? 3.5 : 0}"
+        />
+      `
+    )
+    .join("");
+
+  const labels = montarLabelsGrafico(dados);
+
+  return `
+    <svg viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="gradienteFaturamento" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.85" />
+          <stop offset="100%" stop-color="#7c3aed" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+
+      <path class="area-faturamento" d="${area}" fill="url(#gradienteFaturamento)" />
+
+      <line
+        class="linha-media"
+        x1="${paddingEsquerda}"
+        y1="${yMedia}"
+        x2="${largura - paddingDireita}"
+        y2="${yMedia}"
+      />
+
+      <path class="linha-faturamento" d="${linha}" />
+
+      ${pontosSvg}
+    </svg>
+
+    <div class="grafico-labels">
+      ${labels.map((label) => `<span>${label}</span>`).join("")}
+    </div>
+  `;
+}
+
+function montarLabelsGrafico(dados) {
+  if (periodoAtual === "semana") {
+    return dados.map((item) => item.label);
+  }
+
+  if (periodoAtual === "mes") {
+    const totalDias = dados.length;
+
+    return ["1", "10", "20", String(totalDias)];
+  }
+
+  if (periodoAtual === "ano") {
+    return dados.map((item) => item.label);
+  }
+
+  return [];
 }
 
 // ================================

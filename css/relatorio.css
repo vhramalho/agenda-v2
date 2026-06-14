@@ -159,11 +159,11 @@
 }
 
 .variacao-positiva {
-  color: #22c55e !important;;
+  color: #22c55e !important;
 }
 
 .variacao-negativa {
-  color: #ef4444 !important;;
+  color: #ef4444 !important;
 }
 
 .variacao-neutra {
@@ -251,7 +251,6 @@
 }
 
 .grafico-pizza-recebimentos {
-  
   justify-self: center;
   width: 92px;
   height: 92px;
@@ -262,8 +261,7 @@
   position: relative;
   flex-shrink: 0;
   filter: saturate(1.15) brightness(1.08);
-  box-shadow: 
-  0 0 15px rgba(124, 58, 237, 0.349);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.349);
 }
 
 .grafico-pizza-recebimentos::after {
@@ -396,11 +394,72 @@
   }
 
   .grafico-pizza-recebimentos {
-  width: 68px;
-  height: 68px;
+    width: 68px;
+    height: 68px;
+  }
+
+  .grafico-pizza-recebimentos::after {
+    inset: 16px;
+  }
 }
 
-.grafico-pizza-recebimentos::after {
-  inset: 16px;
+.resumo-media-faturamento {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
 }
+
+.resumo-media-faturamento strong {
+  color: var(--texto-principal);
+  font-weight: 700;
+}
+
+.grafico-faturamento {
+  display: none;
+  width: 100%;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.grafico-faturamento.ativo {
+  display: block;
+}
+
+.grafico-faturamento svg {
+  width: 100%;
+  height: 150px;
+  display: block;
+}
+
+.grafico-faturamento .linha-faturamento {
+  fill: none;
+  stroke: #7c3aed;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.grafico-faturamento .area-faturamento {
+  opacity: 0.28;
+}
+
+.grafico-faturamento .linha-media {
+  stroke: var(--texto-secundario);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 6;
+  opacity: 0.6;
+}
+
+.grafico-faturamento .ponto-faturamento {
+  fill: #7c3aed;
+  stroke: var(--card-bg);
+  stroke-width: 2;
+}
+
+.grafico-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: var(--texto-secundario);
 }
