@@ -158,6 +158,20 @@
   font-weight: 500;
 }
 
+.variacao-linha {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.variacao-linha .variacao-valor,
+.variacao-linha .variacao-contexto {
+  display: inline !important;
+  margin: 0;
+}
+
 .variacao-positiva {
   color: #22c55e !important;
 }
@@ -443,13 +457,6 @@
   opacity: 0.28;
 }
 
-.grafico-faturamento .linha-media {
-  stroke: var(--texto-secundario);
-  stroke-width: 1.5;
-  stroke-dasharray: 6 6;
-  opacity: 0.6;
-}
-
 .grafico-faturamento .ponto-faturamento {
   fill: #7c3aed;
   stroke: var(--card-bg);
@@ -462,4 +469,25 @@
   margin-top: 6px;
   font-size: 0.7rem;
   color: var(--texto-secundario);
+}
+.resumo-media-faturamento {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.valor-selecionado-grafico {
+  min-height: 20px;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+}
+
+.valor-selecionado-grafico strong {
+  color: var(--texto-principal);
 }
