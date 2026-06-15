@@ -1,8 +1,15 @@
+/* ================================
+   PÁGINA
+================================ */
+
 .pagina-relatorio {
   padding: 22px 16px 32px;
 }
 
-/* TOPO */
+/* ================================
+   TOPO
+================================ */
+
 .relatorio-topo {
   display: flex;
   align-items: center;
@@ -29,7 +36,10 @@
   margin-top: 2px;
 }
 
-/* ABAS */
+/* ================================
+   ABAS DE PERÍODO
+================================ */
+
 .abas-periodo {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -55,7 +65,10 @@
   color: #fff;
 }
 
-/* PERÍODO */
+/* ================================
+   PERÍODO SELECIONADO
+================================ */
+
 .periodo-selecionado {
   display: flex;
   align-items: center;
@@ -93,7 +106,10 @@
   font-size: 24px;
 }
 
-/* CARDS BASE */
+/* ================================
+   CARDS BASE
+================================ */
+
 .card-grafico,
 .card-servicos,
 .card-recebimentos,
@@ -138,7 +154,13 @@
   justify-content: center;
 }
 
-/* KPIS */
+.mini-card strong {
+  font-size: 18px;
+}
+
+/* ================================
+   VARIAÇÕES
+================================ */
 
 .variacao-card {
   display: flex;
@@ -147,15 +169,6 @@
   margin-top: 8px;
   font-size: 12px;
   font-weight: 600;
-}
-
-.variacao-valor {
-  font-weight: 700;
-}
-
-.variacao-contexto {
-  color: var(--text-muted);
-  font-weight: 500;
 }
 
 .variacao-linha {
@@ -172,6 +185,15 @@
   margin: 0;
 }
 
+.variacao-valor {
+  font-weight: 700;
+}
+
+.variacao-contexto {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
 .variacao-positiva {
   color: #22c55e !important;
 }
@@ -184,6 +206,10 @@
   color: var(--text-muted);
 }
 
+/* ================================
+   KPIS
+================================ */
+
 .grade-kpis {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -191,11 +217,125 @@
   margin-bottom: 14px;
 }
 
-.mini-card strong {
-  font-size: 18px;
+/* Primeira linha: 4 KPIs pequenos */
+.grade-kpis.principal-kpis {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
 }
 
-/* RECEBIMENTOS */
+.principal-kpis .mini-card {
+  min-height: 68px;
+  padding: 10px 6px;
+  border-radius: 16px;
+  justify-content: flex-start;
+}
+
+.principal-kpis .mini-card span {
+  font-size: 9px;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+.principal-kpis .mini-card strong {
+  font-size: 13px;
+  line-height: 1.15;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+
+.principal-kpis .variacao-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  min-height: 22px;
+  margin-top: 4px;
+  font-size: 9px;
+  white-space: normal;
+}
+
+.principal-kpis .variacao-linha {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  white-space: normal;
+}
+
+.principal-kpis .variacao-contexto {
+  display: block !important;
+  margin: 0;
+  font-size: 8px;
+}
+
+.principal-kpis .variacao-vazia {
+  min-height: 22px;
+  display: block;
+}
+
+/* ================================
+   GRÁFICO DE FATURAMENTO
+================================ */
+
+.grafico-faturamento {
+  display: none;
+  width: 100%;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.grafico-faturamento.ativo {
+  display: block;
+}
+
+.grafico-faturamento svg {
+  width: 100%;
+  height: 150px;
+  display: block;
+}
+
+.grafico-faturamento .linha-faturamento {
+  fill: none;
+  stroke: #7c3aed;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.grafico-faturamento .area-faturamento {
+  opacity: 0.28;
+}
+
+.grafico-faturamento .ponto-faturamento {
+  fill: #7c3aed;
+  stroke: var(--bg-card);
+  stroke-width: 2;
+}
+
+.grafico-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.valor-selecionado-grafico {
+  min-height: 20px;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.valor-selecionado-grafico strong {
+  color: var(--text-main);
+}
+
+/* ================================
+   RECEBIMENTOS
+================================ */
+
 .recebimentos-layout {
   display: grid;
   grid-template-columns: 1fr 150px;
@@ -228,7 +368,7 @@
 
 .coluna-valores {
   gap: 12px;
-  align-items: left;
+  align-items: flex-start;
 }
 
 .coluna-valores strong {
@@ -236,34 +376,35 @@
   white-space: nowrap;
 }
 
+/* Bolinhas das formas de pagamento */
 .bolinha {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.12);
 }
 
 .bolinha.dinheiro {
   background: #09db09;
-  box-shadow: 0 0 8px #09db09;
+  box-shadow: 0 0 3px #09db09;
 }
 
 .bolinha.pix {
   background: #0051ca;
-  box-shadow: 0 0 8px #0051ca;
+  box-shadow: 0 0 3px #0051ca;
 }
 
 .bolinha.credito {
   background: #da14af;
-  box-shadow: 0 0 8px #da14af;
+  box-shadow: 0 0 3px #da14af;
 }
 
 .bolinha.debito {
   background: #fbff00;
-  box-shadow: 0 0 8px #fbff00;
+  box-shadow: 0 0 3px #fbff00;
 }
 
+/* Pizza de recebimentos */
 .grafico-pizza-recebimentos {
   justify-self: center;
   width: 92px;
@@ -275,7 +416,7 @@
   position: relative;
   flex-shrink: 0;
   filter: saturate(1.15) brightness(1.08);
-  box-shadow: 0 0 15px rgba(124, 58, 237, 0.349);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.35);
 }
 
 .grafico-pizza-recebimentos::after {
@@ -287,7 +428,10 @@
   border: 1px solid var(--border-card);
 }
 
-/* SERVIÇOS */
+/* ================================
+   SERVIÇOS
+================================ */
+
 .card-servicos {
   min-height: 220px;
 }
@@ -316,7 +460,10 @@
   color: var(--text-main);
 }
 
-/* CALENDÁRIO */
+/* ================================
+   CALENDÁRIO
+================================ */
+
 .modal-calendario {
   display: none;
   position: fixed;
@@ -400,7 +547,10 @@
   color: white !important;
 }
 
-/* RESPONSIVO */
+/* ================================
+   RESPONSIVO
+================================ */
+
 @media (max-width: 380px) {
   .recebimentos-layout {
     grid-template-columns: 1fr 68px;
@@ -415,79 +565,4 @@
   .grafico-pizza-recebimentos::after {
     inset: 16px;
   }
-}
-
-.resumo-media-faturamento {
-  margin-top: 12px;
-  font-size: 0.85rem;
-  color: var(--texto-secundario);
-}
-
-.resumo-media-faturamento strong {
-  color: var(--texto-principal);
-  font-weight: 700;
-}
-
-.grafico-faturamento {
-  display: none;
-  width: 100%;
-  margin-top: 18px;
-  overflow: hidden;
-}
-
-.grafico-faturamento.ativo {
-  display: block;
-}
-
-.grafico-faturamento svg {
-  width: 100%;
-  height: 150px;
-  display: block;
-}
-
-.grafico-faturamento .linha-faturamento {
-  fill: none;
-  stroke: #7c3aed;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.grafico-faturamento .area-faturamento {
-  opacity: 0.28;
-}
-
-.grafico-faturamento .ponto-faturamento {
-  fill: #7c3aed;
-  stroke: var(--card-bg);
-  stroke-width: 2;
-}
-
-.grafico-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
-  font-size: 0.7rem;
-  color: var(--texto-secundario);
-}
-.resumo-media-faturamento {
-  margin-top: 12px;
-  font-size: 0.85rem;
-  color: var(--texto-secundario);
-
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.valor-selecionado-grafico {
-  min-height: 20px;
-  margin-top: 10px;
-  text-align: center;
-  font-size: 0.85rem;
-  color: var(--texto-secundario);
-}
-
-.valor-selecionado-grafico strong {
-  color: var(--texto-principal);
 }

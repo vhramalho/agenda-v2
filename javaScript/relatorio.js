@@ -200,8 +200,11 @@ function preencherCards(lista, formasCadastradas) {
   const faturamento = somarValores(lista);
   const atendimentos = lista.length;
   const ticketMedio = atendimentos > 0 ? faturamento / atendimentos : 0;
+  const resumoMediaPeriodo = calcularMediaPeriodo(lista);
 
   const anterior = obterDadosPeriodoAnterior();
+
+  const resumoMediaAnterior = calcularMediaPeriodo(anterior.lista);
 
   const variacaoFaturamento = calcularVariacaoPercentual(
     faturamento,
@@ -217,11 +220,29 @@ function preencherCards(lista, formasCadastradas) {
     ticketMedio,
     anterior.ticketMedio,
   );
+
+  const variacaoMediaPeriodo = calcularVariacaoPercentual(
+    resumoMediaPeriodo.media,
+    resumoMediaAnterior.media,
+  );
+
   document.getElementById("faturamentoPeriodo").textContent =
     formatarMoeda(faturamento);
   document.getElementById("totalAtendimentos").textContent = atendimentos;
   document.getElementById("ticketMedio").textContent =
     formatarMoeda(ticketMedio);
+  document.getElementById("labelDiasAtendidos").textContent =
+    resumoMediaPeriodo.labelQuantidade;
+
+  document.getElementById("diasAtendidos").textContent =
+    resumoMediaPeriodo.quantidade;
+
+  document.getElementById("labelMediaPeriodo").textContent =
+    resumoMediaPeriodo.labelMedia;
+
+  document.getElementById("mediaPeriodo").textContent = formatarMoeda(
+    resumoMediaPeriodo.media,
+  );
 
   aplicarVariacao("variacaoFaturamento", variacaoFaturamento);
 
@@ -229,9 +250,48 @@ function preencherCards(lista, formasCadastradas) {
 
   aplicarVariacao("variacaoTicketMedio", variacaoTicket);
 
+  aplicarVariacao("variacaoMediaPeriodo", variacaoMediaPeriodo);
+
   preencherRecebimentos(lista);
   preencherTaxaCartao(lista, formasCadastradas);
   preencherPendentes(lista);
+}
+
+function calcularMediaPeriodo(lista) {
+  const total = somarValores(lista);
+
+  if (periodoAtual === "ano") {
+    const mesesAtendidos = new Set();
+
+    lista.forEach((agendamento) => {
+      const mes = agendamento.data.split("-")[1];
+      mesesAtendidos.add(mes);
+    });
+
+    const quantidade = mesesAtendidos.size;
+
+    return {
+      labelQuantidade: "Meses atendidos",
+      quantidade,
+      labelMedia: "Média mensal",
+      media: quantidade > 0 ? total / quantidade : 0,
+    };
+  }
+
+  const diasAtendidos = new Set();
+
+  lista.forEach((agendamento) => {
+    diasAtendidos.add(agendamento.data);
+  });
+
+  const quantidade = diasAtendidos.size;
+
+  return {
+    labelQuantidade: "Dias atendidos",
+    quantidade,
+    labelMedia: "Média por dia",
+    media: quantidade > 0 ? total / quantidade : 0,
+  };
 }
 
 function preencherRecebimentos(lista) {
@@ -371,7 +431,6 @@ function preencherPendentes(lista) {
 // ================================
 
 function atualizarGraficoFaturamento(lista) {
-  const resumoMedia = document.getElementById("resumoMediaFaturamento");
   const container = document.getElementById("graficoFaturamento");
   const valorSelecionado = document.getElementById("valorSelecionadoGrafico");
 
@@ -379,10 +438,9 @@ function atualizarGraficoFaturamento(lista) {
     valorSelecionado.innerHTML = "";
   }
 
-  if (!resumoMedia || !container) return;
+  if (!container) return;
 
   if (periodoAtual === "dia") {
-    resumoMedia.innerHTML = "";
     container.innerHTML = "";
     container.classList.remove("ativo");
     return;
@@ -392,26 +450,13 @@ function atualizarGraficoFaturamento(lista) {
   const total = somarValores(lista);
 
   if (dados.length === 0 || total <= 0) {
-    resumoMedia.innerHTML = `<span>Sem faturamento neste período.</span>`;
     container.innerHTML = "";
     container.classList.remove("ativo");
     return;
   }
 
-  const itensAtendidos = dados.filter((item) => item.atendimentos > 0);
-  const quantidadeAtendida = itensAtendidos.length;
-  const media = quantidadeAtendida > 0 ? total / quantidadeAtendida : 0;
-
-  const textoQuantidade =
-    periodoAtual === "ano" ? "Meses atendidos" : "Dias atendidos";
-
-  resumoMedia.innerHTML = `
-  <div>${textoQuantidade}: <strong>${quantidadeAtendida}</strong></div>
-  <div>Média: <strong>${formatarMoeda(media)}</strong></div>
-`;
-
   container.classList.add("ativo");
-  container.innerHTML = desenharGraficoSvg(dados, media);
+  container.innerHTML = desenharGraficoSvg(dados);
 }
 
 function montarDadosGraficoFaturamento(lista) {
@@ -501,7 +546,7 @@ function montarDadosAno(lista) {
   return dados;
 }
 
-function desenharGraficoSvg(dados, media) {
+function desenharGraficoSvg(dados) {
   const largura = 320;
   const altura = 150;
   const paddingTopo = 16;
@@ -512,7 +557,7 @@ function desenharGraficoSvg(dados, media) {
   const larguraUtil = largura - paddingEsquerda - paddingDireita;
   const alturaUtil = altura - paddingTopo - paddingBaixo;
 
-  const maiorValor = Math.max(...dados.map((item) => item.valor), media, 1);
+  const maiorValor = Math.max(...dados.map((item) => item.valor), 1);
 
   const pontos = dados.map((item, index) => {
     const x =
@@ -539,8 +584,6 @@ function desenharGraficoSvg(dados, media) {
     L ${pontos[pontos.length - 1].x} ${altura - paddingBaixo}
     Z
   `;
-
-  const yMedia = paddingTopo + alturaUtil - (media / maiorValor) * alturaUtil;
 
   const pontosSvg = pontos
     .map((ponto, index) => {
@@ -574,14 +617,6 @@ function desenharGraficoSvg(dados, media) {
       </defs>
 
       <path class="area-faturamento" d="${area}" fill="url(#gradienteFaturamento)" />
-
-      <line
-        class="linha-media"
-        x1="${paddingEsquerda}"
-        y1="${yMedia}"
-        x2="${largura - paddingDireita}"
-        y2="${yMedia}"
-      />
 
       <path class="linha-faturamento" d="${linha}" />
 
@@ -869,6 +904,7 @@ function obterDadosPeriodoAnterior() {
   const atendimentos = listaAnterior.length;
 
   return {
+    lista: listaAnterior,
     faturamento,
     atendimentos,
     ticketMedio: atendimentos > 0 ? faturamento / atendimentos : 0,
