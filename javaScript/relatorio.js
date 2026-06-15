@@ -226,6 +226,11 @@ function preencherCards(lista, formasCadastradas) {
     resumoMediaAnterior.media,
   );
 
+  const variacaoDiasAtendidos = calcularVariacaoQuantidade(
+  resumoMediaPeriodo.quantidade,
+  resumoMediaAnterior.quantidade,
+);
+
   document.getElementById("faturamentoPeriodo").textContent =
     formatarMoeda(faturamento);
   document.getElementById("totalAtendimentos").textContent = atendimentos;
@@ -251,6 +256,8 @@ function preencherCards(lista, formasCadastradas) {
   aplicarVariacao("variacaoTicketMedio", variacaoTicket);
 
   aplicarVariacao("variacaoMediaPeriodo", variacaoMediaPeriodo);
+
+  aplicarVariacao("variacaoDiasAtendidos", variacaoDiasAtendidos);
 
   preencherRecebimentos(lista);
   preencherTaxaCartao(lista, formasCadastradas);
@@ -296,11 +303,15 @@ function calcularMediaPeriodo(lista) {
 
 function preencherRecebimentos(lista) {
   const container = document.getElementById("recebimentoDetalhado");
+  const formasCadastradas =
+    JSON.parse(localStorage.getItem("formasPagamento")) || [];
+
   const resumo = {
     dinheiro: 0,
     pix: 0,
     credito: 0,
     debito: 0,
+    outras: 0,
   };
 
   lista.forEach((agendamento) => {
@@ -309,52 +320,66 @@ function preencherRecebimentos(lista) {
       : [];
 
     formas.forEach((fp) => {
-      const nome = normalizarTexto(fp.forma);
+      const nomeForma = fp.forma || "";
       const valor = Number(fp.valor) || 0;
 
-      if (nome.includes("dinheiro")) resumo.dinheiro += valor;
-      else if (nome.includes("pix")) resumo.pix += valor;
-      else if (nome.includes("credito") || nome.includes("crédito"))
-        resumo.credito += valor;
-      else if (nome.includes("debito") || nome.includes("débito"))
-        resumo.debito += valor;
+      const formaCadastrada = formasCadastradas.find(
+        (forma) => forma.nome === nomeForma,
+      );
+
+      const tipo = obterTipoPagamento(formaCadastrada, nomeForma);
+
+      resumo[tipo] += valor;
     });
   });
 
+  const itens = [
+    { tipo: "dinheiro", nome: "Dinheiro" },
+    { tipo: "pix", nome: "Pix" },
+    { tipo: "credito", nome: "Crédito" },
+    { tipo: "debito", nome: "Débito" },
+    { tipo: "outras", nome: "Outras" },
+  ];
+
   container.innerHTML = `
-  <div class="coluna-legenda">
-
-    <div class="forma-recebimento">
-      <span class="bolinha dinheiro"></span>
-      <span>Dinheiro</span>
+    <div class="coluna-legenda">
+      ${itens
+        .map(
+          (item) => `
+            <div class="forma-recebimento">
+              <span class="bolinha ${item.tipo}"></span>
+              <span>${item.nome}</span>
+            </div>
+          `,
+        )
+        .join("")}
     </div>
 
-    <div class="forma-recebimento">
-      <span class="bolinha pix"></span>
-      <span>Pix</span>
+    <div class="coluna-valores">
+      ${itens
+        .map((item) => `<strong>${formatarMoeda(resumo[item.tipo])}</strong>`)
+        .join("")}
     </div>
-
-    <div class="forma-recebimento">
-      <span class="bolinha credito"></span>
-      <span>Crédito</span>
-    </div>
-
-    <div class="forma-recebimento">
-      <span class="bolinha debito"></span>
-      <span>Débito</span>
-    </div>
-
-  </div>
-
-  <div class="coluna-valores">
-    <strong>${formatarMoeda(resumo.dinheiro)}</strong>
-    <strong>${formatarMoeda(resumo.pix)}</strong>
-    <strong>${formatarMoeda(resumo.credito)}</strong>
-    <strong>${formatarMoeda(resumo.debito)}</strong>
-  </div>
-`;
+  `;
 
   atualizarGraficoRecebimentos(resumo);
+}
+
+function obterTipoPagamento(formaCadastrada, nomeForma) {
+  if (formaCadastrada && formaCadastrada.tipo) {
+    return formaCadastrada.tipo;
+  }
+
+  const nome = normalizarTexto(nomeForma);
+
+  if (nome.includes("dinheiro")) return "dinheiro";
+  if (nome.includes("pix")) return "pix";
+  if (nome.includes("credito") || nome.includes("cartao credito"))
+    return "credito";
+  if (nome.includes("debito") || nome.includes("cartao debito"))
+    return "debito";
+
+  return "outras";
 }
 
 function atualizarGraficoRecebimentos(resumo) {
@@ -362,31 +387,39 @@ function atualizarGraficoRecebimentos(resumo) {
 
   if (!grafico) return;
 
-  const total = resumo.dinheiro + resumo.pix + resumo.credito + resumo.debito;
+  const cores = {
+    dinheiro: "#09db09",
+    pix: "#0051ca",
+    credito: "#da14af",
+    debito: "#fbff00",
+    outras: "#63faff93",
+  };
+
+  const tipos = ["dinheiro", "pix", "credito", "debito", "outras"];
+
+  const total = tipos.reduce((soma, tipo) => soma + resumo[tipo], 0);
 
   if (total <= 0) {
     grafico.style.background = "var(--bg-card-light)";
     return;
   }
 
-  const dinheiro = (resumo.dinheiro / total) * 100;
-  const pix = (resumo.pix / total) * 100;
-  const credito = (resumo.credito / total) * 100;
-  const debito = (resumo.debito / total) * 100;
+  let inicio = 0;
 
-  const fimDinheiro = dinheiro;
-  const fimPix = fimDinheiro + pix;
-  const fimCredito = fimPix + credito;
-  const fimDebito = fimCredito + debito;
+  const fatias = tipos
+    .filter((tipo) => resumo[tipo] > 0)
+    .map((tipo) => {
+      const percentual = (resumo[tipo] / total) * 100;
+      const fim = inicio + percentual;
 
-  grafico.style.background = `
-  conic-gradient(
-    #09db09 0% ${fimDinheiro}%,
-    #0051ca ${fimDinheiro}% ${fimPix}%,
-    #da14af ${fimPix}% ${fimCredito}%,
-    #fbff00 ${fimCredito}% ${fimDebito}%
-  )
-`;
+      const trecho = `${cores[tipo]} ${inicio}% ${fim}%`;
+
+      inicio = fim;
+
+      return trecho;
+    });
+
+  grafico.style.background = `conic-gradient(${fatias.join(", ")})`;
 }
 
 function preencherTaxaCartao(lista, formasCadastradas) {
@@ -783,6 +816,13 @@ function filtrarPorAno(ags, data) {
 // ================================
 
 btnCalendario.addEventListener("click", () => {
+  const dataSelecionada = criarDataLocal(dataAtual);
+
+  mesAtual = dataSelecionada.getMonth();
+  anoAtual = dataSelecionada.getFullYear();
+
+  gerarCalendario();
+
   modalCalendario.style.display = "flex";
 });
 

@@ -404,6 +404,11 @@
   box-shadow: 0 0 3px #fbff00;
 }
 
+.bolinha.outras {
+  background: #63faff93;
+  box-shadow: 0 0 3px #63faff93;
+}
+
 /* Pizza de recebimentos */
 .grafico-pizza-recebimentos {
   justify-self: center;

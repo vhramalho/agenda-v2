@@ -27,7 +27,6 @@
       <div id="lista-pagamentos" class="lista-pagina">
         <!-- Itens aparecerão aqui -->
       </div>
-
     </main>
 
     <!-- Modal principal para adicionar ou editar -->
@@ -35,6 +34,16 @@
     <div id="modalPagamento" class="modal">
       <h2>Forma</h2>
       <input type="text" id="nomePagamento" placeholder="Nome da forma" />
+
+      <select id="tipoPagamento">
+        <option value="">Tipo de pagamento</option>
+        <option value="dinheiro">Dinheiro</option>
+        <option value="pix">Pix</option>
+        <option value="credito">Crédito</option>
+        <option value="debito">Débito</option>
+        <option value="outras">Outras</option>
+      </select>
+
       <input
         type="number"
         id="taxaPagamento"
@@ -66,7 +75,7 @@
         <button class="btn-verde" id="btnConfirmarExclusao">Confirmar</button>
       </div>
     </div>
-<a href="index.html">agenda</a>
+    <a href="index.html">agenda</a>
     <script src="javaScript/pagamento.js"></script>
     <script src="javaScript/menu.js"></script>
   </body>

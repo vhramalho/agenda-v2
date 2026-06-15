@@ -1,9 +1,9 @@
 // 🔁 Dados fixos iniciais (só adicionados uma vez)
 const formasFixas = [
-  { nome: "Dinheiro", taxa: 0 },
-  { nome: "Pix", taxa: 0 },
-  { nome: "Crédito", taxa: 0 },
-  { nome: "Débito", taxa: 0 },
+  { nome: "Dinheiro", tipo: "dinheiro", taxa: 0 },
+  { nome: "Pix", tipo: "pix", taxa: 0 },
+  { nome: "Crédito", tipo: "credito", taxa: 0 },
+  { nome: "Débito", tipo: "debito", taxa: 0 },
 ];
 
 // 🧠 Estados
@@ -27,6 +27,7 @@ const btnAbrirModal = document.getElementById("btnAbrirModal");
 const btnFecharModal = document.getElementById("btnFecharModal");
 const btnConfirmar = document.getElementById("btnConfirmar");
 const nomeInput = document.getElementById("nomePagamento");
+const tipoInput = document.getElementById("tipoPagamento");
 const taxaInput = document.getElementById("taxaPagamento");
 const listaPagamentos = document.getElementById("lista-pagamentos");
 
@@ -52,6 +53,7 @@ btnAbrirModal.addEventListener("click", () => {
   fundoEscuro.classList.add("ativo");
   modal.classList.add("ativo");
   nomeInput.value = "";
+  tipoInput.value = "";
   taxaInput.value = "";
   modoEdicao = false;
   indiceEditando = null;
@@ -64,16 +66,22 @@ function fecharModal() {
   modalOpcoes.classList.remove("ativo");
   modalConfirmarExclusao.classList.remove("ativo");
 
+  nomeInput.value = "";
+  tipoInput.value = "";
+  taxaInput.value = "";
+
   modoEdicao = false;
   indiceEditando = null;
   indiceSelecionado = null;
 }
+
 btnFecharModal.addEventListener("click", fecharModal);
 fundoEscuro.addEventListener("click", fecharModal);
 
 // 💾 Salvar nova ou editar existente
 btnConfirmar.addEventListener("click", () => {
   const nome = nomeInput.value.trim();
+  const tipo = tipoInput.value;
   const taxa = parseFloat(taxaInput.value) || 0;
 
   if (!nome) {
@@ -81,12 +89,17 @@ btnConfirmar.addEventListener("click", () => {
     return;
   }
 
+  if (!tipo) {
+    alert("Selecione o tipo de pagamento.");
+    return;
+  }
+
   const lista = carregarFormas();
 
   if (modoEdicao && indiceEditando !== null) {
-    lista[indiceEditando] = { nome, taxa };
+    lista[indiceEditando] = { nome, tipo, taxa };
   } else {
-    lista.push({ nome, taxa });
+    lista.push({ nome, tipo, taxa });
   }
 
   salvarFormas(lista);
@@ -138,6 +151,7 @@ btnEditar.addEventListener("click", () => {
   const item = lista[indiceSelecionado];
 
   nomeInput.value = item.nome;
+  tipoInput.value = item.tipo || "";
   taxaInput.value = item.taxa;
 
   modoEdicao = true;
