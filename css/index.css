@@ -1,3 +1,12 @@
+/* =========================================================
+   AGENDA - PÁGINA PRINCIPAL
+   Organizado por seções. Mantém IDs/classes usados pelo JS.
+========================================================= */
+
+/* ================================
+   RESET / BASE DA PÁGINA
+================================ */
+
 * {
   margin: 0;
   padding: 0;
@@ -5,166 +14,276 @@
   font-family: sans-serif;
 }
 
-body,
-html {
+html,
+body {
   width: 100%;
-  height: 100%;
-  background-color: #f3f3f3;
-  overflow: hidden;
+  min-height: 100%;
+  background: var(--bg-main);
+  overflow-x: hidden;
+  overflow-y: auto;
   touch-action: manipulation;
 }
 
-/* ===== CABEÇALHO ===== */
-header {
-  background-color: #000;
-  color: yellow;
+/* ================================
+   TOPO DA AGENDA
+================================ */
+
+.topo-agenda-v2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  position: relative;
+  padding: 16px 20px 6px;
+  background: var(--bg-main);
+  border-bottom: none;
 }
 
-header h1 {
-  font-size: 18px;
+.topo-agenda-v2 h1 {
   flex: 1;
   text-align: center;
-  color: yellow;
+  margin: 0;
+  color: var(--text-main);
+  font-size: 26px;
+  font-weight: 800;
 }
 
-.botao-menu {
-  background: none;
+.botao-topo-v2 {
+  width: 44px;
+  height: 44px;
   border: none;
-  color: #ffff00;
-  font-size: 30px;
-  cursor: pointer;
-  z-index: 1001;
-  position: relative;
-}
-
-.botao-whatsapp {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
+  background: transparent;
+  color: var(--purple-main);
+  display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.botao-whatsapp img {
-  width: 45px;
-  height: 45px;
-}
-
-/* ===== MENU LATERAL (oculto por padrão) ===== */
-.menu-lateral {
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background-color: #000000;
-  color: #ffff00;
-  transition: left 0.5s ease;
-  padding-top: 60px;
-  z-index: 1000;
-}
-
-.menu-lateral.ativo {
-  left: 0;
-}
-
-.menu-lateral ul {
-  list-style: none;
-  padding: 0 20px;
-}
-
-.menu-lateral li {
-  margin: 20px 0;
-}
-
-li[onclick] {
   cursor: pointer;
 }
 
-.menu-lateral a {
-  color: #ffff00;
-  text-decoration: none;
-}
-
-.fundo-escuro {
+.botao-topo-v2 span:last-child {
   display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
 }
 
-/* ===== DATA (como no PDV) ===== */
+.icone-topo-v2 {
+  font-size: 28px;
+  color: var(--purple-main);
+  line-height: 1;
+}
+
+/* Data antiga mantida oculta no HTML para compatibilidade */
 .data {
-  background-color: #f3f3f3;
-  font-size: 24px;
-  text-align: center;
-  padding: 10px;
-  font-weight: bold;
-  color: #000;
+  display: none;
 }
 
-/* ===== LISTA DE HORÁRIOS ===== */
+/* ================================
+   SEMANA HORIZONTAL
+================================ */
+
+.semana-agenda-v2 {
+  position: relative;
+  overflow: hidden;
+  padding: 0 16px 12px;
+  background: var(--bg-main);
+}
+
+.mes-semana-agenda {
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.carrossel-semana {
+  width: 100%;
+  overflow: hidden;
+}
+
+.track-semana {
+  display: flex;
+  width: 300%;
+  transform: translateX(-33.3333%);
+  transition: transform 0.24s ease;
+  will-change: transform;
+}
+
+.dias-semana-agenda {
+  width: 33.3333%;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  padding-bottom: 8px;
+}
+
+.dia-semana-card {
+  min-width: 0;
+  height: 56px;
+  border-radius: 15px;
+  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dia-semana-card .dia-nome {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.dia-semana-card .dia-numero {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-main);
+}
+
+.dia-semana-card.ativo {
+  background: var(--purple-main);
+  border-color: rgba(167, 139, 250, 0.55);
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.22);
+}
+
+.dia-semana-card.ativo .dia-nome,
+.dia-semana-card.ativo .dia-numero {
+  color: #fff;
+}
+
+/* Indicadores laterais exibidos durante o swipe */
+.indicador-swipe-semana {
+  position: absolute;
+  top: 58%;
+  transform: translateY(-50%);
+  color: var(--purple-main);
+  font-size: 26px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.indicador-swipe-semana.esquerda {
+  left: 8px;
+}
+
+.indicador-swipe-semana.direita {
+  right: 8px;
+}
+
+.indicador-swipe-semana.ativo {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.18);
+}
+
+/* ================================
+   LISTA DE HORÁRIOS
+================================ */
 
 .agenda {
   padding: 12px;
   overflow-y: auto;
-  height: calc(100vh - 140px);
-  /* cabeçalho + data + espaço dos botões */
+  height: calc(100dvh - 230px);
 }
 
 .agenda ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding-bottom: 200px;
+  gap: 8px;
+  padding-bottom: 210px;
 }
 
-/* Cores por status */
-.bloqueado,
-.encaixe {
-  background-color: #ffe5e5; /* vermelho clarinho */
-}
-
-.realizado,
-.agendado {
-  background-color: #ddfcdd; /* verde clarinho */
-}
-
-/* Novo layout dos horários */
 .agenda li {
+  min-height: 64px;
+  padding: 10px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text-main);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 75px;
-  padding: 12px 16px;
-  border-radius: 8px;
   font-size: 15px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  border-left: 6px solid transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  border:none
 }
 
-/* Coluna da hora */
+.agenda li.agendado, 
+.agenda li.realizado {
+  background: linear-gradient(
+    90deg,
+    var(--purple-main)0%,
+    rgba(124, 58, 237, 0.14) 50%,
+    rgba(255, 255, 255, 0.025) 100%
+  );
+
+  border: none;
+}
+
+/*.agenda li.realizado {
+  background: linear-gradient(
+    90deg,
+    rgba(34, 197, 94, 0.24) 0%,
+    rgba(34, 197, 94, 0.12) 35%,
+    rgba(255, 255, 255, 0.025) 100%
+  );
+
+  border-color: rgba(34, 197, 94, 0.24);
+  border-left-color: #22c55e;
+
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}*/
+
+.agenda li.bloqueado {
+  opacity: 0.3;
+  min-height: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.20) 0%,
+    rgba(148, 163, 184, 0.10) 35%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+
+    border: none;
+
+}
+
+.agenda li.encaixe {
+  min-height: 10px;
+  opacity: 0.4;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 58, 237, 0.12) 0%,
+    rgba(124, 58, 237, 0.05) 35%,
+    rgba(255, 255, 255, 0.018) 100%
+  );
+
+  border: none;
+
+}
+
+.texto-encaixe {
+  font-size: 11px;;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.4;
+  font-weight: 600;
+  
+}
+
+/* Colunas dos cards */
 .coluna-esquerda {
   width: 50px;
   font-weight: bold;
 }
 
 .hora {
+  color: var(--text-main);
   font-size: 16px;
 }
 
-/* Conteúdo central: nome e serviço */
 .conteudo-centro {
   flex: 1;
   text-align: center;
@@ -175,616 +294,60 @@ li[onclick] {
 }
 
 .nome {
+  color: var(--text-main);
   font-weight: bold;
   font-size: 16px;
 }
 
 .servico {
+  color: var(--text-muted);
   font-size: 14px;
 }
 
-/* Coluna da direita: ícone e valor */
 .coluna-direita {
   width: 55px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
   gap: 4px;
   text-align: right;
+}
+
+.coluna-direita:empty {
+  display: none;
 }
 
 .coluna-direita .icone {
   font-size: 18px;
 }
 
-.coluna-direita .valor {
+.coluna-direita .valor,
+.valor {
+  color: var(--text-main);
   font-weight: bold;
   font-size: 16px;
 }
 
-/* Oculta a coluna se não houver conteúdo */
-.coluna-direita:empty {
-  display: none;
-}
-
-/* ===== BOTÕES FLUTUANTES (⬅️ e ➡️) ===== */
-.botao-flutuante {
-  position: fixed;
-  bottom: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: none;
-  background-color: yellow;
-  box-shadow: none;
-  cursor: pointer;
-  z-index: 10;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.botao-flutuante img {
-  width: 130%;
-  height: 130%;
-  object-fit: contain;
-}
-
-#btnAnterior {
-  left: 20px;
-}
-
-#btnProximo {
-  right: 20px;
-}
-
-.botoes-topo-agenda {
-  display: flex;
-  align-items: center;
-  padding: 10px 16px;
-  position: relative;
-}
-
-.botao-topo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 12px;
-  color: #000;
-  cursor: pointer;
-  width: 70px;
-  text-align: center;
-}
-
-.botao-topo img {
-  width: 18px;
-  height: 18px;
-  margin-bottom: 4px;
-}
-
-#data-agenda {
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
-  color: #000;
-  flex: 1;
-}
-
-/* Modal fundo escuro */
-.modal-calendario {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-/* Caixa do calendário */
-.calendario-container {
-  background: #fff;
-  border-radius: 10px;
-  padding: 16px;
-  width: 90%;
-  max-width: 350px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Topo com nome do mês e botões */
-.calendario-topo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.cal-btn {
-  background-color: yellow;
-  border: none;
-  padding: 6px 12px;
-  font-weight: bold;
-  font-size: 18px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.cal-mes {
-  font-size: 16px;
-  font-weight: bold;
-  color: #000;
-}
-
-/* Corpo com dias */
-.calendario-corpo {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-}
-
-.calendario-corpo div {
-  text-align: center;
-  padding: 10px 0;
-  background-color: #eee;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.calendario-corpo div:hover {
-  background-color: yellow;
-}
-
-.calendario-semana {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: #333;
-}
-
-.modal-opcoes {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.modal-opcoes.ativo {
-  display: flex;
-}
-
-.caixa-opcoes {
-  background-color: white;
-  border-radius: 15px;
-  padding: 25px;
-  width: 80%;
-  max-width: 320px;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-}
-
-.titulo-horario {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.botoes-opcoes {
-  display: flex;
-  justify-content: space-around;
-  gap: 10px;
-}
-
-.botao-verde {
-  background-color: #00b050;
-  font-size: 14px;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 20px;
-  flex: 1;
-}
-
-.botao-vermelho {
-  background-color: #e74c3c;
-  font-size: 14px;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 20px;
-  flex: 1;
-}
-
-/* Modal de bloqueio/desbloqueio */
-#modal-bloqueio {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-#modal-bloqueio.ativo {
-  display: flex;
-}
-
-#modal-bloqueio .modal-caixa {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 320px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
-
-#modal-bloqueio .modal-caixa h2 {
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-
-#modal-bloqueio .checkbox-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
-  justify-content: center;
-  font-size: 16px;
-}
-
-#modal-bloqueio .botoes-modal {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.botoes-modal {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.btn-verde {
-  background-color: #2ecc71;
-
-  color: white;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.btn-transparente {
-  background-color: transparent;
-  color: #333;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-#modal-agendar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-#modal-agendar.ativo {
-  display: flex;
-}
-
-.modal-caixa {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 320px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
-
-.checkbox-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  padding: 10px;
-}
-
-.checkbox-container label {
-  flex: 1 1 45%;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-
-#input-nome-cliente {
-  width: 100%;
-  flex-wrap: wrap;
-  font-size: 16px;
-  padding: 5px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-/* Modal de Agendamento - Visual Padrão */
-#modal-agendamento.modal-fundo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-#modal-agendamento.ativo {
-  display: flex;
-}
-
-#modal-agendamento .modal-caixa {
-  background-color: white;
-  border-radius: 15px;
-  padding: 25px;
-  width: 80%;
-  max-width: 320px;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-}
-
-/* Título do horário */
-#modal-agendamento h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-/* Descrição com nome e serviço */
-#descricao-agendamento {
-  text-align: center;
-  font-weight: bold;
-  font-size: 17px;
-  color: #000;
-  margin-bottom: 20px;
-}
-
-/* Botões */
-.botoes-modal button {
-  padding: 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-/* Botão Editar (cinza claro) */
-#btnEditar {
-  background-color: #f0f0f0;
-  color: #000;
-  font-weight: bold;
-  width: 100%;
-}
-
-/* Container para dois botões lado a lado (se não usar flex direto no HTML) */
-.botoes-modal-duplo {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-vermelho {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-}
-
-/* Fundo escuro por trás do modal */
-#modal-cancelar {
-  position: fixed;
-  font-size: 14px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  /* Inicialmente oculto */
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-/* Quando ativo, exibe o modal */
-#modal-cancelar.ativo {
-  display: flex;
-}
-
-/* Caixa branca central do modal */
-#modal-cancelar .modal-caixa {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 24px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-#modal-realizado {
-  position: fixed;
-  font-size: 18px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  /* Inicialmente oculto */
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-#modal-realizado.ativo {
-  display: flex;
-}
-
-#modal-realizado .modal-caixa {
-  width: 90%;
-  max-width: 300px;
-}
-
-#modal-realizado h2 {
-  margin-bottom: 10px;
-}
-
-#modal-realizado #info-realizado {
-  margin-bottom: 10px;
-  line-height: 1.4;
-}
-
-.grupo-radio {
-  margin-bottom: 15px;
-}
-
-.valorNaoPago {
-  display: none;
-  font-size: 18px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.valorNaoPago input {
-  margin-left: 10px;
-  width: 95px;
-  text-align: center;
-  font-size: 18px;
-}
-
-.grupo-checkbox {
-  margin-left: 30px;
-  margin-bottom: 15px;
-  margin-right: 30px;
-}
-
-/* Cada linha com: [checkbox] [label] ................. [input] */
-
-.linha-pagamento label {
-  justify-content: left;
-  width: 150px;
-  display: flex;
-  gap: 10px;
-  margin-bottom: 5px;
-}
-
-.linha-pagamento {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-
-/* Input de valor à direita */
-.valor-forma-pagamento {
-  font-size: 18px;
-  width: 90px;
-  text-align: center;
-}
-
-#modal-agendamento-realizado {
-  position: fixed;
-  font-size: 16px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-#modal-agendamento-realizado.ativo {
-  display: flex;
-}
-
-#modal-agendamento-realizado .modal-caixa {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 320px;
-  text-align: center;
-}
-
-#modal-agendamento-realizado p {
-  margin-bottom: 10px;
-}
-
-#modal-confirmar-exclusao {
-  position: fixed;
-  font-size: 15px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-#modal-confirmar-exclusao.ativo {
-  display: flex;
-}
+/* ================================
+   RESUMO DO DIA
+================================ */
 
 #resumoDia {
   position: fixed;
-  bottom: 25px;
   left: 50%;
+  bottom: 96px;
   transform: translateX(-50%);
-  background-color: #000;
-  color: yellow;
+  z-index: 1000;
   padding: 6px 14px;
   border-radius: 25px;
+  border: 1px solid var(--border-card);
+  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
+  color: var(--text-main);
   display: flex;
   gap: 14px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   font-size: 10px;
-  z-index: 1000;
 }
 
 #resumoDia .info {
@@ -794,35 +357,294 @@ li[onclick] {
 }
 
 #resumoDia strong {
+  color: var(--purple-soft);
   font-size: 13px;
   margin-top: 2px;
 }
 
-/*MODAL ENCAMINHAR MENSAGEM WPP*/
-.modal-overlay {
+/* ================================
+   MODAIS - ESTRUTURA BASE
+================================ */
+
+.modal-fundo,
+.modal-calendario,
+.modal-opcoes,
+.modal-overlay,
+#modal-bloqueio,
+#modal-agendar,
+#modal-agendamento,
+#modal-cancelar,
+#modal-realizado,
+#modal-agendamento-realizado,
+#modal-confirmar-exclusao {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
+  inset: 0;
+  display: none;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.68);
+  padding: 16px;
+}
+
+.modal-overlay {
+  display: flex;
+}
+
+.modal-calendario {
+  z-index: 1000;
+}
+
+.modal-opcoes {
   z-index: 999;
 }
 
-.modal-caixa {
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  width: 90vw;
-  max-width: 600px;
-  text-align: center;
+.modal-opcoes.ativo,
+#modal-bloqueio.ativo,
+#modal-agendar.ativo,
+#modal-agendamento.ativo,
+#modal-cancelar.ativo,
+#modal-realizado.ativo,
+#modal-agendamento-realizado.ativo,
+#modal-confirmar-exclusao.ativo {
+  display: flex;
 }
+
+.modal-caixa,
+.caixa-opcoes,
+.calendario-container {
+  width: 90%;
+  max-width: 360px;
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid var(--border-card);
+  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
+  color: var(--text-main);
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.modal-caixa h2,
+.caixa-opcoes h2,
+.titulo-horario,
+#modal-agendamento h2,
+#modal-bloqueio h2 {
+  color: var(--text-main);
+  margin-bottom: 14px;
+}
+
+#descricao-agendamento {
+  color: var(--text-main);
+  text-align: center;
+  font-weight: bold;
+  font-size: 17px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+/* ================================
+   MODAL CALENDÁRIO
+================================ */
+
+.calendario-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.cal-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--border-card);
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.cal-mes {
+  color: var(--text-main);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.calendario-semana,
+.calendario-corpo {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendario-semana {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.calendario-corpo div {
+  min-height: 38px;
+  border-radius: 12px;
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.calendario-corpo div:hover {
+  background: var(--purple-main);
+  color: #fff;
+}
+
+/* ================================
+   FORMULÁRIOS / CHECKBOXES
+================================ */
+
+input,
+select,
+textarea {
+  background: var(--bg-card-light);
+  color: var(--text-main);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+
+#input-nome-cliente,
+#inputNomeRealizado {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.checkbox-container {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.checkbox-container label {
+  flex: 1 1 45%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.grupo-radio,
+.grupo-checkbox {
+  margin-bottom: 15px;
+}
+
+.grupo-checkbox {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.valorNaoPago {
+  display: none;
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.valorNaoPago input {
+  width: 95px;
+  margin-left: 10px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Formas de pagamento no modal Realizado */
+.linha-pagamento {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0 5px;
+}
+
+.linha-pagamento label {
+  width: 150px;
+  display: flex;
+  justify-content: left;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.valor-forma-pagamento {
+  width: 90px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* ================================
+   BOTÕES
+================================ */
+
+.botoes-modal,
+.botoes-opcoes,
+.linha-botoes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.botoes-modal.coluna {
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.botoes-modal button,
+.botoes-opcoes button,
+.linha-botoes button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.botao-verde,
+.btn-verde {
+  background: #2ecc71;
+  color: #fff;
+  font-weight: bold;
+}
+
+.botao-vermelho,
+.btn-vermelho {
+  background: #e74c3c;
+  color: #fff;
+  font-weight: bold;
+}
+
+.btn-transparente {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+}
+
+/* ================================
+   MODAL WHATSAPP
+================================ */
 
 .modal-titulo {
   margin-bottom: 10px;
+}
+
+.selecioneDias {
+  margin-bottom: 10px;
+  color: var(--text-muted);
 }
 
 .semana-dias {
@@ -833,42 +655,61 @@ li[onclick] {
 }
 
 .dia-caixa {
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid var(--border-card);
+  background: var(--bg-card-light);
+  color: var(--text-main);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  background-color: #f9f9f9;
   font-size: 13px;
   text-align: center;
+  cursor: pointer;
 }
 
 .dia-caixa span {
   display: block;
+  margin-bottom: 4px;
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: bold;
-  margin-bottom: 4px;
   text-transform: lowercase;
-  color: #555;
 }
 
 .dia-caixa.selecionado {
-  background-color: #ffd700;
-  border-color: #d4a800;
+  background: var(--purple-main);
+  color: #fff;
+  border-color: rgba(167, 139, 250, 0.55);
 }
 
-.botoes-modal {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
+/* ================================
+   RESPONSIVO
+================================ */
 
-.botoes-modal button {
-  flex: 1;
-}
-.selecioneDias {
-  margin-bottom: 10px;
-  color: rgb(125, 125, 125);
+@media (max-width: 380px) {
+  .topo-agenda-v2 {
+    padding-inline: 14px;
+  }
+
+  .semana-agenda-v2 {
+    padding-inline: 12px;
+  }
+
+  .dia-semana-card {
+    height: 58px;
+    border-radius: 15px;
+  }
+
+  .dia-semana-card .dia-nome {
+    font-size: 10px;
+  }
+
+  .dia-semana-card .dia-numero {
+    font-size: 20px;
+  }
+
+  .agenda {
+    padding-inline: 10px;
+  }
 }

@@ -1,8 +1,6 @@
 window.onload = () => {
   const listaHorarios = document.getElementById("lista-horarios");
   const dataAgenda = document.getElementById("data-agenda");
-  const btnAnterior = document.getElementById("btnAnterior");
-  const btnProximo = document.getElementById("btnProximo");
 
   // 🔧 ADICIONADO – Referências ao modal de opções
   const modalOpcoes = document.getElementById("modal-opcoes");
@@ -70,6 +68,179 @@ window.onload = () => {
 
   function capitalize(texto) {
     return texto.charAt(0).toUpperCase() + texto.slice(1);
+  }
+
+  function renderizarSemana() {
+    const tituloMes = document.getElementById("mesSemanaAgenda");
+
+    const semanaAnterior = document.querySelector(
+      '.dias-semana-agenda[data-semana="anterior"]',
+    );
+    const semanaAtual = document.querySelector(
+      '.dias-semana-agenda[data-semana="atual"]',
+    );
+    const semanaProxima = document.querySelector(
+      '.dias-semana-agenda[data-semana="proxima"]',
+    );
+
+    if (!tituloMes || !semanaAnterior || !semanaAtual || !semanaProxima) return;
+
+    const domingoAtual = getDomingoSemana(dataAtual);
+
+    const domingoAnterior = new Date(domingoAtual);
+    domingoAnterior.setDate(domingoAtual.getDate() - 7);
+
+    const domingoProximo = new Date(domingoAtual);
+    domingoProximo.setDate(domingoAtual.getDate() + 7);
+
+    preencherSemana(semanaAnterior, domingoAnterior);
+    preencherSemana(semanaAtual, domingoAtual);
+    preencherSemana(semanaProxima, domingoProximo);
+
+    tituloMes.textContent = formatarMesAno(domingoAtual);
+  }
+
+  function preencherSemana(container, domingoBase) {
+    container.innerHTML = "";
+
+    const nomesDias = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
+
+    for (let i = 0; i < 7; i++) {
+      const dataDia = new Date(domingoBase);
+      dataDia.setDate(domingoBase.getDate() + i);
+
+      const card = document.createElement("div");
+      card.className = "dia-semana-card";
+
+      if (mesmaData(dataDia, dataAtual)) {
+        card.classList.add("ativo");
+      }
+
+      card.innerHTML = `
+      <span class="dia-nome">${nomesDias[i]}</span>
+      <span class="dia-numero">${dataDia.getDate()}</span>
+    `;
+
+      card.addEventListener("click", () => {
+        dataAtual = new Date(dataDia);
+        renderizarHorarios();
+        renderizarSemana();
+        centralizarCarrosselSemana();
+        verificarSeMostrarBotaoHoje();
+      });
+
+      container.appendChild(card);
+    }
+  }
+
+  function getDomingoSemana(data) {
+    const domingo = new Date(data);
+    domingo.setDate(data.getDate() - data.getDay());
+    return domingo;
+  }
+
+  function mesmaData(a, b) {
+    return (
+      a.getDate() === b.getDate() &&
+      a.getMonth() === b.getMonth() &&
+      a.getFullYear() === b.getFullYear()
+    );
+  }
+
+  function formatarMesAno(data) {
+    const meses = [
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
+    ];
+
+    return `${meses[data.getMonth()]} ${data.getFullYear()}`;
+  }
+
+  function centralizarCarrosselSemana() {
+    const track = document.getElementById("trackSemanaAgenda");
+
+    if (!track) return;
+
+    track.style.transition = "none";
+    track.style.transform = "translateX(-33.3333%)";
+
+    track.offsetWidth;
+
+    track.style.transition = "";
+  }
+
+  function configurarSwipeSemana() {
+    const track = document.getElementById("trackSemanaAgenda");
+
+    if (!track) return;
+
+    let inicioX = 0;
+    let fimX = 0;
+
+    track.addEventListener("touchstart", (e) => {
+      inicioX = e.touches[0].clientX;
+
+      track.style.transition = "none";
+    });
+
+    track.addEventListener("touchmove", (e) => {
+      const atualX = e.touches[0].clientX;
+      const distancia = atualX - inicioX;
+
+      track.style.transform = `translateX(calc(-33.3333% + ${distancia}px))`;
+    });
+
+    track.addEventListener("touchend", (e) => {
+      fimX = e.changedTouches[0].clientX;
+
+      const distancia = fimX - inicioX;
+
+      if (Math.abs(distancia) < 50) {
+        track.style.transition = "transform 0.22s ease";
+        track.style.transform = "translateX(-33.3333%)";
+        return;
+      }
+
+      track.style.transition = "transform 0.22s ease";
+
+      if (distancia < 0) {
+        // próxima semana
+        track.style.transform = "translateX(-66.6666%)";
+
+        setTimeout(() => {
+          dataAtual.setDate(dataAtual.getDate() + 7);
+
+          renderizarHorarios();
+          renderizarSemana();
+          verificarSeMostrarBotaoHoje();
+
+          centralizarCarrosselSemana();
+        }, 220);
+      } else {
+        // semana anterior
+        track.style.transform = "translateX(0%)";
+
+        setTimeout(() => {
+          dataAtual.setDate(dataAtual.getDate() - 7);
+
+          renderizarHorarios();
+          renderizarSemana();
+          verificarSeMostrarBotaoHoje();
+
+          centralizarCarrosselSemana();
+        }, 220);
+      }
+    });
   }
 
   function getChaveData(data) {
@@ -175,7 +346,9 @@ window.onload = () => {
 ${
   item.status === "bloqueado"
     ? `<span class="nome">${item.nomeBloqueio || "Bloqueado"}</span>`
-    : `
+    : item.status === "encaixe"
+      ? `<span class="texto-encaixe">encaixe</span>`
+      : `
 <span class="nome">${item.cliente || ""}</span>
 <span class="servico">${item.servico || ""}</span>
 `
@@ -185,7 +358,7 @@ ${
 <div class="coluna-direita">
 ${
   item.status === "realizado"
-    ? `<span class="icone">${item.pago ? "✅" : "⚠️"}</span>`
+    ? `<span class="icone">${item.pago ? "" : "⚠️"}</span>`
     : ""
 }
 ${
@@ -241,21 +414,11 @@ ${
       });
   }
 
-  // 📅 Botões para mudar o dia
-  btnAnterior.addEventListener("click", () => {
-    dataAtual.setDate(dataAtual.getDate() - 1);
-    renderizarHorarios();
-    verificarSeMostrarBotaoHoje();
-  });
-
-  btnProximo.addEventListener("click", () => {
-    dataAtual.setDate(dataAtual.getDate() + 1);
-    renderizarHorarios();
-    verificarSeMostrarBotaoHoje();
-  });
-
   // 🚀 Inicial
   renderizarHorarios();
+  renderizarSemana();
+  configurarSwipeSemana();
+
   const btnVoltarHoje = document.getElementById("btnVoltarHoje");
 
   function verificarSeMostrarBotaoHoje() {
@@ -271,8 +434,10 @@ ${
   btnVoltarHoje.addEventListener("click", () => {
     dataAtual = new Date();
     renderizarHorarios();
+    renderizarSemana();
     verificarSeMostrarBotaoHoje();
   });
+
   verificarSeMostrarBotaoHoje();
 
   // =================== CALENDÁRIO ===================
@@ -373,6 +538,7 @@ ${
       diaElemento.addEventListener("click", () => {
         dataAtual.setFullYear(ano, mes, dia);
         renderizarHorarios();
+        renderizarSemana();
         modalCalendario.style.display = "none";
         verificarSeMostrarBotaoHoje();
       });

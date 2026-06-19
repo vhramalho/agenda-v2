@@ -44,9 +44,9 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
-  border: 1px solid var(--border-card);
+  
   border-radius: 18px;
-  padding: 5px;
+  padding: 1px;
   gap: 5px;
   margin-bottom: 16px;
 }
@@ -74,7 +74,6 @@
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
-  border: 1px solid var(--border-card);
   border-radius: 18px;
   padding: 12px 14px;
   margin-bottom: 16px;
@@ -115,7 +114,6 @@
 .card-recebimentos,
 .mini-card {
   background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
-  border: 1px solid var(--border-card);
   border-radius: 22px;
   padding: 18px;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
@@ -417,11 +415,9 @@
   margin-left: auto;
   border-radius: 50%;
   background: var(--bg-card-light);
-  border: 1px solid var(--border-card);
   position: relative;
   flex-shrink: 0;
   filter: saturate(1.15) brightness(1.08);
-  box-shadow: 0 0 15px rgba(124, 58, 237, 0.35);
 }
 
 .grafico-pizza-recebimentos::after {
@@ -430,7 +426,6 @@
   inset: 22px;
   border-radius: 50%;
   background: var(--bg-card);
-  border: 1px solid var(--border-card);
 }
 
 /* ================================

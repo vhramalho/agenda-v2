@@ -1,42 +1,107 @@
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Agenda Victor</title>
-    <link rel="icon" type="image/png" href="img/favicon.png" />
-  </head>
+<nav class="menu-inferior" id="menuInferior">
+  <a href="index.html" class="menu-item" data-page="index">
+    <span class="menu-icone">X</span>
+    <span class="menu-texto">Agenda</span>
+  </a>
 
-  <body>
-    <!-- Botão de menu -->
-    <button id="botao-menu" class="botao-menu">☰</button>
-    <h1 id="titulo-pagina"></h1>
+  <a href="relatorio.html" class="menu-item" data-page="relatorio">
+    <span class="menu-icone">X</span>
+    <span class="menu-texto">Relatório</span>
+  </a>
 
-    <!-- Botão WhatsApp -->
-    <button id="botao-whatsapp" class="botao-whatsapp">
-      <img src="img/whatsapp-Icone.jpg" alt="WhatsApp" />
+  <a href="pgtoPedentes.html" class="menu-item" data-page="pgtoPedentes">
+    <span class="menu-icone">X</span>
+    <span class="menu-texto">Pendentes</span>
+  </a>
+
+  <a href="clientes.html" class="menu-item" data-page="clientes">
+    <span class="menu-icone">X</span>
+    <span class="menu-texto">Clientes</span>
+  </a>
+
+  <button type="button" class="menu-item menu-botao" id="btnMais">
+    <span class="menu-icone">X</span>
+    <span class="menu-texto">Mais</span>
+  </button>
+</nav>
+
+<div class="menu-mais-overlay" id="menuMaisOverlay"></div>
+
+<section class="menu-mais" id="menuMais">
+  <div class="menu-mais-alca"></div>
+
+  <div class="menu-mais-perfil">
+    <div class="menu-mais-avatar">X</div>
+
+    <div>
+      <strong>Victor Henrique</strong>
+      <span>Primos Barbearia</span>
+    </div>
+  </div>
+
+  <div class="menu-mais-plano">
+    <span>Plano atual</span>
+    <strong>Gratuito</strong>
+  </div>
+
+  <div class="menu-mais-grupo">
+    <a href="perfil.html" class="menu-mais-link">
+      <span>X</span>
+      Meu perfil
+    </a>
+
+    <a href="servicos.html" class="menu-mais-link">
+      <span>X</span>
+      Serviços
+    </a>
+
+    <a href="pagamento.html" class="menu-mais-link">
+      <span>X</span>
+      Formas de pagamento
+    </a>
+
+    <a href="intervalos.html" class="menu-mais-link">
+      <span>X</span>
+      Intervalos e bloqueios
+    </a>
+
+    <a href="whatsapp.html" class="menu-mais-link">
+      <span>X</span>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="menu-mais-grupo">
+    <a href="configuracoes.html" class="menu-mais-link">
+      <span>X</span>
+      Configurações
+    </a>
+
+    <a href="assinatura.html" class="menu-mais-link">
+      <span>X</span>
+      Assinatura
+    </a>
+
+    <a href="backup.html" class="menu-mais-link">
+      <span>X</span>
+      Backup / Exportar dados
+    </a>
+
+    <a href="ajuda.html" class="menu-mais-link">
+      <span>X</span>
+      Ajuda / Suporte
+    </a>
+  </div>
+
+  <div class="menu-mais-grupo">
+    <button type="button" class="menu-mais-link" id="btnAtualizacao">
+      <span>X</span>
+      Verificar atualização
     </button>
 
-    <!-- Fundo escurecido -->
-    <div id="fundo-escuro" class="fundo-escuro"></div>
-
-    <!-- Menu lateral -->
-    <aside id="menu-lateral" class="menu-lateral">
-      <ul>
-        <li><a href="servicos.html">Serviços</a></li>
-        <li><a href="pagamento.html">Forma de Pagamento</a></li>
-        <li><a href="pgtoPedentes.html">Pagamentos Pendentes</a></li>
-        <li><a href="relatorio.html">Relatório</a></li>
-        <li><a href="intervalos.html">Intervalos</a></li>
-        <li><a href="whatsapp.html">WhatsApp</a></li>
-        <li><a href="config.html">Configurações</a></li>
-        
-        <li>
-          <button id="btnAtualizacao" class="btn-atualizacao">
-            Verificar Atualizações
-          </button>
-        </li>
-      </ul>
-    </aside>
-  </body>
-</html>
+    <button type="button" class="menu-mais-link menu-mais-sair" id="btnLogout">
+      <span>X</span>
+      Sair da conta
+    </button>
+  </div>
+</section>
