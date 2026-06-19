@@ -1,0 +1,264 @@
+/* ================================
+   PÁGINA
+================================ */
+
+.pagina-clientes {
+  padding: 22px 16px 32px;
+}
+
+/* ================================
+   TOPO
+================================ */
+
+.clientes-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.botao-voltar-clientes,
+.botao-add-cliente {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid var(--border-card);
+  background: var(--bg-card);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.botao-add-cliente {
+  color: var(--purple-light);
+  font-weight: bold;
+}
+
+.clientes-topo h1 {
+  font-size: 26px;
+}
+
+/* ================================
+   RESUMO
+================================ */
+
+.grade-resumo-clientes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.mini-card-cliente {
+  background: linear-gradient(
+    180deg,
+    var(--bg-card-light),
+    var(--bg-card)
+  );
+
+  border-radius: 16px;
+
+  padding: 10px 6px;
+
+  min-height: 68px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.mini-card-cliente span {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.mini-card-cliente strong {
+  font-size: 13px;
+  margin-top: 4px;
+  color: var(--text-main);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ================================
+   BUSCA
+================================ */
+
+.busca-clientes {
+  margin-bottom: 16px;
+}
+
+.busca-clientes input {
+  width: 100%;
+
+  height: 48px;
+
+  padding: 0 14px;
+
+  border-radius: 16px;
+
+  border: 1px solid var(--border-card);
+
+  background: linear-gradient(
+    180deg,
+    var(--bg-card-light),
+    var(--bg-card)
+  );
+
+  color: var(--text-main);
+
+  font-size: 15px;
+}
+
+/* ================================
+   LISTA
+================================ */
+
+.lista-clientes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-cliente {
+  background: linear-gradient(
+    180deg,
+    var(--bg-card-light),
+    var(--bg-card)
+  );
+
+  border-radius: 18px;
+
+  padding: 14px;
+
+  cursor: pointer;
+}
+
+.card-cliente-nome {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.card-cliente-info {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ================================
+   MODAL
+================================ */
+
+.modal-cliente {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.7);
+
+  padding: 16px;
+
+  z-index: 9999;
+}
+
+.modal-cliente.ativo {
+  display: flex;
+}
+
+.modal-cliente-caixa {
+  width: 100%;
+  max-width: 360px;
+
+  background: linear-gradient(
+    180deg,
+    var(--bg-card-light),
+    var(--bg-card)
+  );
+
+  border-radius: 20px;
+
+  padding: 20px;
+}
+
+.modal-cliente-caixa h2 {
+  margin-bottom: 16px;
+}
+
+.modal-cliente-caixa input,
+.modal-cliente-caixa textarea {
+  width: 100%;
+
+  margin-bottom: 12px;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--border-card);
+
+  background: var(--bg-card-light);
+
+  color: var(--text-main);
+}
+
+.modal-cliente-caixa textarea {
+  resize: none;
+  min-height: 90px;
+}
+
+.linha-aniversario {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: 8px;
+}
+
+.botoes-modal-cliente {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-cliente-neutro,
+.btn-cliente-principal {
+  flex: 1;
+
+  height: 44px;
+
+  border: none;
+
+  border-radius: 12px;
+}
+
+.btn-cliente-neutro {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.btn-cliente-principal {
+  background: var(--purple-main);
+  color: white;
+  font-weight: bold;
+}
+
+.mini-card-cliente {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.mini-card-cliente.ativo {
+  background: var(--purple-main);
+}
+
+.mini-card-cliente.ativo span,
+.mini-card-cliente.ativo strong {
+  color: white;
+}

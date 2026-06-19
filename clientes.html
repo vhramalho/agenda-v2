@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clientes</title>
+
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/clientes.css" />
+  </head>
+
+  <body>
+    <main class="pagina-clientes">
+      <section class="clientes-topo">
+        <a href="index.html" class="botao-voltar-clientes">←</a>
+
+        <div>
+          <h1>Clientes</h1>
+        </div>
+
+        <button id="btnNovoCliente" class="botao-add-cliente" type="button">
+          +
+        </button>
+      </section>
+
+      <section class="grade-resumo-clientes">
+        <article class="mini-card-cliente" id="cardTotalClientes">
+          <span>Total</span>
+          <strong id="totalClientes">0</strong>
+        </article>
+
+        <article class="mini-card-cliente" id="cardAniversariantes">
+          <span>Aniversariantes</span>
+          <strong id="totalAniversariantes">0</strong>
+        </article>
+
+        <article class="mini-card-cliente" id="cardClientesSumidos">
+          <span>Sumidos</span>
+          <strong id="totalClientesSumidos">0</strong>
+        </article>
+
+        <article class="mini-card-cliente" id="cardClienteDestaque">
+          <span>Destaque</span>
+          <strong id="clienteDestaque">-</strong>
+        </article>
+      </section>
+
+      <section class="busca-clientes">
+        <input
+          type="text"
+          id="inputBuscaCliente"
+          placeholder="Buscar cliente..."
+        />
+      </section>
+
+      <section class="lista-clientes-area">
+        <div id="listaClientes" class="lista-clientes">
+          <!-- Clientes inseridos pelo JavaScript -->
+        </div>
+      </section>
+    </main>
+
+    <div id="modalCliente" class="modal-cliente">
+      <div class="modal-cliente-caixa">
+        <h2 id="tituloModalCliente">Novo cliente</h2>
+
+        <input type="text" id="inputNomeCliente" placeholder="Nome" />
+
+        <input type="tel" id="inputTelefoneCliente" placeholder="Telefone" />
+
+        <div class="linha-aniversario">
+          <input
+            type="number"
+            id="inputDiaAniversario"
+            placeholder="Dia"
+            min="1"
+            max="31"
+          />
+
+          <input
+            type="number"
+            id="inputMesAniversario"
+            placeholder="Mês"
+            min="1"
+            max="12"
+          />
+
+          <input
+            type="number"
+            id="inputAnoAniversario"
+            placeholder="Ano opcional"
+          />
+        </div>
+
+        <textarea
+          id="inputObservacaoCliente"
+          placeholder="Observação opcional"
+        ></textarea>
+
+        <div class="botoes-modal-cliente">
+          <button id="btnCancelarCliente" class="btn-cliente-neutro" type="button">
+            Cancelar
+          </button>
+
+          <button id="btnSalvarCliente" class="btn-cliente-principal" type="button">
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="javaScript/clientes.js"></script>
+    <script src="javaScript/menu.js"></script>
+  </body>
+</html>

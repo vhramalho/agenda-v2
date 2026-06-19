@@ -443,6 +443,12 @@ ${
   // =================== CALENDÁRIO ===================
 
   const btnCalendario = document.getElementById("btnCalendario");
+  const btnWhatsapp = document.getElementById("btnWhatsapp");
+
+  btnWhatsapp?.addEventListener("click", () => {
+    abrirModalWhatsapp();
+  });
+  
   const modalCalendario = document.getElementById("modal-calendario");
   const calendarioCorpo = document.getElementById("calendarioCorpo");
   const mesAtualSpan = document.getElementById("mesAtual");

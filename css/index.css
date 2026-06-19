@@ -37,6 +37,12 @@ body {
   border-bottom: none;
 }
 
+.acoes-topo-v2 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .topo-agenda-v2 h1 {
   flex: 1;
   text-align: center;
@@ -58,7 +64,7 @@ body {
   cursor: pointer;
 }
 
-.botao-topo-v2 span:last-child {
+.botao-topo-v2 .texto-topo-v2 {
   display: none;
 }
 
