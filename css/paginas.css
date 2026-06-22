@@ -1,37 +1,23 @@
+/* =========================
+   PÁGINAS SECUNDÁRIAS
+========================= */
+
 .pagina-secundaria {
-  padding: 22px 16px 32px;
-  max-width: 720px;
+  max-width: var(--page-max);
   margin: 0 auto;
+  padding: 22px 16px 32px;
 }
 
-
+/* =========================
+   TOPO DAS PÁGINAS
+========================= */
 
 .topo-pagina {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 14px;
-  margin-bottom: 22px;
-}
-
-.botao-voltar-pagina,
-.acao-topo-pagina {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  border: 1px solid var(--border-card);
-  background: var(--bg-card);
-  color: var(--text-main);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-}
-
-.acao-topo-pagina {
-  opacity: 0;
-  pointer-events: none;
+  margin-bottom: 20px;
 }
 
 .topo-pagina > div {
@@ -39,15 +25,33 @@
 }
 
 .topo-pagina h1 {
-  font-size: 24px;
-  line-height: 1.15;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
 }
 
-.topo-pagina p {
-  margin-top: 4px;
-  color: var(--text-muted);
-  font-size: 13px;
+.topo-pagina-com-acao {
+  align-items: flex-start;
 }
+
+.topo-pagina-com-acao > div {
+  text-align: left;
+}
+
+.botao-topo-mais {
+  border: none;
+  background: transparent;
+  color: var(--purple-light);
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* =========================
+   LISTAS
+========================= */
 
 .lista-pagina {
   display: flex;
@@ -61,11 +65,10 @@
 .intervalo,
 .cartao-pagamento,
 .container-config {
-  background: linear-gradient(180deg, var(--bg-card-light), var(--bg-card));
-  border: 1px solid var(--border-card);
-  border-radius: 22px;
-  padding: 18px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  padding: 16px;
 }
 
 .servico,
@@ -74,25 +77,15 @@
 .cartao-pagamento {
   min-height: 62px;
   margin-bottom: 0;
-}
-
-.servico,
-.pagamento,
-.intervalo,
-.cartao-pagamento {
   cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    background-color 0.2s ease,
-    transform 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .servico:hover,
 .pagamento:hover,
 .intervalo:hover,
 .cartao-pagamento:hover {
-  background: var(--bg-card-light);
-  border-color: var(--purple-light);
+  border-color: rgba(139, 92, 246, 0.35);
 }
 
 .servico-nome,
@@ -111,6 +104,46 @@
 .linha-inferior {
   color: var(--text-muted);
 }
+
+/* =========================
+   LINHAS DE LISTA
+========================= */
+
+.linha-superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.linha-superior .data {
+  min-width: 58px;
+  text-align: left;
+}
+
+.linha-superior .cliente {
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.linha-superior .valor {
+  min-width: 80px;
+  text-align: right;
+}
+
+.linha-inferior {
+  margin-top: 8px;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+/* =========================
+   BOTÕES
+========================= */
 
 .botao-adicionar,
 .salvar {
@@ -134,6 +167,10 @@
 .salvar:hover {
   background: var(--purple-light);
 }
+
+/* =========================
+   FORMULÁRIOS / CONFIG
+========================= */
 
 .container-config {
   max-width: none;
@@ -172,63 +209,10 @@
   color: var(--text-muted);
 }
 
+/* =========================
+   WHATSAPP
+========================= */
+
 .botoes-whatsapp {
   margin-top: 18px;
-}
-
-.linha-superior {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-}
-
-.linha-superior .data {
-  min-width: 58px;
-  text-align: left;
-}
-
-.linha-superior .cliente {
-  flex: 1;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.linha-superior .valor {
-  min-width: 80px;
-  text-align: right;
-}
-
-.linha-inferior {
-  margin-top: 8px;
-  font-size: 13px;
-  word-break: break-word;
-}
-
-
-.topo-pagina-com-acao {
-  align-items: flex-start;
-}
-
-.topo-pagina-com-acao > div {
-  text-align: left;
-}
-
-.botao-topo-mais {
-  border: none;
-  background: transparent;
-  color: #8b5cf6;
-
-  font-size: 42px;
-  font-weight: 300;
-  line-height: 1;
-
-  padding: 0;
-  cursor: pointer;
-}
-.botao-topo-mais:active {
-  transform: scale(0.94);
 }

@@ -19,6 +19,7 @@ function marcarPaginaAtiva() {
     "index.html": "index",
     "relatorio.html": "relatorio",
     "pgtoPedentes.html": "pgtoPedentes",
+    "clientes.html": "clientes",
   };
 
   const paginaAtual = mapaPaginas[nomePagina];

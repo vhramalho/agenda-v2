@@ -2,136 +2,157 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <meta name="theme-color" content="#060d15" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <title>Relatórios</title>
 
     <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/paginas.css" />
     <link rel="stylesheet" href="css/relatorio.css" />
   </head>
 
   <body>
-    <main class="pagina-relatorio">
+    <main class="relatorio-page">
+      <!-- TOPO -->
       <section class="relatorio-topo">
-        <a href="index.html" class="botao-voltar-relatorio">←</a>
+        <h1>Relatórios</h1>
 
-        <div>
-          <h1>Relatórios</h1>
-        </div>
-
-        <button id="btnCalendario" class="botao-calendario-relatorio">
+        <button
+          id="btnCalendario"
+          class="relatorio-calendario"
+          type="button"
+          aria-label="Abrir calendário"
+        >
           📅
         </button>
       </section>
 
-      <section class="abas-periodo">
-        <button class="aba-periodo ativa" data-periodo="dia">Dia</button>
-        <button class="aba-periodo" data-periodo="semana">Semana</button>
-        <button class="aba-periodo" data-periodo="mes">Mês</button>
-        <button class="aba-periodo" data-periodo="ano">Ano</button>
+      <!-- ABAS -->
+      <section class="relatorio-abas">
+        <button class="aba-periodo ativa" data-periodo="dia" type="button">
+          Dia
+        </button>
+
+        <button class="aba-periodo" data-periodo="semana" type="button">
+          Semana
+        </button>
+
+        <button class="aba-periodo" data-periodo="mes" type="button">
+          Mês
+        </button>
+
+        <button class="aba-periodo" data-periodo="ano" type="button">
+          Ano
+        </button>
       </section>
 
+      <!-- PERÍODO SELECIONADO -->
       <section class="periodo-selecionado">
-        <button id="btnPeriodoAnterior" class="btn-periodo">‹</button>
+        <button id="btnPeriodoAnterior" class="btn-periodo" type="button">
+          ‹
+        </button>
 
         <div class="info-periodo">
           <strong id="textoPeriodoSelecionado">Hoje</strong>
           <span id="subtituloPeriodo"></span>
         </div>
 
-        <button id="btnPeriodoSeguinte" class="btn-periodo">›</button>
+        <button id="btnPeriodoSeguinte" class="btn-periodo" type="button">
+          ›
+        </button>
       </section>
 
-      <section class="card-grafico">
-        <div class="card-titulo">
+      <!-- FATURAMENTO -->
+      <section class="card-relatorio card-faturamento">
+        <div class="faturamento-topo">
           <div>
-            <span>Faturamento</span>
-            <h2 id="faturamentoPeriodo">R$ 0,00</h2>
-            <span id="variacaoFaturamento" class="variacao-card"></span>
+            <span class="card-label">Faturamento</span>
+
+            <strong id="faturamentoPeriodo" class="valor-principal">
+              R$ 0,00
+            </strong>
+
+            <p id="variacaoFaturamento" class="variacao-card"></p>
           </div>
         </div>
 
-        <div id="graficoFaturamento" class="grafico-faturamento"></div>
+        <div class="grafico-area">
+          <div class="linha-grid l1"></div>
+          <div class="linha-grid l2"></div>
+          <div class="linha-grid l3"></div>
+          <div class="linha-grid l4"></div>
 
-        <div
-          id="valorSelecionadoGrafico"
-          class="valor-selecionado-grafico"
-        ></div>
-      </section>
-
-      <section class="grade-kpis principal-kpis">
-        <article class="mini-card">
-          <span>Atendimentos</span>
-          <strong id="totalAtendimentos">0</strong>
-          <span id="variacaoAtendimentos" class="variacao-card"></span>
-        </article>
-
-        <article class="mini-card">
-          <span>Ticket médio</span>
-          <strong id="ticketMedio">R$ 0,00</strong>
-          <span id="variacaoTicketMedio" class="variacao-card"></span>
-        </article>
-
-        <article class="mini-card">
-          <span id="labelDiasAtendidos">Dias atendidos</span>
-          <strong id="diasAtendidos">0</strong>
-          <span id="variacaoDiasAtendidos" class="variacao-card"></span>
-        </article>
-
-        <article class="mini-card">
-          <span id="labelMediaPeriodo">Média por dia</span>
-          <strong id="mediaPeriodo">R$ 0,00</strong>
-          <span id="variacaoMediaPeriodo" class="variacao-card"></span>
-        </article>
-      </section>
-
-      <section class="grade-kpis">
-        <article class="mini-card">
-          <span>Taxa cartão</span>
-          <strong id="taxaCartao">R$ 0,00</strong>
-        </article>
-
-        <article class="mini-card">
-          <span>Pendente</span>
-          <strong id="valorPendente">R$ 0,00</strong>
-        </article>
-      </section>
-
-      <article class="card-recebimentos">
-        <div class="card-titulo">
-          <span>Recebimentos</span>
-        </div>
-
-        <div class="recebimentos-layout">
-          <div id="recebimentoDetalhado" class="recebimentos-lista">
-            <!-- Formas de pagamento -->
-          </div>
+          <div id="graficoFaturamento" class="grafico-faturamento"></div>
 
           <div
-            id="graficoPizzaRecebimentos"
-            class="grafico-pizza-recebimentos"
+            id="valorSelecionadoGrafico"
+            class="valor-selecionado-grafico"
           ></div>
         </div>
-      </article>
+      </section>
 
-      <article class="card-servicos">
-        <div class="card-titulo">
-          <span>Serviços</span>
-          <h2 id="totalServicosRealizados">0</h2>
+      <!-- MÉTRICAS PRINCIPAIS -->
+      <section class="cards-metricas">
+        <article class="card-relatorio metrica-card">
+          <div>
+            <span>Atendimentos</span>
+            <strong id="totalAtendimentos">0</strong>
+            <p id="variacaoAtendimentos" class="variacao-card"></p>
+          </div>
+        </article>
+
+        <article class="card-relatorio metrica-card">
+          <div>
+            <span>Ticket médio</span>
+            <strong id="ticketMedio">R$ 0,00</strong>
+            <p id="variacaoTicketMedio" class="variacao-card"></p>
+          </div>
+        </article>
+      </section>
+
+      <!-- RECEBIMENTOS -->
+      <section class="card-relatorio recebimentos-card">
+        <h2>Recebimentos</h2>
+
+        <div class="recebimentos-grid">
+          <div id="recebimentoDetalhado" class="recebimentos-lista">
+            <!-- Legendas e valores gerados pelo JavaScript -->
+          </div>
+
+          <div id="graficoPizzaRecebimentos" class="donut">
+            <div class="donut-centro"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAXA CARTÃO -->
+      <section class="card-relatorio taxas-card">
+        <div class="taxas-info">
+          <span>Taxas do cartão</span>
         </div>
 
-        <div id="listaServicosRealizados" class="lista-servicos">
-          <!-- Serviços gerados pelo JavaScript -->
+        <div class="taxas-variacao">
+          <strong id="taxaCartao">R$ 0,00</strong>
         </div>
-      </article>
+      </section>
+    </main>
 
-    <!-- Modal de Calendário -->
+    <!-- MODAL CALENDÁRIO -->
     <div id="modal-calendario" class="modal-calendario">
       <div class="calendario-container">
         <div class="calendario-topo">
-          <button id="mesAnterior" class="cal-btn">‹</button>
+          <button id="mesAnterior" class="cal-btn" type="button">‹</button>
           <span id="mesAtual" class="cal-mes">Julho 2025</span>
-          <button id="mesSeguinte" class="cal-btn">›</button>
+          <button id="mesSeguinte" class="cal-btn" type="button">›</button>
         </div>
 
         <div class="calendario-semana">
@@ -144,12 +165,14 @@
           <div>Sáb</div>
         </div>
 
-        <div class="calendario-corpo" id="calendarioCorpo">
-          <!-- Dias inseridos por JS -->
+        <div id="calendarioCorpo" class="calendario-corpo">
+          <!-- Dias gerados pelo JavaScript -->
         </div>
       </div>
     </div>
-    
+
+    <div id="menu-container"></div>
+
     <script src="javaScript/relatorio.js"></script>
     <script src="javaScript/menu.js"></script>
   </body>

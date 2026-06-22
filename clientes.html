@@ -2,113 +2,360 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#060d15" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <title>Clientes</title>
 
     <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/paginas.css" />
     <link rel="stylesheet" href="css/clientes.css" />
   </head>
 
   <body>
-    <main class="pagina-clientes">
+    <main class="clientes-page">
+      <!-- TOPO -->
       <section class="clientes-topo">
-        <a href="index.html" class="botao-voltar-clientes">←</a>
+        <h1>Clientes</h1>
 
-        <div>
-          <h1>Clientes</h1>
-        </div>
-
-        <button id="btnNovoCliente" class="botao-add-cliente" type="button">
+        <button
+          type="button"
+          class="btn-adicionar-cliente"
+          id="btnAdicionarCliente"
+        >
           +
         </button>
       </section>
 
-      <section class="grade-resumo-clientes">
-        <article class="mini-card-cliente" id="cardTotalClientes">
-          <span>Total</span>
-          <strong id="totalClientes">0</strong>
-        </article>
-
-        <article class="mini-card-cliente" id="cardAniversariantes">
-          <span>Aniversariantes</span>
-          <strong id="totalAniversariantes">0</strong>
-        </article>
-
-        <article class="mini-card-cliente" id="cardClientesSumidos">
-          <span>Sumidos</span>
-          <strong id="totalClientesSumidos">0</strong>
-        </article>
-
-        <article class="mini-card-cliente" id="cardClienteDestaque">
-          <span>Destaque</span>
-          <strong id="clienteDestaque">-</strong>
-        </article>
-      </section>
-
-      <section class="busca-clientes">
+      <!-- BUSCA -->
+      <section class="clientes-busca">
+        <span>🔎</span>
         <input
-          type="text"
-          id="inputBuscaCliente"
-          placeholder="Buscar cliente..."
+          type="search"
+          id="campoBuscaCliente"
+          placeholder="Buscar cliente por nome ou telefone..."
         />
       </section>
 
-      <section class="lista-clientes-area">
-        <div id="listaClientes" class="lista-clientes">
-          <!-- Clientes inseridos pelo JavaScript -->
+      <!-- TOP 3 -->
+      <section class="card-top-clientes">
+        <div class="top-clientes-titulo">
+          <span>🏆</span>
+          <h2>Top 3 clientes</h2>
+        </div>
+
+        <div class="top-clientes-lista" id="topClientes">
+          <article class="top-cliente-item">
+            <span class="medalha primeiro">1</span>
+
+            <div class="avatar-cliente destaque">JS</div>
+
+            <div class="dados-top-cliente">
+              <strong>João Silva</strong>
+              <span>24 visitas</span>
+            </div>
+
+            <div class="valor-top-cliente">
+              <strong>R$ 1.250,00</strong>
+              <span>faturados</span>
+            </div>
+          </article>
+
+          <article class="top-cliente-item">
+            <span class="medalha segundo">2</span>
+
+            <div class="avatar-cliente destaque">PC</div>
+
+            <div class="dados-top-cliente">
+              <strong>Pedro Costa</strong>
+              <span>18 visitas</span>
+            </div>
+
+            <div class="valor-top-cliente">
+              <strong>R$ 890,00</strong>
+              <span>faturados</span>
+            </div>
+          </article>
+
+          <article class="top-cliente-item">
+            <span class="medalha terceiro">3</span>
+
+            <div class="avatar-cliente destaque">MS</div>
+
+            <div class="dados-top-cliente">
+              <strong>Maria Souza</strong>
+              <span>14 visitas</span>
+            </div>
+
+            <div class="valor-top-cliente">
+              <strong>R$ 650,00</strong>
+              <span>faturados</span>
+            </div>
+          </article>
+        </div>
+
+        <button
+          type="button"
+          class="btn-ranking-clientes"
+          id="btnRankingClientes"
+        >
+          <span>Ver ranking completo</span>
+          <span>›</span>
+        </button>
+      </section>
+
+      <!-- ALERTAS -->
+      <section class="clientes-alertas">
+        <article class="card-alerta-cliente" id="cardAniversariantes">
+          <div class="icone-alerta-cliente aniversario">🎂</div>
+
+          <div>
+            <strong id="totalAniversariantes">3</strong>
+            <span>Aniversariantes</span>
+            <small>neste mês</small>
+          </div>
+        </article>
+
+        <article class="card-alerta-cliente sumidos" id="cardSemRetornar">
+          <div class="icone-alerta-cliente retorno">⏰</div>
+
+          <div>
+            <strong id="totalSemRetornar">12</strong>
+            <span>Sem retornar</span>
+            <small>há mais de 60 dias</small>
+          </div>
+        </article>
+      </section>
+
+      <!-- TODOS CLIENTES -->
+      <section class="secao-clientes">
+        <div class="secao-clientes-topo">
+          <h2>Todos os clientes <span id="totalClientes">(7)</span></h2>
+
+          <button
+            type="button"
+            class="btn-ver-todos-clientes"
+            id="btnVerTodosClientes"
+          >
+            Ver todos
+          </button>
+        </div>
+
+        <div class="card-lista-clientes" id="listaClientes">
+          <article class="cliente-item">
+            <div class="avatar-cliente pequeno">JS</div>
+
+            <div class="dados-cliente">
+              <strong>João Silva</strong>
+              <span>Última visita há 12 dias</span>
+            </div>
+
+            <div class="resumo-cliente">
+              <strong>R$ 1.250,00</strong>
+              <span>24 visitas</span>
+            </div>
+          </article>
+
+          <article class="cliente-item">
+            <div class="avatar-cliente pequeno">PC</div>
+
+            <div class="dados-cliente">
+              <strong>Pedro Costa</strong>
+              <span>Última visita há 5 dias</span>
+            </div>
+
+            <div class="resumo-cliente">
+              <strong>R$ 890,00</strong>
+              <span>18 visitas</span>
+            </div>
+          </article>
+
+          <article class="cliente-item">
+            <div class="avatar-cliente pequeno">MS</div>
+
+            <div class="dados-cliente">
+              <strong>Maria Souza</strong>
+              <span>Última visita há 20 dias</span>
+            </div>
+
+            <div class="resumo-cliente">
+              <strong>R$ 650,00</strong>
+              <span>14 visitas</span>
+            </div>
+          </article>
+
+          <article class="cliente-item">
+            <div class="avatar-cliente pequeno">LA</div>
+
+            <div class="dados-cliente">
+              <strong>Lucas Almeida</strong>
+              <span>Última visita há 35 dias</span>
+            </div>
+
+            <div class="resumo-cliente">
+              <strong>R$ 430,00</strong>
+              <span>9 visitas</span>
+            </div>
+          </article>
+
+          <article class="cliente-item">
+            <div class="avatar-cliente pequeno">FL</div>
+
+            <div class="dados-cliente">
+              <strong>Fernanda Lima</strong>
+              <span>Última visita há 45 dias</span>
+            </div>
+
+            <div class="resumo-cliente">
+              <strong>R$ 380,00</strong>
+              <span>8 visitas</span>
+            </div>
+          </article>
         </div>
       </section>
     </main>
 
-    <div id="modalCliente" class="modal-cliente">
-      <div class="modal-cliente-caixa">
-        <h2 id="tituloModalCliente">Novo cliente</h2>
-
-        <input type="text" id="inputNomeCliente" placeholder="Nome" />
-
-        <input type="tel" id="inputTelefoneCliente" placeholder="Telefone" />
-
-        <div class="linha-aniversario">
-          <input
-            type="number"
-            id="inputDiaAniversario"
-            placeholder="Dia"
-            min="1"
-            max="31"
-          />
-
-          <input
-            type="number"
-            id="inputMesAniversario"
-            placeholder="Mês"
-            min="1"
-            max="12"
-          />
-
-          <input
-            type="number"
-            id="inputAnoAniversario"
-            placeholder="Ano opcional"
-          />
+    <!-- MODAL NOVO CLIENTE -->
+    <div class="modal-clientes" id="modalCliente">
+      <div class="modal-clientes-conteudo">
+        <div class="modal-clientes-topo">
+          <h2>Novo cliente</h2>
+          <button
+            type="button"
+            class="btn-fechar-modal"
+            id="btnFecharModalCliente"
+          >
+            ×
+          </button>
         </div>
 
-        <textarea
-          id="inputObservacaoCliente"
-          placeholder="Observação opcional"
-        ></textarea>
+        <form class="form-cliente" id="formCliente">
+          <label>
+            Nome *
+            <input
+              type="text"
+              id="clienteNome"
+              placeholder="Nome do cliente"
+              autocomplete="off"
+              required
+            />
+          </label>
 
-        <div class="botoes-modal-cliente">
-          <button id="btnCancelarCliente" class="btn-cliente-neutro" type="button">
-            Cancelar
-          </button>
+          <label>
+            Telefone
+            <input
+              type="tel"
+              id="clienteTelefone"
+              placeholder="(32) 99999-9999"
+              autocomplete="off"
+            />
+          </label>
 
-          <button id="btnSalvarCliente" class="btn-cliente-principal" type="button">
-            Salvar
+          <div class="grupo-aniversario">
+            <label>
+              Dia
+              <input
+                type="number"
+                id="clienteAniversarioDia"
+                placeholder="DD"
+                min="1"
+                max="31"
+              />
+            </label>
+
+            <label>
+              Mês
+              <input
+                type="number"
+                id="clienteAniversarioMes"
+                placeholder="MM"
+                min="1"
+                max="12"
+              />
+            </label>
+
+            <label>
+              Ano
+              <input
+                type="number"
+                id="clienteAniversarioAno"
+                placeholder="Opcional"
+                min="1900"
+              />
+            </label>
+          </div>
+
+          <label>
+            Observação
+            <textarea
+              id="clienteObservacao"
+              placeholder="Preferências, observações ou lembretes..."
+              rows="3"
+            ></textarea>
+          </label>
+
+          <div class="modal-clientes-acoes">
+            <button
+              type="button"
+              class="btn-modal-secundario"
+              id="btnCancelarCliente"
+            >
+              Cancelar
+            </button>
+
+            <button type="submit" class="btn-modal-principal">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL ANIVERSARIANTES -->
+    <div class="modal-clientes" id="modalAniversariantes">
+      <div class="modal-clientes-conteudo">
+        <div class="modal-clientes-topo">
+          <h2>Aniversariantes do mês</h2>
+          <button
+            type="button"
+            class="btn-fechar-modal"
+            id="btnFecharModalAniversariantes"
+          >
+            ×
           </button>
+        </div>
+
+        <div class="lista-modal-clientes" id="listaAniversariantes">
+          <p class="estado-vazio-clientes">Nenhum aniversariante neste mês.</p>
         </div>
       </div>
     </div>
+
+    <!-- MODAL SEM RETORNAR -->
+    <div class="modal-clientes" id="modalSemRetornar">
+      <div class="modal-clientes-conteudo">
+        <div class="modal-clientes-topo">
+          <h2>Sem retornar</h2>
+          <button
+            type="button"
+            class="btn-fechar-modal"
+            id="btnFecharModalSemRetornar"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="lista-modal-clientes" id="listaSemRetornar">
+          <p class="estado-vazio-clientes">Nenhum cliente sem retornar.</p>
+        </div>
+      </div>
+    </div>
+    <div id="menu-container"></div>
 
     <script src="javaScript/clientes.js"></script>
     <script src="javaScript/menu.js"></script>

@@ -1,0 +1,408 @@
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* =========================
+   PÁGINA
+========================= */
+
+.pendentes-page {
+  width: 100%;
+  max-width: 100%;
+  min-height: calc(100dvh - 86px);
+  padding: var(--page-padding-top) var(--page-padding-x)
+    var(--page-padding-bottom);
+  overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.15dvh, 12px);
+}
+
+/* =========================
+   TOPO
+========================= */
+
+.pendentes-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pendentes-topo h1 {
+  color: var(--text-main);
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+/* =========================
+   RESUMO
+========================= */
+
+.card-resumo-pendentes {
+  min-height: 112px;
+  padding: 16px 14px;
+  border-radius: var(--card-radius);
+  background: var(--card-bg-feature);
+  border: none;
+}
+
+.card-resumo-pendentes span {
+  display: block;
+  color: var(--text-feature-label);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.card-resumo-pendentes strong {
+  display: block;
+  color: white;
+  font-size: 44px;
+  line-height: 0.95;
+  letter-spacing: -1.4px;
+  margin-bottom: 10px;
+}
+
+.card-resumo-pendentes p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.card-resumo-pendentes p b {
+  color: var(--purple-text);
+  font-weight: 800;
+}
+
+/* =========================
+   SEÇÕES
+========================= */
+
+.secao-pendentes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.secao-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.secao-topo h2 {
+  color: var(--text-main);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+
+.btn-ver-todos {
+  border: none;
+  background: transparent;
+  color: var(--purple-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* =========================
+   CARDS BASE
+========================= */
+
+.card-lista-pendentes,
+.card-lista-pagos,
+.card-ranking-devedores {
+  border: none;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background: var(--card-bg-secondary);
+}
+
+/* =========================
+   QUEM DEVE
+========================= */
+
+.item-pendente {
+  min-height: 64px;
+  padding: 10px 12px;
+
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.item-pendente + .item-pendente {
+  border-top: 1px solid var(--line-soft);
+}
+
+.avatar-devedor {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  font-size: 16px;
+  font-weight: 900;
+
+  background:
+    radial-gradient(circle at top left, rgba(139, 92, 246, 0.48), transparent),
+    #28105f;
+}
+
+.dados-pendente,
+.dados-pago {
+  min-width: 0;
+}
+
+.dados-pendente strong,
+.dados-pago strong {
+  display: block;
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.1;
+  margin-bottom: 6px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dados-pendente p,
+.dados-pago p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: var(--text-soft);
+  font-size: 11px;
+  line-height: 1;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dados-pendente p i,
+.dados-pago p i {
+  color: rgba(255, 255, 255, 0.46);
+  font-style: normal;
+}
+
+.texto-atraso {
+  color: var(--red);
+}
+
+.acao-pendente {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dados-pendente p {
+  flex-wrap: nowrap;
+}
+
+.valor-pendente-linha {
+  color: var(--text-main);
+  font-weight: 750;
+}
+
+.acao-pendente button {
+  min-width: 72px;
+  height: 28px;
+  padding: 0 12px;
+
+  border-radius: 999px;
+  border: 1px solid var(--purple-light);
+  color: var(--purple-text);
+  background: rgba(168, 85, 247, 0.08);
+
+  font-size: 12px;
+  font-weight: 750;
+}
+
+/* =========================
+   PAGOS
+========================= */
+
+.item-pago {
+  min-height: 56px;
+  padding: 9px 12px;
+
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.item-pago + .item-pago {
+  border-top: 1px solid var(--line-soft);
+}
+
+.icone-pago {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--green);
+  font-size: 22px;
+  font-weight: 900;
+
+  background: rgba(34, 197, 94, 0.18);
+}
+
+.valor-pago {
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.texto-pago {
+  color: var(--green);
+}
+
+/* =========================
+   RANKING
+========================= */
+
+.card-ranking-devedores {
+  padding: 12px;
+}
+
+.ranking-item {
+  min-height: 36px;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.ranking-item + .ranking-item {
+  border-top: 1px solid var(--line-soft);
+}
+
+.ranking-posicao {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.ranking-posicao.primeiro {
+  background: rgba(245, 158, 11, 0.34);
+  color: var(--yellow);
+}
+
+.ranking-posicao.segundo {
+  background: rgba(148, 163, 184, 0.24);
+  color: var(--text-soft);
+}
+
+.ranking-posicao.terceiro {
+  background: rgba(180, 83, 9, 0.34);
+  color: var(--yellow);
+}
+
+.ranking-item strong {
+  color: var(--text-main);
+  font-size: 13px;
+  font-weight: 500;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ranking-item em {
+  color: var(--yellow);
+  font-size: 13px;
+  font-weight: 850;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 360px) {
+  .pendentes-page {
+    padding-inline: 10px;
+    gap: 8px;
+  }
+
+  .pendentes-topo h1 {
+    font-size: 22px;
+  }
+
+  .card-resumo-pendentes {
+    min-height: 104px;
+    padding: 14px 12px;
+  }
+
+  .card-resumo-pendentes strong {
+    font-size: 38px;
+  }
+
+  .card-resumo-pendentes p {
+    font-size: 13px;
+  }
+
+  .item-pendente {
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    gap: 8px;
+    padding-inline: 10px;
+  }
+
+  .avatar-devedor {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  .dados-pendente strong,
+  .dados-pago strong {
+    font-size: 13px;
+  }
+
+  .dados-pendente p,
+  .dados-pago p {
+    font-size: 10px;
+    gap: 5px;
+  }
+
+  .acao-pendente button {
+    min-width: 66px;
+    height: 26px;
+    font-size: 11px;
+    padding-inline: 10px;
+  }
+}
+
+.estado-vazio {
+  padding: 14px 12px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.3;
+}

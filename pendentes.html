@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <meta name="theme-color" content="#060d15" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>Pendentes</title>
+
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/paginas.css" />
+    <link rel="stylesheet" href="css/pendentes.css" />
+  </head>
+
+  <body>
+    <main class="pendentes-page">
+      <!-- TOPO -->
+      <section class="pendentes-topo">
+        <h1>Pendentes</h1>
+      </section>
+
+      <!-- RESUMO -->
+      <section class="card-resumo-pendentes">
+        <span>A receber</span>
+        <strong id="totalPendente">R$ 95,00</strong>
+        <p><b id="quantidadePendentes">3 cobranças</b> pendentes</p>
+      </section>
+
+      <!-- QUEM DEVE -->
+      <section class="secao-pendentes">
+        <div class="secao-topo">
+          <h2>Quem deve <span id="contadorQuemDeve">(3)</span></h2>
+          <button type="button" class="btn-ver-todos" id="btnVerTodosPendentes">
+            Ver todos
+          </button>
+        </div>
+
+        <div class="card-lista-pendentes" id="listaPendentes">
+          <article class="item-pendente">
+            <div class="avatar-devedor">BR</div>
+
+            <div class="dados-pendente">
+              <strong>Breno Ronzani</strong>
+              <p>
+                <span class="valor-pendente-linha">R$ 35,00</span>
+                <i>•</i>
+                <span>11/06</span>
+                <i>•</i>
+                <span class="texto-atraso">12 dias em aberto</span>
+              </p>
+            </div>
+
+            <div class="acao-pendente">
+              <button type="button">Receber</button>
+            </div>
+          </article>
+
+          <article class="item-pendente">
+            <div class="avatar-devedor">T</div>
+
+            <div class="dados-pendente">
+              <strong>Tiago</strong>
+              <p>
+                <span class="valor-pendente-linha">R$ 50,00</span>
+                <i>•</i>
+                <span>17/06</span>
+                <i>•</i>
+                <span class="texto-atraso">6 dias em aberto</span>
+              </p>
+            </div>
+
+            <div class="acao-pendente">
+              <button type="button">Receber</button>
+            </div>
+          </article>
+
+          <article class="item-pendente">
+            <div class="avatar-devedor">JS</div>
+
+            <div class="dados-pendente">
+              <strong>João Silva</strong>
+              <p>
+                <span class="valor-pendente-linha">R$ 10,00</span>
+                <i>•</i>
+                <span>19/06</span>
+                <i>•</i>
+                <span class="texto-atraso">4 dias em aberto</span>
+              </p>
+            </div>
+
+            <div class="acao-pendente">
+              <button type="button">Receber</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- PAGOS RECENTEMENTE -->
+      <section class="secao-pendentes">
+        <div class="secao-topo">
+          <h2>Pagos recentemente</h2>
+          <button type="button" class="btn-ver-todos" id="btnVerTodosPagos">
+            Ver todos
+          </button>
+        </div>
+
+        <div class="card-lista-pagos" id="listaPagosRecentes">
+          <article class="item-pago">
+            <div class="icone-pago">✓</div>
+
+            <div class="dados-pago">
+              <strong>Breno Ronzani</strong>
+              <p>
+                <span class="texto-pago">Pago hoje</span>
+              </p>
+            </div>
+
+            <strong class="valor-pago">R$ 10,00</strong>
+          </article>
+
+          <article class="item-pago">
+            <div class="icone-pago">✓</div>
+
+            <div class="dados-pago">
+              <strong>João Silva</strong>
+              <p>
+                <span class="texto-pago">Pago ontem</span>
+              </p>
+            </div>
+
+            <strong class="valor-pago">R$ 20,00</strong>
+          </article>
+        </div>
+      </section>
+
+      <!-- RANKING -->
+      <section class="secao-pendentes">
+        <div class="secao-topo">
+          <h2>Pendências nos últimos 90 dias</h2>
+          <button type="button" class="btn-ver-todos" id="btnVerRanking">
+            Ver todos
+          </button>
+        </div>
+
+        <section class="card-ranking-devedores">
+          <div class="ranking-lista" id="rankingDevedores">
+            <article class="ranking-item">
+              <span class="ranking-posicao primeiro">1</span>
+              <strong>Breno Ronzani</strong>
+              <em>5 vezes</em>
+            </article>
+
+            <article class="ranking-item">
+              <span class="ranking-posicao segundo">2</span>
+              <strong>João Silva</strong>
+              <em>3 vezes</em>
+            </article>
+
+            <article class="ranking-item">
+              <span class="ranking-posicao terceiro">3</span>
+              <strong>Pedro Costa</strong>
+              <em>2 vezes</em>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div id="menu-container"></div>
+
+    <script src="javaScript/pendentes.js"></script>
+    <script src="javaScript/menu.js"></script>
+  </body>
+</html>

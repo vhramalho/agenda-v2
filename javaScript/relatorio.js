@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function atualizarRelatorio() {
   const agendamentos = carregarTodosAgendamentosRealizados();
-  const servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+
   const formas = JSON.parse(localStorage.getItem("formasPagamento")) || [];
 
   let lista = [];
@@ -86,7 +86,6 @@ function atualizarRelatorio() {
 
   preencherCabecalho(titulo);
   preencherCards(lista, formas);
-  preencherServicos(lista, servicos);
   atualizarGraficoFaturamento(lista);
 }
 
@@ -200,11 +199,8 @@ function preencherCards(lista, formasCadastradas) {
   const faturamento = somarValores(lista);
   const atendimentos = lista.length;
   const ticketMedio = atendimentos > 0 ? faturamento / atendimentos : 0;
-  const resumoMediaPeriodo = calcularMediaPeriodo(lista);
 
   const anterior = obterDadosPeriodoAnterior();
-
-  const resumoMediaAnterior = calcularMediaPeriodo(anterior.lista);
 
   const variacaoFaturamento = calcularVariacaoPercentual(
     faturamento,
@@ -221,91 +217,24 @@ function preencherCards(lista, formasCadastradas) {
     anterior.ticketMedio,
   );
 
-  const variacaoMediaPeriodo = calcularVariacaoPercentual(
-    resumoMediaPeriodo.media,
-    resumoMediaAnterior.media,
-  );
-
-  const variacaoDiasAtendidos = calcularVariacaoQuantidade(
-  resumoMediaPeriodo.quantidade,
-  resumoMediaAnterior.quantidade,
-);
-
   document.getElementById("faturamentoPeriodo").textContent =
     formatarMoeda(faturamento);
+
   document.getElementById("totalAtendimentos").textContent = atendimentos;
+
   document.getElementById("ticketMedio").textContent =
     formatarMoeda(ticketMedio);
-  document.getElementById("labelDiasAtendidos").textContent =
-    resumoMediaPeriodo.labelQuantidade;
-
-  document.getElementById("diasAtendidos").textContent =
-    resumoMediaPeriodo.quantidade;
-
-  document.getElementById("labelMediaPeriodo").textContent =
-    resumoMediaPeriodo.labelMedia;
-
-  document.getElementById("mediaPeriodo").textContent = formatarMoeda(
-    resumoMediaPeriodo.media,
-  );
 
   aplicarVariacao("variacaoFaturamento", variacaoFaturamento);
-
   aplicarVariacao("variacaoAtendimentos", variacaoAtendimentos);
-
   aplicarVariacao("variacaoTicketMedio", variacaoTicket);
 
-  aplicarVariacao("variacaoMediaPeriodo", variacaoMediaPeriodo);
-
-  aplicarVariacao("variacaoDiasAtendidos", variacaoDiasAtendidos);
-
-  preencherRecebimentos(lista);
+  preencherRecebimentos(lista, formasCadastradas);
   preencherTaxaCartao(lista, formasCadastradas);
-  preencherPendentes(lista);
 }
 
-function calcularMediaPeriodo(lista) {
-  const total = somarValores(lista);
-
-  if (periodoAtual === "ano") {
-    const mesesAtendidos = new Set();
-
-    lista.forEach((agendamento) => {
-      const mes = agendamento.data.split("-")[1];
-      mesesAtendidos.add(mes);
-    });
-
-    const quantidade = mesesAtendidos.size;
-
-    return {
-      labelQuantidade: "Meses atendidos",
-      quantidade,
-      labelMedia: "Média mensal",
-      media: quantidade > 0 ? total / quantidade : 0,
-    };
-  }
-
-  const diasAtendidos = new Set();
-
-  lista.forEach((agendamento) => {
-    diasAtendidos.add(agendamento.data);
-  });
-
-  const quantidade = diasAtendidos.size;
-
-  return {
-    labelQuantidade: "Dias atendidos",
-    quantidade,
-    labelMedia: "Média por dia",
-    media: quantidade > 0 ? total / quantidade : 0,
-  };
-}
-
-function preencherRecebimentos(lista) {
+function preencherRecebimentos(lista, formasCadastradas) {
   const container = document.getElementById("recebimentoDetalhado");
-  const formasCadastradas =
-    JSON.parse(localStorage.getItem("formasPagamento")) || [];
-
   const resumo = {
     dinheiro: 0,
     pix: 0,
@@ -388,11 +317,11 @@ function atualizarGraficoRecebimentos(resumo) {
   if (!grafico) return;
 
   const cores = {
-    dinheiro: "#09db09",
-    pix: "#0051ca",
-    credito: "#da14af",
-    debito: "#fbff00",
-    outras: "#63faff93",
+    dinheiro: "#39e51f",
+    pix: "#0075ff",
+    credito: "#f012a5",
+    debito: "#ffe600",
+    outras: "#19c8d8",
   };
 
   const tipos = ["dinheiro", "pix", "credito", "debito", "outras"];
@@ -445,39 +374,22 @@ function preencherTaxaCartao(lista, formasCadastradas) {
   document.getElementById("taxaCartao").textContent = formatarMoeda(totalTaxa);
 }
 
-function preencherPendentes(lista) {
-  const totalPendente = lista
-    .filter(
-      (agendamento) => agendamento.pago === "nao" || agendamento.pago === false,
-    )
-    .reduce(
-      (total, agendamento) => total + (Number(agendamento.valor) || 0),
-      0,
-    );
-
-  document.getElementById("valorPendente").textContent =
-    formatarMoeda(totalPendente);
-}
-
 // ================================
 // GRÁFICO DE FATURAMENTO
 // ================================
 
 function atualizarGraficoFaturamento(lista) {
+  const cardFaturamento = document.querySelector(".card-faturamento");
   const container = document.getElementById("graficoFaturamento");
   const valorSelecionado = document.getElementById("valorSelecionadoGrafico");
+
+  cardFaturamento?.classList.remove("sem-grafico");
 
   if (valorSelecionado) {
     valorSelecionado.innerHTML = "";
   }
 
   if (!container) return;
-
-  if (periodoAtual === "dia") {
-    container.innerHTML = "";
-    container.classList.remove("ativo");
-    return;
-  }
 
   const dados = montarDadosGraficoFaturamento(lista);
   const total = somarValores(lista);
@@ -493,6 +405,10 @@ function atualizarGraficoFaturamento(lista) {
 }
 
 function montarDadosGraficoFaturamento(lista) {
+  if (periodoAtual === "dia") {
+    return montarDadosDia(lista);
+  }
+
   if (periodoAtual === "semana") {
     return montarDadosSemana(lista);
   }
@@ -506,6 +422,33 @@ function montarDadosGraficoFaturamento(lista) {
   }
 
   return [];
+}
+
+function montarDadosDia(lista) {
+  const dados = [];
+
+  for (let hora = 8; hora <= 20; hora++) {
+    dados.push({
+      label: `${String(hora).padStart(2, "0")}h`,
+      valor: 0,
+      atendimentos: 0,
+    });
+  }
+
+  lista.forEach((agendamento) => {
+    const horaTexto = agendamento.hora || "";
+    const hora = Number(String(horaTexto).split(":")[0]);
+
+    if (!Number.isFinite(hora)) return;
+    if (hora < 8 || hora > 20) return;
+
+    const index = hora - 8;
+
+    dados[index].valor += Number(agendamento.valor) || 0;
+    dados[index].atendimentos += 1;
+  });
+
+  return dados;
 }
 
 function montarDadosSemana(lista) {
@@ -591,6 +534,15 @@ function desenharGraficoSvg(dados) {
   const alturaUtil = altura - paddingTopo - paddingBaixo;
 
   const maiorValor = Math.max(...dados.map((item) => item.valor), 1);
+  const limiteGrafico = obterLimiteGrafico(maiorValor);
+
+  const labelsY = [
+    limiteGrafico,
+    limiteGrafico * 0.75,
+    limiteGrafico * 0.5,
+    limiteGrafico * 0.25,
+    0,
+  ];
 
   const pontos = dados.map((item, index) => {
     const x =
@@ -598,7 +550,8 @@ function desenharGraficoSvg(dados) {
         ? largura / 2
         : paddingEsquerda + (index / (dados.length - 1)) * larguraUtil;
 
-    const y = paddingTopo + alturaUtil - (item.valor / maiorValor) * alturaUtil;
+    const y =
+      paddingTopo + alturaUtil - (item.valor / limiteGrafico) * alturaUtil;
 
     return {
       ...item,
@@ -624,23 +577,27 @@ function desenharGraficoSvg(dados) {
         periodoAtual === "mes" ? `Dia ${ponto.label}` : ponto.label;
 
       return `
-      <circle
-        class="ponto-faturamento"
-        cx="${ponto.x}"
-        cy="${ponto.y}"
-        r="${ponto.valor > 0 ? 5 : 0}"
-        data-index="${index}"
-        data-label="${textoLabel}"
-        data-valor="${formatarMoeda(ponto.valor)}"
-        onclick="selecionarPontoGrafico(this)"
-      />
-    `;
+        <circle
+          class="ponto-faturamento"
+          cx="${ponto.x}"
+          cy="${ponto.y}"
+          r="${ponto.valor > 0 ? 5 : 0}"
+          data-index="${index}"
+          data-label="${textoLabel}"
+          data-valor="${formatarMoeda(ponto.valor)}"
+          onclick="selecionarPontoGrafico(this)"
+        />
+      `;
     })
     .join("");
 
   const labels = montarLabelsGrafico(dados);
 
   return `
+    <div class="grafico-y-labels">
+      ${labelsY.map((valor) => `<span>${formatarNumeroGrafico(valor)}</span>`).join("")}
+    </div>
+
     <svg viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none">
       <defs>
         <linearGradient id="gradienteFaturamento" x1="0" y1="0" x2="0" y2="1">
@@ -662,6 +619,33 @@ function desenharGraficoSvg(dados) {
   `;
 }
 
+function obterLimiteGrafico(maiorValor) {
+  if (maiorValor <= 0) return 1;
+
+  const potencia = Math.pow(10, Math.floor(Math.log10(maiorValor)));
+  const normalizado = maiorValor / potencia;
+
+  let multiplicador = 1;
+
+  if (normalizado <= 1) {
+    multiplicador = 1;
+  } else if (normalizado <= 2) {
+    multiplicador = 2;
+  } else if (normalizado <= 5) {
+    multiplicador = 5;
+  } else {
+    multiplicador = 10;
+  }
+
+  return multiplicador * potencia;
+}
+
+function formatarNumeroGrafico(valor) {
+  return Number(valor || 0).toLocaleString("pt-BR", {
+    maximumFractionDigits: 0,
+  });
+}
+
 function selecionarPontoGrafico(elemento) {
   const areaSelecionada = document.getElementById("valorSelecionadoGrafico");
 
@@ -676,6 +660,10 @@ function selecionarPontoGrafico(elemento) {
 }
 
 function montarLabelsGrafico(dados) {
+  if (periodoAtual === "dia") {
+    return ["08h", "10h", "12h", "14h", "16h", "18h", "20h"];
+  }
+
   if (periodoAtual === "semana") {
     return dados.map((item) => item.label);
   }
@@ -695,56 +683,6 @@ function montarLabelsGrafico(dados) {
   }
 
   return [];
-}
-
-// ================================
-// SERVIÇOS REALIZADOS
-// ================================
-
-function preencherServicos(lista, servicosCadastrados) {
-  const container = document.getElementById("listaServicosRealizados");
-  const totalContainer = document.getElementById("totalServicosRealizados");
-
-  const contagem = {};
-
-  lista.forEach((agendamento) => {
-    let servicos = [];
-
-    if (Array.isArray(agendamento.servico)) {
-      servicos = agendamento.servico;
-    } else if (typeof agendamento.servico === "string") {
-      servicos = agendamento.servico.split("+").map((s) => s.trim());
-    }
-
-    servicos.forEach((nome) => {
-      if (!contagem[nome]) contagem[nome] = 0;
-      contagem[nome]++;
-    });
-  });
-
-  const totalServicos = Object.values(contagem).reduce(
-    (soma, qtd) => soma + qtd,
-    0,
-  );
-  totalContainer.textContent = totalServicos;
-
-  if (servicosCadastrados.length === 0) {
-    container.innerHTML = `<p class="texto-vazio">Nenhum serviço cadastrado.</p>`;
-    return;
-  }
-
-  container.innerHTML = servicosCadastrados
-    .map((servico) => {
-      const qtd = contagem[servico.nome] || 0;
-
-      return `
-            <div class="item-servico">
-                <span>${servico.nome}</span>
-                <strong>${qtd}</strong>
-            </div>
-        `;
-    })
-    .join("");
 }
 
 // ================================
@@ -964,11 +902,6 @@ function formatarMoeda(valor) {
     style: "currency",
     currency: "BRL",
   });
-}
-
-function formatarDataCurta(data) {
-  const [, mes, dia] = data.split("-");
-  return `${dia}/${mes}`;
 }
 
 function formatarData(data) {
